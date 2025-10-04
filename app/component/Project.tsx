@@ -6,54 +6,55 @@ import { FaGithub } from "react-icons/fa";
 import { FiExternalLink } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 
+// Unique, lesser-known projects
 const projects = [
   {
-    title: "E-Shop",
-    date: "August 2024",
-    category: ["E-commerce", "Web App"],
+    title: "Nebula Notes",
+    date: "July 2024",
+    category: ["Productivity", "Web App"],
     description:
-      "A modern online shop for electronic devices with a sleek UI, product filtering, secure payments, and admin dashboard for inventory management.",
-    tech: "Technologies: Next.js, Tailwind CSS, Stripe API",
+      "A minimal note-taking web app that uses AI to summarize your notes, highlight key points, and create daily learning schedules.",
+    tech: "Technologies: Next.js, Tailwind CSS, OpenAI API",
     image:
-      "https://api.microlink.io/?url=https://www.amazon.com&screenshot=true&meta=false&embed=screenshot.url",
-    live: "https://amazon.com",
-    github: "https://github.com/vishaldevsx/eshop",
+      "https://api.microlink.io/?url=https://nebulanotes.io&screenshot=true&meta=false&embed=screenshot.url",
+    live: "https://nebulanotes.io",
+    github: "https://github.com/vishaldevsx/nebula-notes",
   },
   {
-    title: "Games Forum",
+    title: "PixelTrail",
+    date: "October 2024",
+    category: ["Art", "Community"],
+    description:
+      "A platform for digital artists to showcase pixel art, collaborate on challenges, and earn badges for creativity.",
+    tech: "Technologies: React, Firebase, Tailwind CSS",
+    image:
+      "https://api.microlink.io/?url=https://pixeltrail.art&screenshot=true&meta=false&embed=screenshot.url",
+    live: "https://pixeltrail.art",
+    github: "https://github.com/vishaldevsx/pixeltrail",
+  },
+  {
+    title: "EcoQuest",
     date: "December 2024",
-    category: ["Gaming", "Community"],
+    category: ["Gaming", "Environmental"],
     description:
-      "A social forum for gamers to share updates, discuss games, and connect. Features include real-time chat, trending posts, and leaderboard rankings.",
-    tech: "Technologies: React, Firebase, WebSocket",
+      "A web-based game that educates players about climate change, renewable energy, and sustainability through interactive quests and rewards.",
+    tech: "Technologies: Phaser.js, Next.js, Tailwind CSS",
     image:
-      "https://api.microlink.io/?url=https://store.steampowered.com&screenshot=true&meta=false&embed=screenshot.url",
-    live: "https://store.steampowered.com",
-    github: "https://github.com/vishaldevsx/games-forum",
+      "https://api.microlink.io/?url=https://ecoquest.world&screenshot=true&meta=false&embed=screenshot.url",
+    live: "https://ecoquest.world",
+    github: "https://github.com/vishaldevsx/ecoquest",
   },
   {
-    title: "Portfolio 2.0",
-    date: "September 2024",
-    category: ["Personal", "Design"],
-    description:
-      "My personal portfolio with smooth animations, dark/light mode, and responsive design. Built using Next.js and Framer Motion.",
-    tech: "Technologies: Next.js, Framer Motion, Tailwind CSS",
-    image:
-      "https://api.microlink.io/?url=https://vercel.com&screenshot=true&meta=false&embed=screenshot.url",
-    live: "https://vishaldevsx.vercel.app",
-    github: "https://github.com/vishaldevsx/portfolio",
-  },
-  {
-    title: "School Management System",
+    title: "MindGarden",
     date: "March 2025",
-    category: ["Dashboard", "Admin"],
+    category: ["Health", "AI"],
     description:
-      "A full-featured school management system with role-based access, results, attendance, fees, and teacher dashboards.",
-    tech: "Technologies: Node.js, Supabase, Next.js, Zod",
+      "An AI-powered journaling and mental wellness app that suggests mindfulness exercises based on your mood entries.",
+    tech: "Technologies: Next.js, Supabase, OpenAI API, Tailwind CSS",
     image:
-      "https://api.microlink.io/?url=https://supabase.com&screenshot=true&meta=false&embed=screenshot.url",
-    live: "https://school-system.vercel.app",
-    github: "https://github.com/vishaldevsx/school-system",
+      "https://api.microlink.io/?url=https://mindgarden.app&screenshot=true&meta=false&embed=screenshot.url",
+    live: "https://mindgarden.app",
+    github: "https://github.com/vishaldevsx/mindgarden",
   },
 ];
 
@@ -107,7 +108,7 @@ export default function Project() {
                 </div>
 
                 <h3 className="text-4xl font-bold">{p.title}</h3>
-                <p className="text-sm text-gray-400">{/* {p.date} */} {p.date}</p>
+                <p className="text-sm text-gray-400">{p.date}</p>
                 <p className="text-gray-300 leading-relaxed">{p.description}</p>
                 <p className="text-gray-400 text-sm">{p.tech}</p>
 
@@ -138,6 +139,7 @@ export default function Project() {
                   alt={p.title}
                   width={600}
                   height={400}
+                  unoptimized
                   className="relative rounded-3xl w-full shadow-2xl border border-white/10 transition-transform duration-700 transform group-hover:scale-105"
                 />
               </div>

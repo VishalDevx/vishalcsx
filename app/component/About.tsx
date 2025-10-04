@@ -10,7 +10,6 @@ const TimelineDot = ({ color }: { color: string }) => (
   <div className={`w-3 h-3 ${color} rounded-full absolute -left-1.5 top-1.5`} />
 );
 
-// Timeline Data
 const timelineData = [
   {
     title: "10th & 12th",
@@ -55,13 +54,13 @@ export default function AboutSection() {
       }}
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col lg:flex-row lg:justify-between lg:items-start gap-20">
-        {/* LEFT — Profile Image */}
+        {/* LEFT — Profile Image (hidden on mobile) */}
         <motion.div
           initial={{ opacity: 0, x: -80 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 1, ease: "easeOut" }}
           viewport={{ once: true }}
-          className="lg:w-1/2 flex justify-center lg:justify-start relative"
+          className="lg:w-1/2 flex justify-center lg:justify-start relative hidden lg:flex"
         >
           <div className="relative w-full max-w-sm sm:max-w-md lg:max-w-lg h-96 sm:h-[500px] lg:h-[600px] flex flex-col items-center">
             {/* Gradient Glow Behind Image */}
@@ -137,9 +136,7 @@ export default function AboutSection() {
                     {item.date}
                   </span>
                 </div>
-                <span className="text-gray-400 text-base">
-                  {item.description}
-                </span>
+                <span className="text-gray-400 text-base">{item.description}</span>
               </motion.li>
             ))}
           </ul>

@@ -17,14 +17,14 @@ export default function Hero() {
       <Navbar />
 
       {/* Hero Section */}
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between px-8 md:px-16 mt-16 gap-10">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-center md:justify-between px-8 md:px-16 mt-16 gap-10">
         {/* LEFT — Text Section */}
         <motion.div
           initial={{ opacity: 0, x: -80 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 1, ease: "easeOut" }}
           viewport={{ once: true }}
-          className="flex flex-col space-y-6 md:w-1/2 text-center md:text-left"
+          className="flex flex-col space-y-6 text-center md:text-left md:w-1/2"
         >
           <motion.h1
             className="text-6xl sm:text-7xl font-extrabold leading-tight bg-gradient-to-r from-red-500 via-purple-500 to-indigo-500 bg-clip-text text-transparent"
@@ -70,13 +70,13 @@ export default function Hero() {
           </motion.div>
         </motion.div>
 
-        {/* RIGHT — Image Section */}
+        {/* RIGHT — Image Section (Hidden on mobile) */}
         <motion.div
           initial={{ opacity: 0, x: 80 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 1, ease: "easeOut" }}
           viewport={{ once: true }}
-          className="relative md:w-1/2 flex justify-center items-center"
+          className="relative md:flex hidden md:w-1/2 justify-center items-center"
         >
           {/* Animated Glow Behind Image */}
           <motion.div

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { FaGithub } from "react-icons/fa";
 import { FiExternalLink } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
@@ -106,7 +107,7 @@ export default function Project() {
                 </div>
 
                 <h3 className="text-4xl font-bold">{p.title}</h3>
-                <p className="text-sm text-gray-400">// {p.date}</p>
+                <p className="text-sm text-gray-400">{/* {p.date} */} {p.date}</p>
                 <p className="text-gray-300 leading-relaxed">{p.description}</p>
                 <p className="text-gray-400 text-sm">{p.tech}</p>
 
@@ -132,9 +133,11 @@ export default function Project() {
 
               <div className="flex-1 relative group">
                 <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-red-600 via-blue-600 to-indigo-600 opacity-25 blur-2xl group-hover:opacity-50 transition-opacity duration-500"></div>
-                <img
+                <Image
                   src={p.image}
                   alt={p.title}
+                  width={600}
+                  height={400}
                   className="relative rounded-3xl w-full shadow-2xl border border-white/10 transition-transform duration-700 transform group-hover:scale-105"
                 />
               </div>

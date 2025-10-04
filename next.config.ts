@@ -1,8 +1,8 @@
-import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
-  reactStrictMode: true,
-  // you can add future experimental flags here if needed
+const nextConfig = {
+  experimental: {
+    turbo: true, // disables Turbopack
+  },
 };
 
 export default nextConfig;

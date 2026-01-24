@@ -19,29 +19,29 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-black text-gray-100 scroll-smooth">
-      <motion.section id="hero" {...sectionMotion}>
+      
         <Hero />
-      </motion.section>
+      
 
-      <motion.section id="about" {...sectionMotion}>
+     
         <AboutSection />
-      </motion.section>
+     
 
-      <motion.section id="skills" {...sectionMotion}>
+      
         <Skill />
-      </motion.section>
+    
 
-      <motion.section id="projects" {...sectionMotion}>
+     
         <Project />
-      </motion.section>
+   
 
-      <motion.section id="hobbies" {...sectionMotion}>
+     
         <Hobbies />
-      </motion.section>
 
-      <motion.section id="contact" {...sectionMotion}>
+
+     
         <ContactForm />
-      </motion.section>
+      
 
       <Footer />
     </main>

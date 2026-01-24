@@ -18,13 +18,13 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-black text-gray-100 scroll-smooth">
+    <main className=" w-1/3 m-auto pt-10 mt-10">
       
         <Hero />
       
 
      
-        <AboutSection />
+        {/* <AboutSection />
      
 
       
@@ -43,7 +43,7 @@ export default function Home() {
         <ContactForm />
       
 
-      <Footer />
+      <Footer /> */}
     </main>
   );
 }

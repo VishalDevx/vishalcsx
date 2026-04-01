@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
+import { FaGithub, FaLinkedin, FaTwitter ,Fa500Px} from "react-icons/fa";
 import { SiGmail } from "react-icons/si";
 
 

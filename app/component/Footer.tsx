@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Link from "next/link";
 import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
 
 export default function Footer() {
@@ -22,7 +21,7 @@ export default function Footer() {
         <div className="flex gap-6 text-xl">
           <motion.a
             whileHover={{ scale: 1.2, color: "#9333EA" }}
-            href="https://github.com/yourusername"
+            href="https://github.com/VishalDevx"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="GitHub"
@@ -31,7 +30,7 @@ export default function Footer() {
           </motion.a>
           <motion.a
             whileHover={{ scale: 1.2, color: "#0A66C2" }}
-            href="https://linkedin.com/in/yourusername"
+            href="https://linkedin.com"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="LinkedIn"
@@ -40,7 +39,7 @@ export default function Footer() {
           </motion.a>
           <motion.a
             whileHover={{ scale: 1.2, color: "#1DA1F2" }}
-            href="https://twitter.com/yourusername"
+            href="https://x.com/VishalCsx"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Twitter"

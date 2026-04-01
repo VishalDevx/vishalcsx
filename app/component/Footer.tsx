@@ -2,6 +2,8 @@
 
 import { motion } from "framer-motion";
 import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
+import { SiGmail } from "react-icons/si";
+
 
 export default function Footer() {
   return (
@@ -30,7 +32,7 @@ export default function Footer() {
           </motion.a>
           <motion.a
             whileHover={{ scale: 1.2, color: "#0A66C2" }}
-            href="https://linkedin.com"
+            href="https://www.linkedin.com/in/vishal-singh-779054260/"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="LinkedIn"
@@ -45,6 +47,15 @@ export default function Footer() {
             aria-label="Twitter"
           >
             <FaTwitter />
+          </motion.a>
+            <motion.a
+            whileHover={{ scale: 1.2, color: "#e22d2f" }}
+           href="mailto:vishalcsx@gmail.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Gmail"
+          >
+            <SiGmail />
           </motion.a>
         </div>
       </motion.div>

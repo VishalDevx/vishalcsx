@@ -6,9 +6,9 @@ type ResumeItem = { k: string; v: string };
 
 const SUMMARY: ResumeItem[] = [
   { k: "name", v: "Vishal Singh" },
-  { k: "headline", v: "Senior Backend Engineer • Senior Full-Stack Engineer • System Architect" },
+  { k: "headline", v: "Senior Backend Engineer • Senior Full-Stack Engineer " },
   { k: "location", v: "India (open to remote)" },
-  { k: "email", v: "add-your-email@domain.com" },
+  { k: "email", v: "vishalcsx@gmail.com" },
   { k: "github", v: "github.com/VishalDevx" },
 ];
 
@@ -35,7 +35,7 @@ export function ResumeSection() {
               </div>
             ))}
             <div className="pt-2 text-xs text-zinc-500">
-              Tip: update email/location in `app/component/ResumeSection.tsx`.
+            
             </div>
           </div>
 

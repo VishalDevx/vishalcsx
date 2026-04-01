@@ -16,6 +16,7 @@ import { GithubPRsSection } from "./component/GithubPRsSection";
 import { DevtoBlogsSection } from "./component/DevtoBlogsSection";
 import { TweetsSection } from "./component/TweetsSection";
 import { useMemo, useState } from "react";
+import Footer from "./component/Footer";
 
 
 export default function Home() {
@@ -68,29 +69,12 @@ export default function Home() {
           {visible === null || visible === "tweets" ? <TweetsSection /> : null}
           {visible === null || visible === "about" ? <ResumeSection /> : null}
           {visible === null || visible === "activity" ? <ContributionGraph /> : null}
+         
+     <Footer/>
         </div>
       </div>
 
      
-        {/* <AboutSection />
-     
-
-      
-    
-
-     
-        <Project />
-   
-
-     
-        <Hobbies />
-
-
-     
-        <ContactForm />
-      
-
-      <Footer /> */}
     </main>
   );
 }

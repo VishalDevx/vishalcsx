@@ -25,7 +25,7 @@ export default function Introduction() {
         <div>
           <h1 className="text-base font-semibold text-zinc-100">Vishal Singh</h1>
           <div className="font-mono text-xs text-zinc-400">
-            senior backend • senior full‑stack • system architecture
+            senior backend • senior full‑stack  developer
           </div>
         </div>
       </div>

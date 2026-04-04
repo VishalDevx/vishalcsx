@@ -1,9 +1,7 @@
 const nextConfig = {
   images: {
     domains: ["api.microlink.io"],
-images: {
-    domains: ["github.com"],
-  },
+
     remotePatterns: [
       {
         protocol: "https",

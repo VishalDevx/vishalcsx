@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from "react";
 
-export default function PixelEditor10x50() {
-  const ROWS = 12;
-  const COLS = 50;
+export default function PixelEditor9x40() {
+  const ROWS = 9;
+  const COLS = 40; // 9 rows, 40 columns
   const BOX_SIZE = 22;
 
   const PALETTE = [
@@ -55,7 +55,7 @@ export default function PixelEditor10x50() {
       : { top: 0, left: 0 };
 
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-start">
       <div
         className="relative bg-black p-2 rounded-lg"
         onMouseDown={() => setMouseDown(true)}

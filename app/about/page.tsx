@@ -12,7 +12,6 @@ import {
   Boxes,
   Monitor,
   GitBranch,
-  BrainCircuit,
   Cpu,
   BookOpen,
 } from "lucide-react";
@@ -104,7 +103,14 @@ const stackGroups = [
   {
     title: "Frontend",
     icon: <Monitor size={15} />,
-    items: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "Reusable UI Systems"],
+    items: [
+      "React",
+      "Next.js",
+      "TypeScript",
+      "Tailwind CSS",
+      "Framer Motion",
+      "Reusable UI Systems",
+    ],
   },
   {
     title: "Backend",
@@ -185,28 +191,28 @@ export default function AboutPage() {
       `}</style>
 
       <main
-        className="min-h-screen bg-[#09090b] text-white relative overflow-x-hidden"
+        className="relative min-h-screen overflow-x-hidden bg-[#09090b] text-white"
         style={{ fontFamily: "'DM Sans', sans-serif" }}
       >
         <div className="pointer-events-none fixed inset-0 z-0">
-          <div className="absolute top-0 left-[10%] w-[500px] h-[400px] rounded-full bg-blue-500/[0.05] blur-[120px]" />
-          <div className="absolute bottom-0 right-[8%] w-[420px] h-[420px] rounded-full bg-blue-500/[0.03] blur-[110px]" />
+          <div className="absolute left-[-80px] top-[-30px] h-[240px] w-[240px] rounded-full bg-blue-500/[0.05] blur-[80px] sm:left-[4%] sm:top-0 sm:h-[340px] sm:w-[340px] sm:blur-[100px] lg:left-[10%] lg:h-[500px] lg:w-[400px] lg:blur-[120px]" />
+          <div className="absolute bottom-[-20px] right-[-60px] h-[220px] w-[220px] rounded-full bg-blue-500/[0.03] blur-[80px] sm:right-[4%] sm:bottom-0 sm:h-[300px] sm:w-[300px] sm:blur-[95px] lg:right-[8%] lg:h-[420px] lg:w-[420px] lg:blur-[110px]" />
         </div>
 
-        <div className="relative z-10 max-w-[1200px] mx-auto px-6 md:px-8 pb-24">
+        <div className="relative z-10 mx-auto max-w-[1200px] px-4 pb-16 sm:px-6 sm:pb-20 md:px-8 lg:pb-24">
           {/* HEADER */}
-          <header className="pt-16 md:pt-20 pb-14 border-b border-white/[0.07] mb-16 grid grid-cols-1 lg:grid-cols-[1fr_auto] items-end gap-8">
+          <header className="mb-12 grid grid-cols-1 gap-8 border-b border-white/[0.07] pb-10 pt-12 sm:mb-14 sm:pb-12 sm:pt-14 lg:mb-16 lg:grid-cols-[1fr_auto] lg:items-end lg:pb-14 lg:pt-20">
             <div>
               <div
-                className="flex items-center gap-3 mb-5 text-[11px] uppercase tracking-[0.2em] text-zinc-500"
+                className="mb-4 flex items-center gap-3 text-[10px] uppercase tracking-[0.2em] text-zinc-500 sm:mb-5 sm:text-[11px]"
                 style={{ fontFamily: "'DM Mono', monospace" }}
               >
-                <span className="w-6 h-px bg-zinc-700 block" />
+                <span className="block h-px w-5 bg-zinc-700 sm:w-6" />
                 About Me
               </div>
 
               <h1
-                className="text-[clamp(42px,7vw,82px)] font-extrabold leading-[0.92] tracking-[-0.03em] text-white"
+                className="text-[clamp(34px,11vw,82px)] font-extrabold leading-[0.96] tracking-[-0.035em] text-white"
                 style={{ fontFamily: "'Syne', sans-serif" }}
               >
                 Full-stack engineer
@@ -220,7 +226,7 @@ export default function AboutPage() {
                 </span>
               </h1>
 
-              <p className="mt-6 text-base leading-[1.9] text-zinc-500 font-light max-w-[760px]">
+              <p className="mt-5 max-w-[760px] text-sm font-light leading-7 text-zinc-500 sm:mt-6 sm:text-[15px] sm:leading-8 md:text-base md:leading-[1.9]">
                 I’m Vishal Singh — a full-stack developer currently pursuing
                 B.Tech in Computer Science under Dr. A.P.J. Abdul Kalam Technical
                 University (AKTU), with a school background from UP Board. I am
@@ -231,22 +237,21 @@ export default function AboutPage() {
               </p>
             </div>
 
-            <div className="hidden lg:flex flex-col items-end gap-4 pb-1">
+            <div className="grid grid-cols-3 gap-4 sm:gap-5 lg:flex lg:flex-col lg:items-end lg:gap-4 lg:pb-1">
               {[
                 { num: "CS", label: "B.Tech CSE" },
                 { num: "FS", label: "Full-Stack" },
                 { num: "AI", label: "Learning path" },
               ].map(({ num, label }, i) => (
-                <div key={i} className="flex flex-col items-end gap-1">
-                  {i > 0 && <div className="w-px h-10 bg-white/[0.1] self-center mb-1" />}
+                <div key={i} className="flex flex-col items-start gap-1 lg:items-end">
                   <span
-                    className="text-[40px] font-bold text-white leading-none"
+                    className="text-[28px] font-bold leading-none text-white sm:text-[34px] lg:text-[40px]"
                     style={{ fontFamily: "'Syne', sans-serif" }}
                   >
                     {num}
                   </span>
                   <span
-                    className="text-[10px] uppercase tracking-[0.15em] text-zinc-600"
+                    className="text-[9px] uppercase tracking-[0.15em] text-zinc-600 sm:text-[10px]"
                     style={{ fontFamily: "'DM Mono', monospace" }}
                   >
                     {label}
@@ -257,22 +262,22 @@ export default function AboutPage() {
           </header>
 
           {/* QUICK FACTS */}
-          <section className="mb-16">
-            <div className="flex items-center gap-4 mb-7">
+          <section className="mb-12 sm:mb-14 lg:mb-16">
+            <div className="mb-6 flex items-center gap-4 sm:mb-7">
               <span
-                className="text-[11px] uppercase tracking-[0.2em] text-zinc-600 whitespace-nowrap"
+                className="whitespace-nowrap text-[10px] uppercase tracking-[0.2em] text-zinc-600 sm:text-[11px]"
                 style={{ fontFamily: "'DM Mono', monospace" }}
               >
                 Quick facts
               </span>
-              <div className="flex-1 h-px bg-white/[0.07]" />
+              <div className="h-px flex-1 bg-white/[0.07]" />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/[0.07] border border-white/[0.07] rounded-2xl overflow-hidden">
+            <div className="grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-white/[0.07] bg-white/[0.07] md:grid-cols-3">
               {quickFacts.map((item) => (
-                <div key={item.label} className="bg-[#09090b] p-7">
+                <div key={item.label} className="bg-[#09090b] p-5 sm:p-6 lg:p-7">
                   <div
-                    className="flex items-center gap-2 text-[10px] uppercase tracking-[0.14em] text-blue-400 mb-4"
+                    className="mb-3 flex items-center gap-2 text-[10px] uppercase tracking-[0.14em] text-blue-400 sm:mb-4"
                     style={{ fontFamily: "'DM Mono', monospace" }}
                   >
                     {item.icon}
@@ -280,13 +285,13 @@ export default function AboutPage() {
                   </div>
 
                   <h3
-                    className="text-[22px] font-bold tracking-[-0.02em] text-white mb-2"
+                    className="mb-2 text-[20px] font-bold tracking-[-0.02em] text-white sm:text-[22px]"
                     style={{ fontFamily: "'Syne', sans-serif" }}
                   >
                     {item.value}
                   </h3>
 
-                  <p className="text-[14px] leading-[1.8] text-zinc-500 font-light">
+                  <p className="text-[13px] font-light leading-7 text-zinc-500 sm:text-[14px] sm:leading-[1.8]">
                     {item.sub}
                   </p>
                 </div>
@@ -295,10 +300,10 @@ export default function AboutPage() {
           </section>
 
           {/* INTRO */}
-          <section className="grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr] gap-px bg-white/[0.07] border border-white/[0.07] rounded-2xl overflow-hidden mb-16">
-            <div className="bg-[#09090b] p-8 md:p-10">
+          <section className="mb-12 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-white/[0.07] bg-white/[0.07] lg:mb-16 lg:grid-cols-[1.15fr_0.85fr]">
+            <div className="bg-[#09090b] p-6 sm:p-8 md:p-10">
               <div
-                className="flex items-center gap-3 mb-5 text-[10px] uppercase tracking-[0.16em] text-blue-400"
+                className="mb-4 flex items-center gap-3 text-[10px] uppercase tracking-[0.16em] text-blue-400 sm:mb-5"
                 style={{ fontFamily: "'DM Mono', monospace" }}
               >
                 <Code2 size={13} />
@@ -306,7 +311,7 @@ export default function AboutPage() {
               </div>
 
               <h2
-                className="text-[30px] md:text-[38px] font-bold tracking-[-0.03em] leading-[1.05] text-white mb-5"
+                className="mb-4 text-[26px] font-bold leading-[1.06] tracking-[-0.03em] text-white sm:text-[32px] md:text-[38px] sm:mb-5"
                 style={{ fontFamily: "'Syne', sans-serif" }}
               >
                 I build across
@@ -316,7 +321,7 @@ export default function AboutPage() {
                 and system design
               </h2>
 
-              <p className="text-[15px] leading-[1.9] text-zinc-500 font-light max-w-[640px]">
+              <p className="max-w-[640px] text-[14px] font-light leading-7 text-zinc-500 sm:text-[15px] sm:leading-[1.9]">
                 My work is not limited to one layer. I build frontend systems
                 with better structure, backend systems with clear architecture,
                 and full-stack products where APIs, workflows, data models, and
@@ -325,10 +330,10 @@ export default function AboutPage() {
               </p>
             </div>
 
-            <div className="bg-[#0d0d10] p-8 md:p-10 flex flex-col justify-between">
+            <div className="flex flex-col justify-between bg-[#0d0d10] p-6 sm:p-8 md:p-10">
               <div>
                 <div
-                  className="text-[10px] uppercase tracking-[0.16em] text-zinc-600 mb-5"
+                  className="mb-4 text-[10px] uppercase tracking-[0.16em] text-zinc-600 sm:mb-5"
                   style={{ fontFamily: "'DM Mono', monospace" }}
                 >
                   Short profile
@@ -338,23 +343,23 @@ export default function AboutPage() {
                   {profilePoints.map((point) => (
                     <div
                       key={point}
-                      className="flex gap-3 text-sm text-zinc-500 font-light leading-relaxed"
+                      className="flex gap-3 text-sm font-light leading-relaxed text-zinc-500"
                     >
-                      <span className="w-1 h-1 rounded-full bg-blue-500 flex-shrink-0 mt-[9px]" />
+                      <span className="mt-[9px] h-1 w-1 flex-shrink-0 rounded-full bg-blue-500" />
                       <span>{point}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
-              <div className="pt-8 mt-8 border-t border-white/[0.07]">
+              <div className="mt-7 border-t border-white/[0.07] pt-7 sm:mt-8 sm:pt-8">
                 <div
-                  className="text-[9px] uppercase tracking-[0.14em] text-zinc-600 mb-3"
+                  className="mb-3 text-[9px] uppercase tracking-[0.14em] text-zinc-600"
                   style={{ fontFamily: "'DM Mono', monospace" }}
                 >
                   Current direction
                 </div>
-                <p className="text-sm text-zinc-400 leading-[1.8]">
+                <p className="text-sm leading-[1.8] text-zinc-400">
                   Building stronger proof through better projects, sharper
                   system thinking, more serious open-source learning, and deeper
                   technical understanding across backend, full-stack systems,
@@ -365,22 +370,22 @@ export default function AboutPage() {
           </section>
 
           {/* IDENTITY */}
-          <section className="mb-16">
-            <div className="flex items-center gap-4 mb-7">
+          <section className="mb-12 sm:mb-14 lg:mb-16">
+            <div className="mb-6 flex items-center gap-4 sm:mb-7">
               <span
-                className="text-[11px] uppercase tracking-[0.2em] text-zinc-600 whitespace-nowrap"
+                className="whitespace-nowrap text-[10px] uppercase tracking-[0.2em] text-zinc-600 sm:text-[11px]"
                 style={{ fontFamily: "'DM Mono', monospace" }}
               >
                 More about me
               </span>
-              <div className="flex-1 h-px bg-white/[0.07]" />
+              <div className="h-px flex-1 bg-white/[0.07]" />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/[0.07] border border-white/[0.07] rounded-2xl overflow-hidden">
+            <div className="grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-white/[0.07] bg-white/[0.07] md:grid-cols-2 xl:grid-cols-3">
               {identityCards.map((item) => (
-                <div key={item.title} className="bg-[#09090b] p-7">
+                <div key={item.title} className="bg-[#09090b] p-5 sm:p-6 lg:p-7">
                   <div
-                    className="flex items-center gap-2 mb-4 text-[10px] uppercase tracking-[0.14em] text-blue-400"
+                    className="mb-3 flex items-center gap-2 text-[10px] uppercase tracking-[0.14em] text-blue-400 sm:mb-4"
                     style={{ fontFamily: "'DM Mono', monospace" }}
                   >
                     {item.icon}
@@ -388,13 +393,13 @@ export default function AboutPage() {
                   </div>
 
                   <h3
-                    className="text-[20px] font-bold tracking-[-0.02em] text-white mb-3"
+                    className="mb-3 text-[18px] font-bold tracking-[-0.02em] text-white sm:text-[20px]"
                     style={{ fontFamily: "'Syne', sans-serif" }}
                   >
                     {item.title}
                   </h3>
 
-                  <p className="text-[14px] leading-[1.8] text-zinc-500 font-light">
+                  <p className="text-[13px] font-light leading-7 text-zinc-500 sm:text-[14px] sm:leading-[1.8]">
                     {item.desc}
                   </p>
                 </div>
@@ -403,35 +408,35 @@ export default function AboutPage() {
           </section>
 
           {/* FOCUS AREAS */}
-          <section className="mb-16">
-            <div className="flex items-center gap-4 mb-7">
+          <section className="mb-12 sm:mb-14 lg:mb-16">
+            <div className="mb-6 flex items-center gap-4 sm:mb-7">
               <span
-                className="text-[11px] uppercase tracking-[0.2em] text-zinc-600 whitespace-nowrap"
+                className="whitespace-nowrap text-[10px] uppercase tracking-[0.2em] text-zinc-600 sm:text-[11px]"
                 style={{ fontFamily: "'DM Mono', monospace" }}
               >
                 Focus areas
               </span>
-              <div className="flex-1 h-px bg-white/[0.07]" />
+              <div className="h-px flex-1 bg-white/[0.07]" />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/[0.07] border border-white/[0.07] rounded-2xl overflow-hidden">
+            <div className="grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-white/[0.07] bg-white/[0.07] md:grid-cols-2 xl:grid-cols-3">
               {focusAreas.map((area) => (
-                <div key={area.title} className="bg-[#09090b] p-7">
+                <div key={area.title} className="bg-[#09090b] p-5 sm:p-6 lg:p-7">
                   <span
-                    className="inline-flex mb-4 text-[10px] uppercase tracking-[0.14em] text-blue-400 bg-blue-500/10 border border-blue-500/20 rounded px-2 py-[4px]"
+                    className="mb-4 inline-flex rounded border border-blue-500/20 bg-blue-500/10 px-2 py-[4px] text-[10px] uppercase tracking-[0.14em] text-blue-400"
                     style={{ fontFamily: "'DM Mono', monospace" }}
                   >
                     {area.label}
                   </span>
 
                   <h3
-                    className="text-[18px] font-bold tracking-[-0.02em] text-white mb-3"
+                    className="mb-3 text-[17px] font-bold tracking-[-0.02em] text-white sm:text-[18px]"
                     style={{ fontFamily: "'Syne', sans-serif" }}
                   >
                     {area.title}
                   </h3>
 
-                  <p className="text-[14px] leading-[1.8] text-zinc-500 font-light">
+                  <p className="text-[13px] font-light leading-7 text-zinc-500 sm:text-[14px] sm:leading-[1.8]">
                     {area.desc}
                   </p>
                 </div>
@@ -440,33 +445,33 @@ export default function AboutPage() {
           </section>
 
           {/* CURRENT WORK */}
-          <section className="mb-16">
-            <div className="flex items-center gap-4 mb-7">
+          <section className="mb-12 sm:mb-14 lg:mb-16">
+            <div className="mb-6 flex items-center gap-4 sm:mb-7">
               <span
-                className="text-[11px] uppercase tracking-[0.2em] text-zinc-600 whitespace-nowrap"
+                className="whitespace-nowrap text-[10px] uppercase tracking-[0.2em] text-zinc-600 sm:text-[11px]"
                 style={{ fontFamily: "'DM Mono', monospace" }}
               >
                 What I am doing now
               </span>
-              <div className="flex-1 h-px bg-white/[0.07]" />
+              <div className="h-px flex-1 bg-white/[0.07]" />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-white/[0.07] border border-white/[0.07] rounded-2xl overflow-hidden">
+            <div className="grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-white/[0.07] bg-white/[0.07] md:grid-cols-2">
               {currentWork.map((item) => (
-                <div key={item.title} className="bg-[#09090b] p-7">
+                <div key={item.title} className="bg-[#09090b] p-5 sm:p-6 lg:p-7">
                   <span
-                    className="inline-flex mb-4 text-[10px] uppercase tracking-[0.14em] text-blue-400 bg-blue-500/10 border border-blue-500/20 rounded px-2 py-[4px]"
+                    className="mb-4 inline-flex rounded border border-blue-500/20 bg-blue-500/10 px-2 py-[4px] text-[10px] uppercase tracking-[0.14em] text-blue-400"
                     style={{ fontFamily: "'DM Mono', monospace" }}
                   >
                     {item.tag}
                   </span>
                   <h3
-                    className="text-[18px] font-bold tracking-[-0.02em] text-white mb-3"
+                    className="mb-3 text-[17px] font-bold tracking-[-0.02em] text-white sm:text-[18px]"
                     style={{ fontFamily: "'Syne', sans-serif" }}
                   >
                     {item.title}
                   </h3>
-                  <p className="text-[14px] leading-[1.8] text-zinc-500 font-light">
+                  <p className="text-[13px] font-light leading-7 text-zinc-500 sm:text-[14px] sm:leading-[1.8]">
                     {item.desc}
                   </p>
                 </div>
@@ -475,23 +480,23 @@ export default function AboutPage() {
           </section>
 
           {/* STACK */}
-          <section className="mb-16">
-            <div className="flex items-center gap-4 mb-7">
+          <section className="mb-12 sm:mb-14 lg:mb-16">
+            <div className="mb-6 flex items-center gap-4 sm:mb-7">
               <span
-                className="text-[11px] uppercase tracking-[0.2em] text-zinc-600 whitespace-nowrap"
+                className="whitespace-nowrap text-[10px] uppercase tracking-[0.2em] text-zinc-600 sm:text-[11px]"
                 style={{ fontFamily: "'DM Mono', monospace" }}
               >
                 Tools and stack
               </span>
-              <div className="flex-1 h-px bg-white/[0.07]" />
+              <div className="h-px flex-1 bg-white/[0.07]" />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-px bg-white/[0.07] border border-white/[0.07] rounded-2xl overflow-hidden">
+            <div className="grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-white/[0.07] bg-white/[0.07] sm:grid-cols-2 xl:grid-cols-4">
               {stackGroups.map((group) => (
-                <div key={group.title} className="bg-[#09090b] p-7">
-                  <div className="flex items-center justify-between mb-4">
+                <div key={group.title} className="bg-[#09090b] p-5 sm:p-6 lg:p-7">
+                  <div className="mb-4 flex items-center justify-between">
                     <h3
-                      className="text-[17px] font-bold tracking-[-0.02em] text-white"
+                      className="text-[16px] font-bold tracking-[-0.02em] text-white sm:text-[17px]"
                       style={{ fontFamily: "'Syne', sans-serif" }}
                     >
                       {group.title}
@@ -503,7 +508,7 @@ export default function AboutPage() {
                     {group.items.map((item) => (
                       <span
                         key={item}
-                        className="text-[10px] text-zinc-500 bg-zinc-900 border border-white/[0.07] rounded px-2 py-[4px] tracking-[0.05em]"
+                        className="rounded border border-white/[0.07] bg-zinc-900 px-2 py-[4px] text-[10px] tracking-[0.05em] text-zinc-500"
                         style={{ fontFamily: "'DM Mono', monospace" }}
                       >
                         {item}
@@ -516,28 +521,28 @@ export default function AboutPage() {
           </section>
 
           {/* LEARNING NOW */}
-          <section className="mb-16">
-            <div className="flex items-center gap-4 mb-7">
+          <section className="mb-12 sm:mb-14 lg:mb-16">
+            <div className="mb-6 flex items-center gap-4 sm:mb-7">
               <span
-                className="text-[11px] uppercase tracking-[0.2em] text-zinc-600 whitespace-nowrap"
+                className="whitespace-nowrap text-[10px] uppercase tracking-[0.2em] text-zinc-600 sm:text-[11px]"
                 style={{ fontFamily: "'DM Mono', monospace" }}
               >
                 What I am learning now
               </span>
-              <div className="flex-1 h-px bg-white/[0.07]" />
+              <div className="h-px flex-1 bg-white/[0.07]" />
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-px bg-white/[0.07] border border-white/[0.07] rounded-2xl overflow-hidden">
+            <div className="grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-white/[0.07] bg-white/[0.07] sm:grid-cols-2 xl:grid-cols-4">
               {learningNow.map((item, index) => (
-                <div key={item} className="bg-[#09090b] p-6">
+                <div key={item} className="bg-[#09090b] p-5 sm:p-6">
                   <div
-                    className="text-[10px] uppercase tracking-[0.12em] text-zinc-600 mb-3"
+                    className="mb-3 text-[10px] uppercase tracking-[0.12em] text-zinc-600"
                     style={{ fontFamily: "'DM Mono', monospace" }}
                   >
-                    0{index + 1}
+                    {String(index + 1).padStart(2, "0")}
                   </div>
-                  <div className="flex items-start gap-3 text-[15px] text-zinc-300 leading-[1.7]">
-                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500 mt-2.5 flex-shrink-0" />
+                  <div className="flex items-start gap-3 text-[14px] leading-[1.7] text-zinc-300 sm:text-[15px]">
+                    <span className="mt-2.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-blue-500" />
                     <span>{item}</span>
                   </div>
                 </div>
@@ -546,34 +551,34 @@ export default function AboutPage() {
           </section>
 
           {/* OPEN SOURCE */}
-          <section className="mb-16">
-            <div className="flex items-center gap-4 mb-7">
+          <section className="mb-12 sm:mb-14 lg:mb-16">
+            <div className="mb-6 flex items-center gap-4 sm:mb-7">
               <span
-                className="text-[11px] uppercase tracking-[0.2em] text-zinc-600 whitespace-nowrap"
+                className="whitespace-nowrap text-[10px] uppercase tracking-[0.2em] text-zinc-600 sm:text-[11px]"
                 style={{ fontFamily: "'DM Mono', monospace" }}
               >
                 Open source
               </span>
-              <div className="flex-1 h-px bg-white/[0.07]" />
+              <div className="h-px flex-1 bg-white/[0.07]" />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-white/[0.07] border border-white/[0.07] rounded-2xl overflow-hidden">
+            <div className="grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-white/[0.07] bg-white/[0.07] md:grid-cols-2">
               {openSourceItems.map((item) => (
-                <div key={item.title} className="bg-[#09090b] p-7">
+                <div key={item.title} className="bg-[#09090b] p-5 sm:p-6 lg:p-7">
                   <div
-                    className="flex items-center gap-2 mb-4 text-[10px] uppercase tracking-[0.14em] text-blue-400"
+                    className="mb-4 flex items-center gap-2 text-[10px] uppercase tracking-[0.14em] text-blue-400"
                     style={{ fontFamily: "'DM Mono', monospace" }}
                   >
                     <GitBranch size={12} />
                     {item.label}
                   </div>
                   <h3
-                    className="text-[20px] font-bold tracking-[-0.02em] text-white mb-3"
+                    className="mb-3 text-[18px] font-bold tracking-[-0.02em] text-white sm:text-[20px]"
                     style={{ fontFamily: "'Syne', sans-serif" }}
                   >
                     {item.title}
                   </h3>
-                  <p className="text-[14px] leading-[1.8] text-zinc-500 font-light">
+                  <p className="text-[13px] font-light leading-7 text-zinc-500 sm:text-[14px] sm:leading-[1.8]">
                     {item.desc}
                   </p>
                 </div>
@@ -582,24 +587,24 @@ export default function AboutPage() {
           </section>
 
           {/* JOURNEY */}
-          <section className="mb-20">
-            <div className="flex items-center gap-4 mb-7">
+          <section className="mb-16 sm:mb-18 lg:mb-20">
+            <div className="mb-6 flex items-center gap-4 sm:mb-7">
               <span
-                className="text-[11px] uppercase tracking-[0.2em] text-zinc-600 whitespace-nowrap"
+                className="whitespace-nowrap text-[10px] uppercase tracking-[0.2em] text-zinc-600 sm:text-[11px]"
                 style={{ fontFamily: "'DM Mono', monospace" }}
               >
                 Journey
               </span>
-              <div className="flex-1 h-px bg-white/[0.07]" />
+              <div className="h-px flex-1 bg-white/[0.07]" />
             </div>
 
-            <div className="flex flex-col gap-px bg-white/[0.07] border border-white/[0.07] rounded-2xl overflow-hidden">
+            <div className="flex flex-col gap-px overflow-hidden rounded-2xl border border-white/[0.07] bg-white/[0.07]">
               {journey.map((item) => (
                 <div
                   key={item.title}
-                  className="grid grid-cols-[120px_1fr] md:grid-cols-[170px_1fr] bg-[#09090b] hover:bg-[#111113] transition-colors"
+                  className="grid grid-cols-1 bg-[#09090b] transition-colors hover:bg-[#111113] md:grid-cols-[160px_1fr]"
                 >
-                  <div className="p-6 md:p-7 border-r border-white/[0.07]">
+                  <div className="border-b border-white/[0.07] p-5 md:border-b-0 md:border-r md:p-7">
                     <span
                       className="text-[10px] uppercase tracking-[0.14em] text-blue-400"
                       style={{ fontFamily: "'DM Mono', monospace" }}
@@ -608,14 +613,14 @@ export default function AboutPage() {
                     </span>
                   </div>
 
-                  <div className="p-6 md:p-7">
+                  <div className="p-5 md:p-7">
                     <h3
-                      className="text-[20px] font-bold tracking-[-0.02em] text-white mb-3"
+                      className="mb-3 text-[18px] font-bold tracking-[-0.02em] text-white sm:text-[20px]"
                       style={{ fontFamily: "'Syne', sans-serif" }}
                     >
                       {item.title}
                     </h3>
-                    <p className="text-[14px] leading-[1.8] text-zinc-500 font-light max-w-[760px]">
+                    <p className="max-w-[760px] text-[13px] font-light leading-7 text-zinc-500 sm:text-[14px] sm:leading-[1.8]">
                       {item.desc}
                     </p>
                   </div>
@@ -625,24 +630,24 @@ export default function AboutPage() {
           </section>
 
           {/* CTA */}
-          <section className="grid grid-cols-1 md:grid-cols-[1fr_auto] items-center gap-8 p-10 border border-white/[0.07] rounded-2xl">
+          <section className="grid grid-cols-1 gap-6 rounded-2xl border border-white/[0.07] p-6 sm:gap-8 sm:p-8 lg:grid-cols-[1fr_auto] lg:items-center lg:p-10">
             <div>
               <h3
-                className="text-[28px] font-bold tracking-[-0.02em] text-white leading-tight"
+                className="text-[22px] font-bold leading-tight tracking-[-0.02em] text-white sm:text-[26px] lg:text-[28px]"
                 style={{ fontFamily: "'Syne', sans-serif" }}
               >
                 Want proof beyond the intro?
                 <br />
-                <span className="text-zinc-500 font-normal">
+                <span className="font-normal text-zinc-500">
                   Look at the projects, systems, and code direction.
                 </span>
               </h3>
             </div>
 
-            <div className="flex gap-3 flex-shrink-0 flex-wrap">
+            <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap lg:justify-end">
               <Link
                 href="/projects"
-                className="flex items-center gap-2 text-[11px] uppercase tracking-[0.1em] px-5 py-3 rounded-md bg-white text-black hover:bg-zinc-200 transition-colors font-medium"
+                className="flex items-center justify-center gap-2 rounded-md bg-white px-5 py-3 text-[11px] font-medium uppercase tracking-[0.1em] text-black transition-colors hover:bg-zinc-200"
                 style={{ fontFamily: "'DM Mono', monospace" }}
               >
                 View projects <ArrowUpRight size={12} />
@@ -650,7 +655,7 @@ export default function AboutPage() {
 
               <Link
                 href="/system"
-                className="flex items-center gap-2 text-[11px] uppercase tracking-[0.1em] px-5 py-3 rounded-md border border-white/[0.07] text-zinc-500 hover:text-white hover:border-white/[0.12] hover:bg-white/[0.03] transition-all"
+                className="flex items-center justify-center gap-2 rounded-md border border-white/[0.07] px-5 py-3 text-[11px] uppercase tracking-[0.1em] text-zinc-500 transition-all hover:border-white/[0.12] hover:bg-white/[0.03] hover:text-white"
                 style={{ fontFamily: "'DM Mono', monospace" }}
               >
                 <Server size={12} />
@@ -660,7 +665,7 @@ export default function AboutPage() {
               <Link
                 href="https://github.com/VishalDevx"
                 target="_blank"
-                className="flex items-center gap-2 text-[11px] uppercase tracking-[0.1em] px-5 py-3 rounded-md border border-white/[0.07] text-zinc-500 hover:text-white hover:border-white/[0.12] hover:bg-white/[0.03] transition-all"
+                className="flex items-center justify-center gap-2 rounded-md border border-white/[0.07] px-5 py-3 text-[11px] uppercase tracking-[0.1em] text-zinc-500 transition-all hover:border-white/[0.12] hover:bg-white/[0.03] hover:text-white"
                 style={{ fontFamily: "'DM Mono', monospace" }}
               >
                 <Github size={12} />

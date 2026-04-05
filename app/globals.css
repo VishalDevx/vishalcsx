@@ -1,6 +1,11 @@
 @import "tailwindcss";
 
 :root {
+  --background: #ffffff;
+  --foreground: #18181b;
+}
+
+.dark {
   --background: #050505;
   --foreground: #e5e5e5;
 }
@@ -12,17 +17,11 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #050505;
-    --foreground: #e5e5e5;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* subtle terminal grid */
@@ -34,9 +33,20 @@ body::before {
   background:
     radial-gradient(circle at 20% 10%, rgba(16, 185, 129, 0.10), transparent 45%),
     radial-gradient(circle at 80% 30%, rgba(99, 102, 241, 0.10), transparent 50%),
+    linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+  background-size: auto, auto, 40px 40px, 40px 40px;
+  background-position: 0 0, 0 0, center, center;
+  opacity: 0.35;
+  transition: background 0.3s ease;
+}
+
+.dark body::before {
+  background:
+    radial-gradient(circle at 20% 10%, rgba(16, 185, 129, 0.10), transparent 45%),
+    radial-gradient(circle at 80% 30%, rgba(99, 102, 241, 0.10), transparent 50%),
     linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
   background-size: auto, auto, 40px 40px, 40px 40px;
   background-position: 0 0, 0 0, center, center;
-  opacity: 0.35;
 }

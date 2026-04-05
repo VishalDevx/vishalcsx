@@ -5,7 +5,6 @@ import { useMemo, useState } from "react";
 import {
   ArrowUpRight,
   Github,
-  ExternalLink,
   Braces,
   Database,
   Server,
@@ -247,29 +246,29 @@ export default function SkillsPage() {
       `}</style>
 
       <main
-        className="min-h-screen bg-[#09090b] text-white relative overflow-x-hidden"
+        className="relative min-h-screen overflow-x-hidden bg-[#09090b] text-white"
         style={{ fontFamily: "'DM Sans', sans-serif" }}
       >
         {/* Background glow */}
         <div className="pointer-events-none fixed inset-0 z-0">
-          <div className="absolute top-0 left-[10%] w-[500px] h-[400px] rounded-full bg-blue-500/[0.05] blur-[120px]" />
-          <div className="absolute bottom-0 right-[8%] w-[400px] h-[400px] rounded-full bg-blue-500/[0.03] blur-[100px]" />
+          <div className="absolute top-0 left-[10%] h-[260px] w-[260px] rounded-full bg-blue-500/[0.05] blur-[90px] sm:h-[360px] sm:w-[360px] md:h-[420px] md:w-[420px] md:blur-[120px]" />
+          <div className="absolute bottom-0 right-[8%] h-[220px] w-[220px] rounded-full bg-blue-500/[0.03] blur-[80px] sm:h-[320px] sm:w-[320px] md:h-[380px] md:w-[380px] md:blur-[100px]" />
         </div>
 
-        <div className="relative z-10 max-w-[1200px] mx-auto px-8 pb-24">
+        <div className="relative z-10 mx-auto max-w-[1200px] px-4 pb-16 sm:px-6 sm:pb-20 lg:px-8 lg:pb-24">
           {/* HEADER */}
-          <header className="pt-16 md:pt-20 pb-14 border-b border-white/[0.07] mb-16 grid grid-cols-1 lg:grid-cols-[1fr_auto] items-end gap-8">
+          <header className="mb-12 grid grid-cols-1 items-end gap-8 border-b border-white/[0.07] pb-10 pt-12 sm:mb-14 sm:pb-12 sm:pt-16 md:pt-20 lg:grid-cols-[1fr_auto]">
             <div>
               <div
-                className="flex items-center gap-3 mb-5 text-[11px] uppercase tracking-[0.2em] text-zinc-500"
+                className="mb-4 flex items-center gap-3 text-[10px] uppercase tracking-[0.2em] text-zinc-500 sm:mb-5 sm:text-[11px]"
                 style={{ fontFamily: "'DM Mono', monospace" }}
               >
-                <span className="w-6 h-px bg-zinc-700 block" />
+                <span className="block h-px w-5 bg-zinc-700 sm:w-6" />
                 Technical Skills
               </div>
 
               <h1
-                className="text-[clamp(48px,7vw,88px)] font-extrabold leading-[0.92] tracking-[-0.03em] text-white"
+                className="text-[clamp(2.75rem,10vw,5.5rem)] font-extrabold leading-[0.92] tracking-[-0.03em] text-white"
                 style={{ fontFamily: "'Syne', sans-serif" }}
               >
                 Stack
@@ -283,33 +282,35 @@ export default function SkillsPage() {
                 </span>
               </h1>
 
-              <p className="mt-6 text-base leading-[1.75] text-zinc-500 font-light max-w-[560px]">
+              <p className="mt-5 max-w-[560px] text-sm font-light leading-7 text-zinc-500 sm:mt-6 sm:text-base sm:leading-[1.75]">
                 Full-stack engineering with a strong{" "}
-                <span className="text-zinc-200 font-normal">backend and systems</span>{" "}
-                core — shaped by product building, architecture work, open-source
-                learning, and real implementation.
+                <span className="font-normal text-zinc-200">
+                  backend and systems
+                </span>{" "}
+                core — shaped by product building, architecture work,
+                open-source learning, and real implementation.
               </p>
             </div>
 
             {/* Stats */}
-            <div className="hidden lg:flex flex-col items-end gap-4 pb-1">
+            <div className="grid grid-cols-3 gap-4 pt-2 lg:flex lg:flex-col lg:items-end lg:gap-4 lg:pb-1">
               {[
                 { num: "6", label: "Skill Groups" },
                 { num: "15+", label: "Core Tools" },
                 { num: "24/7", label: "Learning Mode" },
               ].map(({ num, label }, i) => (
-                <div key={i} className="flex flex-col items-end gap-1">
-                  {i > 0 && (
-                    <div className="w-px h-10 bg-white/[0.1] self-center mb-1" />
-                  )}
+                <div
+                  key={i}
+                  className="flex flex-col rounded-xl border border-white/[0.07] bg-white/[0.02] px-3 py-4 text-center lg:items-end lg:border-0 lg:bg-transparent lg:px-0 lg:py-0 lg:text-right"
+                >
                   <span
-                    className="text-[40px] font-bold text-white leading-none"
+                    className="text-2xl font-bold leading-none text-white sm:text-3xl lg:text-[40px]"
                     style={{ fontFamily: "'Syne', sans-serif" }}
                   >
                     {num}
                   </span>
                   <span
-                    className="text-[10px] uppercase tracking-[0.15em] text-zinc-600"
+                    className="mt-1 text-[9px] uppercase tracking-[0.15em] text-zinc-600 sm:text-[10px]"
                     style={{ fontFamily: "'DM Mono', monospace" }}
                   >
                     {label}
@@ -320,15 +321,15 @@ export default function SkillsPage() {
           </header>
 
           {/* FILTERS */}
-          <div className="flex flex-wrap gap-2 mb-10">
+          <div className="mb-8 flex flex-wrap gap-2 sm:mb-10">
             {filters.map((f) => (
               <button
                 key={f}
                 onClick={() => setActiveFilter(f)}
-                className={`text-[11px] uppercase tracking-[0.12em] px-4 py-[6px] rounded border transition-all ${
+                className={`rounded px-3 py-2 text-[10px] uppercase tracking-[0.12em] transition-all sm:px-4 sm:py-[6px] sm:text-[11px] ${
                   activeFilter === f
-                    ? "border-blue-500 text-blue-400 bg-blue-500/10"
-                    : "border-white/[0.07] text-zinc-500 bg-transparent hover:border-white/[0.12] hover:text-zinc-200 hover:bg-white/[0.03]"
+                    ? "border border-blue-500 bg-blue-500/10 text-blue-400"
+                    : "border border-white/[0.07] bg-transparent text-zinc-500 hover:border-white/[0.12] hover:bg-white/[0.03] hover:text-zinc-200"
                 }`}
                 style={{ fontFamily: "'DM Mono', monospace" }}
               >
@@ -338,8 +339,8 @@ export default function SkillsPage() {
           </div>
 
           {/* SKILLS LIST */}
-          <div className="flex flex-col gap-px bg-white/[0.07] border border-white/[0.07] rounded-2xl overflow-hidden mb-20">
-            {filteredSkills.map((skill) => {
+          <div className="mb-16 overflow-hidden rounded-2xl border border-white/[0.07] bg-white/[0.07] sm:mb-20">
+            {filteredSkills.map((skill, idx) => {
               const isOpen = expandedSlug === skill.slug;
               const Icon = skill.icon;
 
@@ -347,16 +348,16 @@ export default function SkillsPage() {
                 <article
                   key={skill.slug}
                   onClick={() => toggleCard(skill.slug)}
-                  className={`grid grid-cols-[72px_1fr] lg:grid-cols-[72px_1fr_200px] items-stretch cursor-pointer transition-colors ${
+                  className={`grid cursor-pointer grid-cols-[56px_1fr] transition-colors sm:grid-cols-[64px_1fr] lg:grid-cols-[72px_1fr_200px] ${
                     isOpen
-                      ? "bg-[#111113] border-l-2 border-blue-500"
+                      ? "border-l-2 border-blue-500 bg-[#111113]"
                       : "bg-[#09090b] hover:bg-[#111113]"
-                  }`}
+                  } ${idx !== filteredSkills.length - 1 ? "border-b border-white/[0.07]" : ""}`}
                 >
                   {/* Index */}
-                  <div className="flex items-start justify-center pt-7 border-r border-white/[0.07]">
+                  <div className="flex items-start justify-center border-r border-white/[0.07] pt-5 sm:pt-6 lg:pt-7">
                     <span
-                      className="text-[11px] text-zinc-600 tracking-[0.1em]"
+                      className="text-[10px] tracking-[0.1em] text-zinc-600 sm:text-[11px]"
                       style={{ fontFamily: "'DM Mono', monospace" }}
                     >
                       {skill.index}
@@ -364,44 +365,53 @@ export default function SkillsPage() {
                   </div>
 
                   {/* Body */}
-                  <div className="p-7 lg:p-8">
-                    <div className="flex flex-wrap items-center gap-3 mb-3">
+                  <div className="p-4 sm:p-6 lg:p-8">
+                    <div className="mb-3 flex flex-wrap items-center gap-2 sm:gap-3">
                       <span
-                        className="text-[10px] uppercase tracking-[0.15em] text-blue-400 bg-blue-500/10 border border-blue-500/25 rounded px-2 py-[3px]"
+                        className="rounded border border-blue-500/25 bg-blue-500/10 px-2 py-[3px] text-[9px] uppercase tracking-[0.15em] text-blue-400 sm:text-[10px]"
                         style={{ fontFamily: "'DM Mono', monospace" }}
                       >
                         {skill.category}
                       </span>
                       <span
-                        className="text-[10px] uppercase tracking-[0.12em] text-zinc-600"
+                        className="text-[9px] uppercase tracking-[0.12em] text-zinc-600 sm:text-[10px]"
                         style={{ fontFamily: "'DM Mono', monospace" }}
                       >
                         {skill.label}
                       </span>
                     </div>
 
-                    <div className="flex items-start gap-4">
-                      <div className="w-11 h-11 rounded-xl border border-white/[0.08] bg-white/[0.02] flex items-center justify-center shrink-0">
+                    <div className="flex items-start gap-3 sm:gap-4">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/[0.08] bg-white/[0.02] sm:h-11 sm:w-11">
                         <Icon size={18} className="text-blue-400" />
                       </div>
 
-                      <div className="flex-1">
-                        <h2
-                          className="text-[22px] font-bold tracking-[-0.02em] text-white leading-tight mb-3"
-                          style={{ fontFamily: "'Syne', sans-serif" }}
-                        >
-                          {skill.title}
-                        </h2>
+                      <div className="min-w-0 flex-1">
+                        <div className="mb-3 flex items-start justify-between gap-3 lg:block">
+                          <h2
+                            className="text-[18px] font-bold leading-tight tracking-[-0.02em] text-white sm:text-[20px] lg:text-[22px]"
+                            style={{ fontFamily: "'Syne', sans-serif" }}
+                          >
+                            {skill.title}
+                          </h2>
 
-                        <p className="text-sm leading-relaxed text-zinc-500 font-light max-w-[650px] mb-4">
+                          <ArrowUpRight
+                            size={18}
+                            className={`mt-1 shrink-0 text-zinc-600 transition-all lg:hidden ${
+                              isOpen ? "rotate-45 text-blue-400" : ""
+                            }`}
+                          />
+                        </div>
+
+                        <p className="mb-4 max-w-[650px] text-sm font-light leading-relaxed text-zinc-500">
                           {skill.description}
                         </p>
 
-                        <div className="flex flex-wrap gap-[6px]">
+                        <div className="flex flex-wrap gap-2">
                           {skill.stack.map((tech) => (
                             <span
                               key={tech}
-                              className="text-[10px] text-zinc-500 bg-zinc-900 border border-white/[0.07] rounded px-2 py-[3px] tracking-[0.05em]"
+                              className="rounded border border-white/[0.07] bg-zinc-900 px-2 py-[3px] text-[10px] tracking-[0.05em] text-zinc-500"
                               style={{ fontFamily: "'DM Mono', monospace" }}
                             >
                               {tech}
@@ -414,12 +424,12 @@ export default function SkillsPage() {
                     {/* Expanded */}
                     {isOpen && (
                       <div
-                        className="mt-6 pt-6 border-t border-white/[0.07] grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-8"
+                        className="mt-5 grid grid-cols-1 gap-6 border-t border-white/[0.07] pt-5 lg:mt-6 lg:grid-cols-[1.2fr_1fr] lg:gap-8 lg:pt-6"
                         onClick={(e) => e.stopPropagation()}
                       >
                         <div>
                           <div
-                            className="text-[10px] uppercase tracking-[0.16em] text-zinc-600 mb-4"
+                            className="mb-4 text-[10px] uppercase tracking-[0.16em] text-zinc-600"
                             style={{ fontFamily: "'DM Mono', monospace" }}
                           >
                             What this means in practice
@@ -429,9 +439,9 @@ export default function SkillsPage() {
                             {skill.points.map((point) => (
                               <div
                                 key={point}
-                                className="flex gap-3 text-sm text-zinc-500 font-light leading-relaxed"
+                                className="flex gap-3 text-sm font-light leading-relaxed text-zinc-500"
                               >
-                                <span className="w-1 h-1 rounded-full bg-blue-500 flex-shrink-0 mt-[9px]" />
+                                <span className="mt-[9px] h-1 w-1 flex-shrink-0 rounded-full bg-blue-500" />
                                 <span>{point}</span>
                               </div>
                             ))}
@@ -440,17 +450,17 @@ export default function SkillsPage() {
 
                         <div>
                           <div
-                            className="text-[10px] uppercase tracking-[0.16em] text-zinc-600 mb-4"
+                            className="mb-4 text-[10px] uppercase tracking-[0.16em] text-zinc-600"
                             style={{ fontFamily: "'DM Mono', monospace" }}
                           >
                             Tools & concepts
                           </div>
 
-                          <div className="flex flex-wrap gap-[6px]">
+                          <div className="flex flex-wrap gap-2">
                             {skill.tools.map((tool) => (
                               <span
                                 key={tool}
-                                className="text-[10px] text-zinc-400 bg-blue-500/[0.07] border border-blue-500/20 rounded px-2 py-[4px] tracking-[0.05em]"
+                                className="rounded border border-blue-500/20 bg-blue-500/[0.07] px-2 py-[4px] text-[10px] tracking-[0.05em] text-zinc-400"
                                 style={{ fontFamily: "'DM Mono', monospace" }}
                               >
                                 {tool}
@@ -464,19 +474,17 @@ export default function SkillsPage() {
 
                   {/* Right panel */}
                   <div
-                    className="hidden lg:flex flex-col items-end justify-between p-7 border-l border-white/[0.07]"
+                    className="hidden flex-col justify-between border-l border-white/[0.07] p-7 lg:flex"
                     onClick={(e) => e.stopPropagation()}
                   >
                     <ArrowUpRight
                       size={20}
-                      className={`text-zinc-600 transition-all ${
-                        isOpen
-                          ? "opacity-100 translate-x-0 translate-y-0"
-                          : "opacity-70"
+                      className={`self-end text-zinc-600 transition-all ${
+                        isOpen ? "translate-x-0 translate-y-0 opacity-100" : "opacity-70"
                       }`}
                     />
 
-                    <div className="flex flex-col gap-[8px] items-end">
+                    <div className="flex flex-col items-end gap-[8px]">
                       <div
                         className="text-[10px] uppercase tracking-[0.1em] text-zinc-600"
                         style={{ fontFamily: "'DM Mono', monospace" }}
@@ -484,7 +492,7 @@ export default function SkillsPage() {
                         Focus Area
                       </div>
                       <div
-                        className="text-right text-sm text-zinc-400 leading-relaxed max-w-[140px]"
+                        className="max-w-[140px] text-right text-sm leading-relaxed text-zinc-400"
                         style={{ fontFamily: "'DM Sans', sans-serif" }}
                       >
                         {skill.label}
@@ -497,34 +505,37 @@ export default function SkillsPage() {
           </div>
 
           {/* CORE SNAPSHOTS */}
-          <div className="flex items-center gap-4 mb-7">
-            <span
-              className="text-[11px] uppercase tracking-[0.2em] text-zinc-600 whitespace-nowrap"
-              style={{ fontFamily: "'DM Mono', monospace" }}
-            >
-              Core Stack Snapshots
-            </span>
-            <div className="flex-1 h-px bg-white/[0.07]" />
+          <div className="mb-6 flex flex-col gap-4 sm:mb-7 sm:flex-row sm:items-center">
+            <div className="flex items-center gap-4 min-w-0 flex-1">
+              <span
+                className="whitespace-nowrap text-[10px] uppercase tracking-[0.2em] text-zinc-600 sm:text-[11px]"
+                style={{ fontFamily: "'DM Mono', monospace" }}
+              >
+                Core Stack Snapshots
+              </span>
+              <div className="h-px flex-1 bg-white/[0.07]" />
+            </div>
+
             <Link
               href="https://github.com/VishalDevx"
               target="_blank"
-              className="flex items-center gap-2 text-[10px] uppercase tracking-[0.1em] text-zinc-500 border border-white/[0.07] rounded px-3 py-[6px] hover:text-white hover:border-white/[0.12] hover:bg-white/[0.03] transition-all whitespace-nowrap"
+              className="inline-flex w-fit items-center gap-2 whitespace-nowrap rounded border border-white/[0.07] px-3 py-[6px] text-[10px] uppercase tracking-[0.1em] text-zinc-500 transition-all hover:border-white/[0.12] hover:bg-white/[0.03] hover:text-white"
               style={{ fontFamily: "'DM Mono', monospace" }}
             >
               View GitHub <ArrowUpRight size={10} />
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/[0.07] border border-white/[0.07] rounded-xl overflow-hidden mb-20">
+          <div className="mb-16 grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-white/[0.07] bg-white/[0.07] md:grid-cols-3 sm:mb-20">
             {skillSnapshots.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
                 target="_blank"
-                className="bg-[#09090b] p-6 hover:bg-[#111113] transition-colors group block"
+                className="group block bg-[#09090b] p-5 transition-colors hover:bg-[#111113] sm:p-6"
               >
-                <div className="flex items-start justify-between mb-4">
-                  <div className="w-8 h-8 border border-white/[0.12] rounded-lg flex items-center justify-center">
+                <div className="mb-4 flex items-start justify-between">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/[0.12]">
                     <ShieldCheck size={14} className="text-zinc-500" />
                   </div>
                   <span
@@ -536,13 +547,13 @@ export default function SkillsPage() {
                 </div>
 
                 <h4
-                  className="text-[15px] font-bold text-white mb-2 tracking-[-0.01em] group-hover:text-blue-400 transition-colors"
+                  className="mb-2 text-[15px] font-bold tracking-[-0.01em] text-white transition-colors group-hover:text-blue-400"
                   style={{ fontFamily: "'Syne', sans-serif" }}
                 >
                   {item.name}
                 </h4>
 
-                <p className="text-[13px] leading-relaxed text-zinc-500 font-light mb-4">
+                <p className="mb-4 text-[13px] font-light leading-relaxed text-zinc-500">
                   {item.description}
                 </p>
 
@@ -550,7 +561,7 @@ export default function SkillsPage() {
                   {item.tech.map((t) => (
                     <span
                       key={t}
-                      className="text-[10px] text-zinc-600 px-[7px] py-[2px] border border-white/[0.07] rounded-sm"
+                      className="rounded-sm border border-white/[0.07] px-[7px] py-[2px] text-[10px] text-zinc-600"
                       style={{ fontFamily: "'DM Mono', monospace" }}
                     >
                       {t}
@@ -562,23 +573,23 @@ export default function SkillsPage() {
           </div>
 
           {/* NOW LEARNING */}
-          <section className="grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-8 mb-20">
-            <div className="p-8 border border-white/[0.07] rounded-2xl bg-white/[0.02]">
+          <section className="mb-16 grid grid-cols-1 gap-6 lg:grid-cols-[1fr_1.1fr] lg:gap-8 sm:mb-20">
+            <div className="rounded-2xl border border-white/[0.07] bg-white/[0.02] p-6 sm:p-8">
               <div
-                className="text-[10px] uppercase tracking-[0.16em] text-zinc-600 mb-4"
+                className="mb-4 text-[10px] uppercase tracking-[0.16em] text-zinc-600"
                 style={{ fontFamily: "'DM Mono', monospace" }}
               >
                 Current Direction
               </div>
 
               <h3
-                className="text-[28px] font-bold tracking-[-0.02em] text-white leading-tight mb-4"
+                className="mb-4 text-[24px] font-bold leading-tight tracking-[-0.02em] text-white sm:text-[28px]"
                 style={{ fontFamily: "'Syne', sans-serif" }}
               >
                 What I&apos;m learning now
               </h3>
 
-              <p className="text-sm leading-[1.9] text-zinc-500 font-light max-w-[560px]">
+              <p className="max-w-[560px] text-sm font-light leading-7 text-zinc-500 sm:leading-[1.9]">
                 Right now I&apos;m pushing deeper into Rust, Solana, protocol
                 design, stronger system design thinking, and more production-grade
                 engineering patterns. I&apos;m also refining frontend quality so my
@@ -586,7 +597,7 @@ export default function SkillsPage() {
               </p>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
               {[
                 "Rust",
                 "Solana",
@@ -600,7 +611,7 @@ export default function SkillsPage() {
               ].map((item) => (
                 <div
                   key={item}
-                  className="px-4 py-4 rounded-xl border border-white/[0.07] bg-[#0d0d10] text-sm text-zinc-400 hover:text-white hover:border-blue-500/30 hover:bg-blue-500/[0.04] transition-all"
+                  className="rounded-xl border border-white/[0.07] bg-[#0d0d10] px-4 py-4 text-sm text-zinc-400 transition-all hover:border-blue-500/30 hover:bg-blue-500/[0.04] hover:text-white"
                   style={{ fontFamily: "'DM Mono', monospace" }}
                 >
                   {item}
@@ -610,24 +621,24 @@ export default function SkillsPage() {
           </section>
 
           {/* FOOTER CTA */}
-          <div className="mt-20 grid grid-cols-1 md:grid-cols-[1fr_auto] items-center gap-8 p-10 border border-white/[0.07] rounded-2xl">
+          <div className="mt-16 grid grid-cols-1 gap-6 rounded-2xl border border-white/[0.07] p-6 sm:gap-8 sm:p-8 md:grid-cols-[1fr_auto] md:items-center lg:mt-20 lg:p-10">
             <div>
               <h3
-                className="text-[28px] font-bold tracking-[-0.02em] text-white leading-tight"
+                className="text-[24px] font-bold leading-tight tracking-[-0.02em] text-white sm:text-[28px]"
                 style={{ fontFamily: "'Syne', sans-serif" }}
               >
                 Need an engineer who can
                 <br />
-                <span className="text-zinc-500 font-normal">
+                <span className="font-normal text-zinc-500">
                   think in systems and still ship product?
                 </span>
               </h3>
             </div>
 
-            <div className="flex gap-3 flex-shrink-0">
+            <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap md:justify-end">
               <a
                 href="mailto:vishal@example.com"
-                className="flex items-center gap-2 text-[11px] uppercase tracking-[0.1em] px-5 py-3 rounded-md bg-white text-black hover:bg-zinc-200 transition-colors font-medium"
+                className="inline-flex items-center justify-center gap-2 rounded-md bg-white px-5 py-3 text-[11px] font-medium uppercase tracking-[0.1em] text-black transition-colors hover:bg-zinc-200"
                 style={{ fontFamily: "'DM Mono', monospace" }}
               >
                 Get in touch <ArrowUpRight size={12} />
@@ -636,7 +647,7 @@ export default function SkillsPage() {
               <Link
                 href="https://github.com/VishalDevx"
                 target="_blank"
-                className="flex items-center gap-2 text-[11px] uppercase tracking-[0.1em] px-5 py-3 rounded-md border border-white/[0.07] text-zinc-500 hover:text-white hover:border-white/[0.12] hover:bg-white/[0.03] transition-all"
+                className="inline-flex items-center justify-center gap-2 rounded-md border border-white/[0.07] px-5 py-3 text-[11px] uppercase tracking-[0.1em] text-zinc-500 transition-all hover:border-white/[0.12] hover:bg-white/[0.03] hover:text-white"
                 style={{ fontFamily: "'DM Mono', monospace" }}
               >
                 <Github size={12} />

@@ -3,10 +3,10 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FaGithub, FaLinkedin,FaTwitter } from "react-icons/fa";
+import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
 import { SiGmail } from "react-icons/si";
 import { ArrowUpRight, Menu, X } from "lucide-react";
-
+import { ThemeToggle } from "./ThemeToggle";
 
 const NAV_LINKS = [
   { label: "Work", href: "/projects" },
@@ -20,8 +20,12 @@ const NAV_LINKS = [
 
 const SOCIALS = [
   { icon: FaGithub, href: "https://github.com/VishalDevx", label: "GitHub" },
-  { icon: FaLinkedin, href: "https://www.linkedin.com/in/vishal-singh-779054260/", label: "LinkedIn" },
-  {icon : FaTwitter,href:"https://www.x.com/VishalCsx",label:"X"},
+  {
+    icon: FaLinkedin,
+    href: "https://www.linkedin.com/in/vishal-singh-779054260/",
+    label: "LinkedIn",
+  },
+  { icon: FaTwitter, href: "https://www.x.com/VishalCsx", label: "X" },
   { icon: SiGmail, href: "mailto:vishalcsx@gmail.com", label: "Email" },
 ];
 
@@ -36,6 +40,10 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [pathname]);
+
   const isActive = (href: string) => {
     if (href === "/") return pathname === "/";
     return pathname === href || pathname.startsWith(href + "/");
@@ -45,6 +53,7 @@ export function Navbar() {
     <>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@700;800&display=swap');
+
         .nav-link {
           font-family: 'DM Mono', monospace;
           font-size: 11px;
@@ -54,35 +63,67 @@ export function Navbar() {
           padding: 6px 14px;
           border-radius: 6px;
           border: 0.5px solid transparent;
-          color: rgba(255,255,255,0.32);
+          color: rgba(255,255,255,0.34);
           transition: all 0.15s ease;
+          white-space: nowrap;
         }
+
         .nav-link:hover {
-          color: rgba(255,255,255,0.7);
+          color: rgba(255,255,255,0.75);
           background: rgba(255,255,255,0.03);
         }
+
         .nav-link.active {
           color: white;
           border-color: rgba(255,255,255,0.1);
           background: rgba(255,255,255,0.05);
         }
+
+        .mobile-nav-link {
+          font-family: 'DM Mono', monospace;
+          font-size: 12px;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: rgba(255,255,255,0.5);
+          text-decoration: none;
+          padding: 12px 14px;
+          border-radius: 8px;
+          display: block;
+          transition: all 0.15s ease;
+          border: 0.5px solid transparent;
+        }
+
+        .mobile-nav-link:hover {
+          color: rgba(255,255,255,0.85);
+          background: rgba(255,255,255,0.03);
+        }
+
+        .mobile-nav-link.active {
+          color: white;
+          background: rgba(255,255,255,0.05);
+          border-color: rgba(255,255,255,0.1);
+        }
+
         .social-btn {
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 32px;
-          height: 32px;
-          border-radius: 6px;
+          width: 34px;
+          height: 34px;
+          border-radius: 8px;
           border: 0.5px solid transparent;
-          color: rgba(255,255,255,0.25);
+          color: rgba(255,255,255,0.3);
           text-decoration: none;
           transition: all 0.15s ease;
+          flex-shrink: 0;
         }
+
         .social-btn:hover {
-          color: rgba(255,255,255,0.75);
-          border-color: rgba(255,255,255,0.09);
+          color: rgba(255,255,255,0.8);
+          border-color: rgba(255,255,255,0.1);
           background: rgba(255,255,255,0.04);
         }
+
         .hire-btn {
           font-family: 'DM Mono', monospace;
           font-size: 10px;
@@ -91,55 +132,41 @@ export function Navbar() {
           color: white;
           background: rgba(255,255,255,0.06);
           border: 0.5px solid rgba(255,255,255,0.12);
-          border-radius: 6px;
-          padding: 6px 14px;
+          border-radius: 8px;
+          padding: 8px 14px;
           text-decoration: none;
-          display: flex;
+          display: inline-flex;
           align-items: center;
-          gap: 5px;
+          justify-content: center;
+          gap: 6px;
           transition: all 0.15s ease;
+          white-space: nowrap;
         }
+
         .hire-btn:hover {
-          background: rgba(255,255,255,0.10);
+          background: rgba(255,255,255,0.1);
           border-color: rgba(255,255,255,0.2);
         }
-        .mobile-nav-link {
-          font-family: 'DM Mono', monospace;
-          font-size: 12px;
-          letter-spacing: 0.12em;
-          text-transform: uppercase;
-          color: rgba(255,255,255,0.45);
-          text-decoration: none;
-          padding: 10px 12px;
-          border-radius: 6px;
-          display: block;
-          transition: all 0.15s ease;
-        }
-        .mobile-nav-link:hover {
-          color: rgba(255,255,255,0.85);
-          background: rgba(255,255,255,0.03);
-        }
-        .mobile-nav-link.active {
-          color: white;
-          background: rgba(255,255,255,0.05);
-          border: 0.5px solid rgba(255,255,255,0.1);
-        }
+
         .hamburger-btn {
           background: none;
-          border: 0.5px solid rgba(255,255,255,0.09);
-          border-radius: 6px;
-          color: rgba(255,255,255,0.5);
+          border: 0.5px solid rgba(255,255,255,0.1);
+          border-radius: 8px;
+          color: rgba(255,255,255,0.6);
           cursor: pointer;
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 34px;
-          height: 34px;
+          width: 36px;
+          height: 36px;
           transition: all 0.15s ease;
+          flex-shrink: 0;
         }
+
         .hamburger-btn:hover {
           border-color: rgba(255,255,255,0.18);
           color: white;
+          background: rgba(255,255,255,0.04);
         }
       `}</style>
 
@@ -160,16 +187,7 @@ export function Navbar() {
         }}
       >
         <div
-          style={{
-            maxWidth: "1200px",
-            margin: "0 auto",
-            padding: "0 32px",
-            height: "56px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            position: "relative",
-          }}
+          className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8"
         >
           <Link
             href="/"
@@ -178,6 +196,7 @@ export function Navbar() {
               display: "flex",
               alignItems: "baseline",
               gap: "3px",
+              flexShrink: 0,
             }}
           >
             <span
@@ -205,15 +224,7 @@ export function Navbar() {
           </Link>
 
           <nav
-            style={{
-              position: "absolute",
-              left: "50%",
-              transform: "translateX(-50%)",
-              display: "flex",
-              alignItems: "center",
-              gap: "2px",
-            }}
-            className="hidden md:flex"
+            className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 lg:flex"
           >
             {NAV_LINKS.map(({ label, href }) => (
               <Link
@@ -226,8 +237,8 @@ export function Navbar() {
             ))}
           </nav>
 
-          <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-            <div className="hidden md:flex" style={{ alignItems: "center", gap: "2px" }}>
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="hidden items-center gap-1 lg:flex">
               {SOCIALS.map(({ icon: Icon, href, label }) => (
                 <a
                   key={label}
@@ -243,87 +254,86 @@ export function Navbar() {
             </div>
 
             <div
-              className="hidden md:block"
+              className="hidden lg:block"
               style={{
                 width: "0.5px",
                 height: "18px",
                 background: "rgba(255,255,255,0.08)",
-                margin: "0 6px",
               }}
             />
 
-            <a href="mailto:vishal@example.com" className="hire-btn hidden md:flex">
+            <div className="hidden sm:block">
+              <ThemeToggle />
+            </div>
+
+            <a
+              href="mailto:vishalcsx@gmail.com"
+              className="hire-btn hidden sm:inline-flex"
+            >
               Hire me <ArrowUpRight size={10} />
             </a>
 
             <button
-              className="hamburger-btn flex md:hidden"
-              onClick={() => setMenuOpen((v) => !v)}
+              className="hamburger-btn lg:hidden"
+              onClick={() => setMenuOpen((prev) => !prev)}
               aria-label="Toggle menu"
+              aria-expanded={menuOpen}
             >
-              {menuOpen ? <X size={15} /> : <Menu size={15} />}
+              {menuOpen ? <X size={16} /> : <Menu size={16} />}
             </button>
           </div>
         </div>
 
         {menuOpen && (
-          <div
-            style={{
-              borderTop: "0.5px solid rgba(255,255,255,0.06)",
-              background: "#09090b",
-              padding: "8px 24px 20px",
-            }}
-          >
-            <nav
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "2px",
-                marginBottom: "16px",
-              }}
-            >
+          <div className="border-t border-white/[0.06] bg-[#09090b] px-4 pb-5 pt-3 sm:px-6 lg:hidden">
+            <nav className="flex flex-col gap-2">
               {NAV_LINKS.map(({ label, href }) => (
                 <Link
                   key={href}
                   href={href}
                   className={`mobile-nav-link${isActive(href) ? " active" : ""}`}
-                  onClick={() => setMenuOpen(false)}
                 >
                   {label}
                 </Link>
               ))}
             </nav>
 
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                paddingTop: "12px",
-                borderTop: "0.5px solid rgba(255,255,255,0.06)",
-              }}
-            >
-              {SOCIALS.map(({ icon: Icon, href, label }) => (
+            <div className="mt-4 border-t border-white/[0.06] pt-4">
+              <div className="mb-4 flex items-center justify-between sm:hidden">
+                <span className="text-[10px] uppercase tracking-[0.16em] text-white/35">
+                  Theme
+                </span>
+                <ThemeToggle />
+              </div>
+
+              <div className="flex flex-wrap items-center gap-2">
+                {SOCIALS.map(({ icon: Icon, href, label }) => (
+                  <a
+                    key={label}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={label}
+                    className="social-btn"
+                    style={{ border: "0.5px solid rgba(255,255,255,0.09)" }}
+                  >
+                    <Icon size={13} />
+                  </a>
+                ))}
+
                 <a
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="social-btn"
-                  style={{ border: "0.5px solid rgba(255,255,255,0.09)" }}
+                  href="mailto:vishalcsx@gmail.com"
+                  className="hire-btn ml-auto"
                 >
-                  <Icon size={13} />
+                  Hire me <ArrowUpRight size={10} />
                 </a>
-              ))}
-              <a href="mailto:vishal@example.com" className="hire-btn" style={{ marginLeft: "auto" }}>
-                Hire me <ArrowUpRight size={10} />
-              </a>
+              </div>
             </div>
           </div>
         )}
       </header>
 
-      <div style={{ height: "56px" }} />
+      <div className="h-14" />
     </>
   );
 }

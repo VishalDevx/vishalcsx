@@ -18,6 +18,9 @@ export const metadata: Metadata = {
   title: "VishalCSx",
   description:
     "Vishal Singh — Senior Backend / Full-Stack Engineer & System Architect.",
+  verification: {
+    google: "google4aba8522528b17ba.html",
+  },
 };
 
 export default function RootLayout({

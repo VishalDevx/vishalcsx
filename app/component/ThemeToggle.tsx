@@ -18,7 +18,22 @@ export function ThemeToggle() {
     <button
       onClick={() => setTheme(isDark ? "light" : "dark")}
       aria-label="Toggle theme"
-      className="w-9 h-9 flex items-center justify-center rounded-md border border-zinc-300/40 dark:border-white/[0.08] text-zinc-700 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:border-zinc-400 dark:hover:border-white/[0.15] hover:bg-black/[0.04] dark:hover:bg-white/[0.04] transition-all"
+      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md border transition-all"
+      style={{
+        borderColor: "var(--border-color)",
+        color: "var(--text-secondary)",
+        backgroundColor: "transparent",
+      }}
+      onMouseEnter={(e) => {
+        (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--border-hover)";
+        (e.currentTarget as HTMLButtonElement).style.color = "var(--text-primary)";
+        (e.currentTarget as HTMLButtonElement).style.backgroundColor = "var(--bg-secondary)";
+      }}
+      onMouseLeave={(e) => {
+        (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--border-color)";
+        (e.currentTarget as HTMLButtonElement).style.color = "var(--text-secondary)";
+        (e.currentTarget as HTMLButtonElement).style.backgroundColor = "transparent";
+      }}
     >
       {isDark ? <Sun size={16} /> : <Moon size={16} />}
     </button>

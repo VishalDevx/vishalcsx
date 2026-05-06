@@ -18,8 +18,8 @@ export default function ContactPage() {
       `}</style>
 
       <main
-        className="relative min-h-screen overflow-x-hidden bg-[#09090b] text-white"
-        style={{ fontFamily: "'DM Sans', sans-serif" }}
+        className="relative min-h-screen overflow-x-hidden pt-14"
+        style={{ backgroundColor: "var(--bg-primary)", color: "var(--text-primary)", transition: "background-color 0.3s ease, color 0.3s ease", fontFamily: "'DM Sans', sans-serif" }}
       >
         {/* Background glow */}
         <div className="pointer-events-none fixed inset-0 z-0">
@@ -29,12 +29,12 @@ export default function ContactPage() {
 
         <div className="relative z-10 mx-auto max-w-[1100px] px-4 sm:px-6 lg:px-8 pb-16 sm:pb-20 lg:pb-24">
           {/* HEADER */}
-          <header className="mb-10 border-b border-white/[0.07] pb-10 pt-24 sm:mb-12 sm:pb-12 sm:pt-28 lg:mb-16 lg:pb-16 lg:pt-20">
+          <header className="mb-10 border-b border-[var(--border-color)] pb-10 pt-24 sm:mb-12 sm:pb-12 sm:pt-28 lg:mb-16 lg:pb-16 lg:pt-20">
             <div
-              className="mb-4 flex items-center gap-3 text-[10px] uppercase tracking-[0.2em] text-zinc-500 sm:mb-5 sm:text-[11px]"
+              className="mb-4 flex items-center gap-3 text-[10px] uppercase tracking-[0.2em] text-[var(--text-secondary)] sm:mb-5 sm:text-[11px]"
               style={{ fontFamily: "'DM Mono', monospace" }}
             >
-              <span className="block h-px w-5 bg-zinc-700 sm:w-6" />
+              <span className="block h-px w-5 bg-[var(--divider-line)] sm:w-6" />
               Contact
             </div>
 
@@ -52,7 +52,7 @@ export default function ContactPage() {
               </span>
             </h1>
 
-            <p className="mt-5 max-w-[520px] text-sm leading-7 text-zinc-500 sm:mt-6 sm:text-[15px] sm:leading-[1.8] md:text-base">
+            <p className="mt-5 max-w-[520px] text-sm leading-7 text-[var(--text-secondary)] sm:mt-6 sm:text-[15px] sm:leading-[1.8] md:text-base">
               I’m open to serious work — backend-heavy systems, full-stack products,
               or anything that involves real engineering challenges. If it’s just a
               quick clone project or low-quality work, I’m not interested.
@@ -62,9 +62,9 @@ export default function ContactPage() {
           {/* MAIN GRID */}
           <section className="grid grid-cols-1 gap-6 sm:gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:gap-12">
             {/* LEFT — FORM */}
-            <div className="rounded-2xl border border-white/[0.07] bg-white/[0.02] p-5 sm:p-6 md:p-8">
+            <div className="rounded-2xl border border-[var(--border-color)] bg-[var(--bg-secondary)] p-5 sm:p-6 md:p-8">
               <div
-                className="mb-5 text-[10px] uppercase tracking-[0.16em] text-zinc-600 sm:mb-6"
+                className="mb-5 text-[10px] uppercase tracking-[0.16em] text-[var(--text-muted)] sm:mb-6"
                 style={{ fontFamily: "'DM Mono', monospace" }}
               >
                 Send a message
@@ -72,7 +72,7 @@ export default function ContactPage() {
 
               <form className="flex flex-col gap-5 sm:gap-6">
                 <div>
-                  <label className="mb-2 block text-xs text-zinc-500">
+                  <label className="mb-2 block text-xs text-[var(--text-secondary)]">
                     Name
                   </label>
                   <input
@@ -82,12 +82,12 @@ export default function ContactPage() {
                     onChange={(e) =>
                       setForm({ ...form, name: e.target.value })
                     }
-                    className="w-full rounded-md border border-white/[0.07] bg-[#0d0d10] px-4 py-3 text-sm text-white focus:border-blue-500/40 focus:outline-none"
+                    className="w-full rounded-md border border-[var(--border-color)] bg-[var(--bg-secondary)] px-4 py-3 text-sm text-[var(--text-primary)] focus:border-blue-500/40 focus:outline-none"
                   />
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-xs text-zinc-500">
+                  <label className="mb-2 block text-xs text-[var(--text-secondary)]">
                     Email
                   </label>
                   <input
@@ -97,12 +97,12 @@ export default function ContactPage() {
                     onChange={(e) =>
                       setForm({ ...form, email: e.target.value })
                     }
-                    className="w-full rounded-md border border-white/[0.07] bg-[#0d0d10] px-4 py-3 text-sm text-white focus:border-blue-500/40 focus:outline-none"
+                    className="w-full rounded-md border border-[var(--border-color)] bg-[var(--bg-secondary)] px-4 py-3 text-sm text-[var(--text-primary)] focus:border-blue-500/40 focus:outline-none"
                   />
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-xs text-zinc-500">
+                  <label className="mb-2 block text-xs text-[var(--text-secondary)]">
                     Message
                   </label>
                   <textarea
@@ -112,13 +112,13 @@ export default function ContactPage() {
                     onChange={(e) =>
                       setForm({ ...form, message: e.target.value })
                     }
-                    className="w-full resize-none rounded-md border border-white/[0.07] bg-[#0d0d10] px-4 py-3 text-sm text-white focus:border-blue-500/40 focus:outline-none"
+                    className="w-full resize-none rounded-md border border-[var(--border-color)] bg-[var(--bg-secondary)] px-4 py-3 text-sm text-[var(--text-primary)] focus:border-blue-500/40 focus:outline-none"
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-md bg-white px-5 py-3 text-[11px] font-medium uppercase tracking-[0.1em] text-black transition-colors hover:bg-zinc-200 sm:mt-4 sm:w-auto sm:self-start"
+                  className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-md bg-[var(--btn-bg)] px-5 py-3 text-[11px] font-medium uppercase tracking-[0.1em] text-[var(--btn-text)] transition-colors hover:bg-[var(--btn-hover)] sm:mt-4 sm:w-auto sm:self-start"
                   style={{ fontFamily: "'DM Mono', monospace" }}
                 >
                   Send Message <ArrowUpRight size={12} />
@@ -128,9 +128,9 @@ export default function ContactPage() {
 
             {/* RIGHT — DIRECT CONTACT */}
             <div className="flex flex-col gap-6">
-              <div className="rounded-2xl border border-white/[0.07] bg-[#0d0d10] p-5 sm:p-6">
+              <div className="rounded-2xl border border-[var(--border-color)] bg-[var(--bg-secondary)] p-5 sm:p-6">
                 <div
-                  className="mb-3 text-[10px] uppercase tracking-[0.16em] text-zinc-600"
+                  className="mb-3 text-[10px] uppercase tracking-[0.16em] text-[var(--text-muted)]"
                   style={{ fontFamily: "'DM Mono', monospace" }}
                 >
                   Direct Contact
@@ -139,55 +139,55 @@ export default function ContactPage() {
                 <div className="flex flex-col gap-3 sm:gap-4">
                   <a
                     href="mailto:vishal@example.com"
-                    className="flex items-center justify-between gap-3 rounded-md border border-white/[0.07] px-4 py-3 transition-all hover:border-white/[0.12] hover:bg-white/[0.03]"
+                    className="flex items-center justify-between gap-3 rounded-md border border-[var(--border-color)] px-4 py-3 transition-all hover:border-[var(--border-color)] hover:bg-[var(--card-hover)]"
                   >
-                    <div className="flex min-w-0 items-center gap-3 text-sm text-zinc-400">
+                    <div className="flex min-w-0 items-center gap-3 text-sm text-[var(--text-secondary)]">
                       <Mail size={16} className="shrink-0" />
                       <span className="truncate">Email</span>
                     </div>
-                    <ArrowUpRight size={14} className="shrink-0 text-zinc-500" />
+                    <ArrowUpRight size={14} className="shrink-0 text-[var(--text-secondary)]" />
                   </a>
 
                   <Link
                     href="https://github.com/VishalDevx"
                     target="_blank"
-                    className="flex items-center justify-between gap-3 rounded-md border border-white/[0.07] px-4 py-3 transition-all hover:border-white/[0.12] hover:bg-white/[0.03]"
+                    className="flex items-center justify-between gap-3 rounded-md border border-[var(--border-color)] px-4 py-3 transition-all hover:border-[var(--border-color)] hover:bg-[var(--card-hover)]"
                   >
-                    <div className="flex min-w-0 items-center gap-3 text-sm text-zinc-400">
+                    <div className="flex min-w-0 items-center gap-3 text-sm text-[var(--text-secondary)]">
                       <Github size={16} className="shrink-0" />
                       <span className="truncate">GitHub</span>
                     </div>
-                    <ArrowUpRight size={14} className="shrink-0 text-zinc-500" />
+                    <ArrowUpRight size={14} className="shrink-0 text-[var(--text-secondary)]" />
                   </Link>
 
                   <Link
                     href="https://linkedin.com"
                     target="_blank"
-                    className="flex items-center justify-between gap-3 rounded-md border border-white/[0.07] px-4 py-3 transition-all hover:border-white/[0.12] hover:bg-white/[0.03]"
+                    className="flex items-center justify-between gap-3 rounded-md border border-[var(--border-color)] px-4 py-3 transition-all hover:border-[var(--border-color)] hover:bg-[var(--card-hover)]"
                   >
-                    <div className="flex min-w-0 items-center gap-3 text-sm text-zinc-400">
+                    <div className="flex min-w-0 items-center gap-3 text-sm text-[var(--text-secondary)]">
                       <Linkedin size={16} className="shrink-0" />
                       <span className="truncate">LinkedIn</span>
                     </div>
-                    <ArrowUpRight size={14} className="shrink-0 text-zinc-500" />
+                    <ArrowUpRight size={14} className="shrink-0 text-[var(--text-secondary)]" />
                   </Link>
                 </div>
               </div>
 
               {/* Availability */}
-              <div className="rounded-2xl border border-white/[0.07] p-5 sm:p-6">
+              <div className="rounded-2xl border border-[var(--border-color)] p-5 sm:p-6">
                 <div
-                  className="mb-3 text-[10px] uppercase tracking-[0.16em] text-zinc-600"
+                  className="mb-3 text-[10px] uppercase tracking-[0.16em] text-[var(--text-muted)]"
                   style={{ fontFamily: "'DM Mono', monospace" }}
                 >
                   Availability
                 </div>
 
-                <p className="text-sm leading-relaxed text-zinc-500">
+                <p className="text-sm leading-relaxed text-[var(--text-secondary)]">
                   Currently open to:
                 </p>
 
-                <ul className="mt-4 flex flex-col gap-3 text-sm text-zinc-400">
+                <ul className="mt-4 flex flex-col gap-3 text-sm text-[var(--text-secondary)]">
                   <li>• Backend / API engineering work</li>
                   <li>• Full-stack product development</li>
                   <li>• System design & architecture discussions</li>

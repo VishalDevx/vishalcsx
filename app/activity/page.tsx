@@ -222,29 +222,29 @@ export default function ActivityPage() {
       `}</style>
 
       <main
-        className="relative min-h-screen overflow-x-hidden bg-[#09090b] text-white"
-        style={{ fontFamily: "'DM Sans', sans-serif" }}
+        className="relative min-h-screen overflow-x-hidden pt-14"
+        style={{ backgroundColor: "var(--bg-primary)", color: "var(--text-primary)", transition: "background-color 0.3s ease, color 0.3s ease", fontFamily: "'DM Sans', sans-serif" }}
       >
         {/* Background glow */}
         <div className="pointer-events-none fixed inset-0 z-0">
-          <div className="absolute left-[-80px] top-[-20px] h-[240px] w-[240px] rounded-full bg-blue-500/[0.05] blur-[80px] sm:left-[4%] sm:top-0 sm:h-[320px] sm:w-[320px] sm:blur-[100px] lg:left-[10%] lg:h-[500px] lg:w-[400px] lg:blur-[120px]" />
-          <div className="absolute bottom-[-30px] right-[-60px] h-[220px] w-[220px] rounded-full bg-blue-500/[0.03] blur-[80px] sm:right-[4%] sm:bottom-0 sm:h-[300px] sm:w-[300px] sm:blur-[95px] lg:right-[8%] lg:h-[400px] lg:w-[400px] lg:blur-[100px]" />
+          <div className="absolute left-[-80px] top-[-20px] h-[240px] w-[240px] rounded-full bg-[var(--glow)] blur-[80px] sm:left-[4%] sm:top-0 sm:h-[320px] sm:w-[320px] sm:blur-[100px] lg:left-[10%] lg:h-[500px] lg:w-[400px] lg:blur-[120px]" />
+          <div className="absolute bottom-[-30px] right-[-60px] h-[220px] w-[220px] rounded-full bg-[var(--glow)] blur-[80px] sm:right-[4%] sm:bottom-0 sm:h-[300px] sm:w-[300px] sm:blur-[95px] lg:right-[8%] lg:h-[400px] lg:w-[400px] lg:blur-[100px]" />
         </div>
 
         <div className="relative z-10 mx-auto max-w-[1200px] px-4 pb-16 sm:px-6 sm:pb-20 md:px-8 lg:pb-24">
           {/* HEADER */}
-          <header className="mb-12 grid grid-cols-1 gap-8 border-b border-white/[0.07] pb-10 pt-12 sm:mb-14 sm:pb-12 sm:pt-14 lg:mb-16 lg:grid-cols-[1fr_auto] lg:items-end lg:pb-14 lg:pt-20">
+          <header className="mb-12 grid grid-cols-1 gap-8 border-b border-[var(--border-color)] pb-10 pt-12 sm:mb-14 sm:pb-12 sm:pt-14 lg:mb-16 lg:grid-cols-[1fr_auto] lg:items-end lg:pb-14 lg:pt-20">
             <div>
               <div
-                className="mb-4 flex items-center gap-3 text-[10px] uppercase tracking-[0.2em] text-zinc-500 sm:mb-5 sm:text-[11px]"
+                className="mb-4 flex items-center gap-3 text-[10px] uppercase tracking-[0.2em] text-[var(--text-secondary)] sm:mb-5 sm:text-[11px]"
                 style={{ fontFamily: "'DM Mono', monospace" }}
               >
-                <span className="block h-px w-5 bg-zinc-700 sm:w-6" />
+                <span className="block h-px w-5 bg-[var(--divider-line)] sm:w-6" />
                 Activity Log
               </div>
 
               <h1
-                className="text-[clamp(36px,11vw,88px)] font-extrabold leading-[0.95] tracking-[-0.03em] text-white"
+                className="text-[clamp(36px,11vw,88px)] font-extrabold leading-[0.95] tracking-[-0.03em] text-[var(--text-primary)]"
                 style={{ fontFamily: "'Syne', sans-serif" }}
               >
                 What I&apos;m
@@ -257,7 +257,7 @@ export default function ActivityPage() {
                 </span>
               </h1>
 
-              <p className="mt-5 max-w-[580px] text-sm font-light leading-7 text-zinc-500 sm:mt-6 sm:text-[15px] sm:leading-8 md:text-base md:leading-[1.75]">
+              <p className="mt-5 max-w-[580px] text-sm font-light leading-7 text-[var(--text-secondary)] sm:mt-6 sm:text-[15px] sm:leading-8 md:text-base md:leading-[1.75]">
                 A live view of what I&apos;m building, learning, exploring, and
                 improving — from product systems and backend architecture to open
                 source, protocol engineering, and AI/ML curiosity.
@@ -273,13 +273,13 @@ export default function ActivityPage() {
               ].map(({ num, label }, i) => (
                 <div key={i} className="flex flex-col items-start gap-1 lg:items-end">
                   <span
-                    className="text-[28px] font-bold leading-none text-white sm:text-[34px] lg:text-[40px]"
+                    className="text-[28px] font-bold leading-none text-[var(--text-primary)] sm:text-[34px] lg:text-[40px]"
                     style={{ fontFamily: "'Syne', sans-serif" }}
                   >
                     {num}
                   </span>
                   <span
-                    className="text-[9px] uppercase tracking-[0.15em] text-zinc-600 sm:text-[10px]"
+                    className="text-[9px] uppercase tracking-[0.15em] text-[var(--text-muted)] sm:text-[10px]"
                     style={{ fontFamily: "'DM Mono', monospace" }}
                   >
                     {label}
@@ -297,8 +297,8 @@ export default function ActivityPage() {
                 onClick={() => setActiveFilter(filter)}
                 className={`rounded border px-3 py-[7px] text-[10px] uppercase tracking-[0.12em] transition-all sm:px-4 sm:text-[11px] ${
                   activeFilter === filter
-                    ? "border-blue-500 bg-blue-500/10 text-blue-400"
-                    : "border-white/[0.07] bg-transparent text-zinc-500 hover:border-white/[0.12] hover:bg-white/[0.03] hover:text-zinc-200"
+                    ? "border-[var(--accent)] bg-[var(--accent-bg)] text-[var(--accent-text)]"
+                    : "border-[var(--border-color)] bg-transparent text-[var(--text-secondary)] hover:border-[var(--border-color)] hover:bg-[var(--card-hover)] hover:text-[var(--text-primary)]"
                 }`}
                 style={{ fontFamily: "'DM Mono', monospace" }}
               >
@@ -308,7 +308,7 @@ export default function ActivityPage() {
           </div>
 
           {/* FEED */}
-          <div className="mb-16 flex flex-col gap-px overflow-hidden rounded-2xl border border-white/[0.07] bg-white/[0.07] sm:mb-20">
+          <div className="mb-16 flex flex-col gap-px overflow-hidden rounded-2xl border border-[var(--border-color)] bg-[var(--card-border)] sm:mb-20">
             {filteredFeed.map((item) => {
               const isOpen = expandedSlug === item.slug;
               const Icon = getActivityIcon(item.type);
@@ -319,14 +319,14 @@ export default function ActivityPage() {
                   onClick={() => toggleCard(item.slug)}
                   className={`grid cursor-pointer grid-cols-1 transition-colors md:grid-cols-[64px_1fr] lg:grid-cols-[72px_1fr_170px] ${
                     isOpen
-                      ? "border-l-2 border-blue-500 bg-[#111113]"
-                      : "bg-[#09090b] hover:bg-[#111113]"
+                      ? "border-l-2 border-[var(--accent)] bg-[var(--bg-secondary)]"
+                      : "bg-[var(--bg-primary)] hover:bg-[var(--bg-secondary)]"
                   }`}
                 >
                   {/* mobile top row */}
-                  <div className="flex items-center justify-between border-b border-white/[0.07] px-5 py-4 md:hidden">
+                  <div className="flex items-center justify-between border-b border-[var(--border-color)] px-5 py-4 md:hidden">
                     <span
-                      className="text-[10px] tracking-[0.1em] text-zinc-600"
+                      className="text-[10px] tracking-[0.1em] text-[var(--text-muted)]"
                       style={{ fontFamily: "'DM Mono', monospace" }}
                     >
                       {item.index}
@@ -334,24 +334,24 @@ export default function ActivityPage() {
 
                     <div className="flex items-center gap-2">
                       <span
-                        className="rounded border border-blue-500/25 bg-blue-500/10 px-2 py-[3px] text-[10px] uppercase tracking-[0.15em] text-blue-400"
+                        className="rounded border border-[var(--accent)] bg-[var(--accent-bg)] px-2 py-[3px] text-[10px] uppercase tracking-[0.15em] text-[var(--accent-text)]"
                         style={{ fontFamily: "'DM Mono', monospace" }}
                       >
                         {item.category}
                       </span>
                       <ArrowUpRight
                         size={16}
-                        className={`text-zinc-600 transition-all ${
-                          isOpen ? "rotate-45 text-blue-400" : ""
+                        className={`text-[var(--text-muted)] transition-all ${
+                          isOpen ? "rotate-45 text-[var(--accent-text)]" : ""
                         }`}
                       />
                     </div>
                   </div>
 
                   {/* index desktop */}
-                  <div className="hidden items-start justify-center border-r border-white/[0.07] pt-7 md:flex">
+                  <div className="hidden items-start justify-center border-r border-[var(--border-color)] pt-7 md:flex">
                     <span
-                      className="text-[11px] tracking-[0.1em] text-zinc-600"
+                      className="text-[11px] tracking-[0.1em] text-[var(--text-muted)]"
                       style={{ fontFamily: "'DM Mono', monospace" }}
                     >
                       {item.index}
@@ -362,13 +362,13 @@ export default function ActivityPage() {
                   <div className="p-5 sm:p-6 lg:p-8">
                     <div className="mb-3 hidden flex-wrap items-center gap-3 md:flex">
                       <span
-                        className="rounded border border-blue-500/25 bg-blue-500/10 px-2 py-[3px] text-[10px] uppercase tracking-[0.15em] text-blue-400"
+                        className="rounded border border-[var(--accent)] bg-[var(--accent-bg)] px-2 py-[3px] text-[10px] uppercase tracking-[0.15em] text-[var(--accent-text)]"
                         style={{ fontFamily: "'DM Mono', monospace" }}
                       >
                         {item.category}
                       </span>
                       <span
-                        className="text-[10px] uppercase tracking-[0.12em] text-zinc-600"
+                        className="text-[10px] uppercase tracking-[0.12em] text-[var(--text-muted)]"
                         style={{ fontFamily: "'DM Mono', monospace" }}
                       >
                         {item.label}
@@ -376,14 +376,14 @@ export default function ActivityPage() {
                     </div>
 
                     <div className="flex items-start gap-4">
-                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/[0.08] bg-white/[0.02] sm:h-11 sm:w-11">
-                        <Icon size={18} className="text-blue-400" />
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-[var(--border-color)] bg-[var(--bg-secondary)] sm:h-11 sm:w-11">
+                        <Icon size={18} className="text-[var(--accent-text)]" />
                       </div>
 
                       <div className="min-w-0 flex-1">
                         <div className="mb-3 md:hidden">
                           <span
-                            className="text-[10px] uppercase tracking-[0.12em] text-zinc-600"
+                            className="text-[10px] uppercase tracking-[0.12em] text-[var(--text-muted)]"
                             style={{ fontFamily: "'DM Mono', monospace" }}
                           >
                             {item.label}
@@ -391,13 +391,13 @@ export default function ActivityPage() {
                         </div>
 
                         <h2
-                          className="mb-3 text-[19px] font-bold leading-tight tracking-[-0.02em] text-white sm:text-[21px] lg:text-[22px]"
+                          className="mb-3 text-[19px] font-bold leading-tight tracking-[-0.02em] text-[var(--text-primary)] sm:text-[21px] lg:text-[22px]"
                           style={{ fontFamily: "'Syne', sans-serif" }}
                         >
                           {item.title}
                         </h2>
 
-                        <p className="mb-4 max-w-[650px] text-sm font-light leading-relaxed text-zinc-500">
+                        <p className="mb-4 max-w-[650px] text-sm font-light leading-relaxed text-[var(--text-secondary)]">
                           {item.description}
                         </p>
 
@@ -405,7 +405,7 @@ export default function ActivityPage() {
                           {item.tags.map((tag) => (
                             <span
                               key={tag}
-                              className="rounded border border-white/[0.07] bg-zinc-900 px-2 py-[3px] text-[10px] tracking-[0.05em] text-zinc-500"
+                              className="rounded border border-[var(--border-color)] bg-[var(--bg-secondary)] px-2 py-[3px] text-[10px] tracking-[0.05em] text-[var(--text-secondary)]"
                               style={{ fontFamily: "'DM Mono', monospace" }}
                             >
                               {tag}
@@ -417,13 +417,13 @@ export default function ActivityPage() {
 
                     {isOpen && (
                       <div
-                        className="mt-5 grid grid-cols-1 gap-4 border-t border-white/[0.07] pt-5 md:mt-6 md:pt-6 xl:grid-cols-3"
+                        className="mt-5 grid grid-cols-1 gap-4 border-t border-[var(--border-color)] pt-5 md:mt-6 md:pt-6 xl:grid-cols-3"
                         onClick={(e) => e.stopPropagation()}
                       >
                         {item.points.map((point) => (
                           <div
                             key={point}
-                            className="flex gap-3 text-sm font-light leading-relaxed text-zinc-500"
+                            className="flex gap-3 text-sm font-light leading-relaxed text-[var(--text-secondary)]"
                           >
                             <span className="mt-[9px] h-1 w-1 flex-shrink-0 rounded-full bg-blue-500" />
                             <span>{point}</span>
@@ -435,19 +435,19 @@ export default function ActivityPage() {
 
                   {/* right panel desktop */}
                   <div
-                    className="hidden border-l border-white/[0.07] p-7 lg:flex lg:flex-col lg:items-end lg:justify-between"
+                    className="hidden border-l border-[var(--border-color)] p-7 lg:flex lg:flex-col lg:items-end lg:justify-between"
                     onClick={(e) => e.stopPropagation()}
                   >
                     <ArrowUpRight
                       size={20}
-                      className={`text-zinc-600 transition-all ${
-                        isOpen ? "opacity-100 text-blue-400" : "opacity-70"
+                      className={`text-[var(--text-muted)] transition-all ${
+                        isOpen ? "opacity-100 text-[var(--accent-text)]" : "opacity-70"
                       }`}
                     />
 
                     <div className="flex flex-col items-end gap-[8px]">
                       <div
-                        className="text-[10px] uppercase tracking-[0.1em] text-zinc-600"
+                        className="text-[10px] uppercase tracking-[0.1em] text-[var(--text-muted)]"
                         style={{ fontFamily: "'DM Mono', monospace" }}
                       >
                         Status
@@ -455,7 +455,7 @@ export default function ActivityPage() {
                       <div className="flex items-center gap-2">
                         <span className="h-2 w-2 rounded-full bg-blue-500" />
                         <span
-                          className="text-[11px] uppercase tracking-[0.1em] text-zinc-400"
+                          className="text-[11px] uppercase tracking-[0.1em] text-[var(--text-secondary)]"
                           style={{ fontFamily: "'DM Mono', monospace" }}
                         >
                           Active
@@ -471,34 +471,34 @@ export default function ActivityPage() {
           {/* SNAPSHOTS */}
           <div className="mb-6 flex items-center gap-4 sm:mb-7">
             <span
-              className="whitespace-nowrap text-[10px] uppercase tracking-[0.2em] text-zinc-600 sm:text-[11px]"
+              className="whitespace-nowrap text-[10px] uppercase tracking-[0.2em] text-[var(--text-muted)] sm:text-[11px]"
               style={{ fontFamily: "'DM Mono', monospace" }}
             >
               Quick Snapshots
             </span>
-            <div className="h-px flex-1 bg-white/[0.07]" />
+            <div className="h-px flex-1 bg-[var(--card-border)]" />
             <Link
               href="https://github.com/VishalDevx"
               target="_blank"
-              className="hidden items-center gap-2 whitespace-nowrap rounded border border-white/[0.07] px-3 py-[6px] text-[10px] uppercase tracking-[0.1em] text-zinc-500 transition-all hover:border-white/[0.12] hover:bg-white/[0.03] hover:text-white sm:flex"
+              className="hidden items-center gap-2 whitespace-nowrap rounded border border-[var(--border-color)] px-3 py-[6px] text-[10px] uppercase tracking-[0.1em] text-[var(--text-secondary)] transition-all hover:border-[var(--border-color)] hover:bg-[var(--card-hover)] hover:text-[var(--text-primary)] sm:flex"
               style={{ fontFamily: "'DM Mono', monospace" }}
             >
               View GitHub <ArrowUpRight size={10} />
             </Link>
           </div>
 
-          <div className="mb-16 grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-white/[0.07] bg-white/[0.07] sm:mb-20 md:grid-cols-2 xl:grid-cols-3">
+          <div className="mb-16 grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-[var(--border-color)] bg-[var(--card-border)] sm:mb-20 md:grid-cols-2 xl:grid-cols-3">
             {snapshots.map((item) => (
               <div
                 key={item.name}
-                className="group block bg-[#09090b] p-5 transition-colors hover:bg-[#111113] sm:p-6"
+                className="group block bg-[var(--bg-primary)] p-5 transition-colors hover:bg-[var(--bg-secondary)] sm:p-6"
               >
                 <div className="mb-4 flex items-start justify-between">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/[0.12]">
-                    <Activity size={14} className="text-zinc-500" />
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-[var(--border-color)]">
+                    <Activity size={14} className="text-[var(--text-secondary)]" />
                   </div>
                   <span
-                    className="text-[9px] uppercase tracking-[0.15em] text-zinc-600"
+                    className="text-[9px] uppercase tracking-[0.15em] text-[var(--text-muted)]"
                     style={{ fontFamily: "'DM Mono', monospace" }}
                   >
                     {item.type}
@@ -506,13 +506,13 @@ export default function ActivityPage() {
                 </div>
 
                 <h4
-                  className="mb-2 text-[15px] font-bold tracking-[-0.01em] text-white"
+                  className="mb-2 text-[15px] font-bold tracking-[-0.01em] text-[var(--text-primary)]"
                   style={{ fontFamily: "'Syne', sans-serif" }}
                 >
                   {item.name}
                 </h4>
 
-                <p className="mb-4 text-[13px] font-light leading-relaxed text-zinc-500">
+                <p className="mb-4 text-[13px] font-light leading-relaxed text-[var(--text-secondary)]">
                   {item.description}
                 </p>
 
@@ -520,7 +520,7 @@ export default function ActivityPage() {
                   {item.tech.map((t) => (
                     <span
                       key={t}
-                      className="rounded-sm border border-white/[0.07] px-[7px] py-[2px] text-[10px] text-zinc-600"
+                      className="rounded-sm border border-[var(--border-color)] px-[7px] py-[2px] text-[10px] text-[var(--text-muted)]"
                       style={{ fontFamily: "'DM Mono', monospace" }}
                     >
                       {t}
@@ -535,27 +535,27 @@ export default function ActivityPage() {
           <section className="mb-16 sm:mb-20">
             <div className="mb-6 flex items-center gap-4 sm:mb-7">
               <span
-                className="whitespace-nowrap text-[10px] uppercase tracking-[0.2em] text-zinc-600 sm:text-[11px]"
+                className="whitespace-nowrap text-[10px] uppercase tracking-[0.2em] text-[var(--text-muted)] sm:text-[11px]"
                 style={{ fontFamily: "'DM Mono', monospace" }}
               >
                 Progress Direction
               </span>
-              <div className="h-px flex-1 bg-white/[0.07]" />
+              <div className="h-px flex-1 bg-[var(--card-border)]" />
             </div>
 
-            <div className="overflow-hidden rounded-2xl border border-white/[0.07]">
+            <div className="overflow-hidden rounded-2xl border border-[var(--border-color)]">
               {timeline.map((item, idx) => (
                 <div
                   key={item.title}
                   className={`grid grid-cols-1 gap-4 p-5 sm:gap-6 sm:p-6 md:grid-cols-[130px_1fr] md:p-7 ${
                     idx !== timeline.length - 1
-                      ? "border-b border-white/[0.07]"
+                      ? "border-b border-[var(--border-color)]"
                       : ""
                   }`}
                 >
                   <div>
                     <span
-                      className="text-[10px] uppercase tracking-[0.15em] text-blue-400"
+                      className="text-[10px] uppercase tracking-[0.15em] text-[var(--accent-text)]"
                       style={{ fontFamily: "'DM Mono', monospace" }}
                     >
                       {item.period}
@@ -564,12 +564,12 @@ export default function ActivityPage() {
 
                   <div>
                     <h3
-                      className="mb-2 text-[18px] font-bold leading-tight tracking-[-0.02em] text-white sm:text-[20px]"
+                      className="mb-2 text-[18px] font-bold leading-tight tracking-[-0.02em] text-[var(--text-primary)] sm:text-[20px]"
                       style={{ fontFamily: "'Syne', sans-serif" }}
                     >
                       {item.title}
                     </h3>
-                    <p className="max-w-[760px] text-sm font-light leading-relaxed text-zinc-500">
+                    <p className="max-w-[760px] text-sm font-light leading-relaxed text-[var(--text-secondary)]">
                       {item.detail}
                     </p>
                   </div>
@@ -579,15 +579,15 @@ export default function ActivityPage() {
           </section>
 
           {/* CTA */}
-          <div className="mt-16 grid grid-cols-1 gap-6 rounded-2xl border border-white/[0.07] p-6 sm:mt-20 sm:gap-8 sm:p-8 md:grid-cols-[1fr_auto] md:items-center lg:p-10">
+          <div className="mt-16 grid grid-cols-1 gap-6 rounded-2xl border border-[var(--border-color)] p-6 sm:mt-20 sm:gap-8 sm:p-8 md:grid-cols-[1fr_auto] md:items-center lg:p-10">
             <div>
               <h3
-                className="text-[22px] font-bold leading-tight tracking-[-0.02em] text-white sm:text-[26px] lg:text-[28px]"
+                className="text-[22px] font-bold leading-tight tracking-[-0.02em] text-[var(--text-primary)] sm:text-[26px] lg:text-[28px]"
                 style={{ fontFamily: "'Syne', sans-serif" }}
               >
                 Want to follow the work
                 <br />
-                <span className="font-normal text-zinc-500">
+                <span className="font-normal text-[var(--text-secondary)]">
                   or build something serious together?
                 </span>
               </h3>
@@ -596,7 +596,7 @@ export default function ActivityPage() {
             <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap md:justify-end">
               <a
                 href="mailto:vishalcsx@gmail.com"
-                className="flex items-center justify-center gap-2 rounded-md bg-white px-5 py-3 text-[11px] font-medium uppercase tracking-[0.1em] text-black transition-colors hover:bg-zinc-200"
+                className="flex items-center justify-center gap-2 rounded-md bg-[var(--btn-bg)] px-5 py-3 text-[11px] font-medium uppercase tracking-[0.1em] text-[var(--btn-text)] transition-colors hover:bg-[var(--btn-hover)]"
                 style={{ fontFamily: "'DM Mono', monospace" }}
               >
                 Contact Me <ArrowUpRight size={12} />
@@ -605,7 +605,7 @@ export default function ActivityPage() {
               <Link
                 href="https://github.com/VishalDevx"
                 target="_blank"
-                className="flex items-center justify-center gap-2 rounded-md border border-white/[0.07] px-5 py-3 text-[11px] uppercase tracking-[0.1em] text-zinc-500 transition-all hover:border-white/[0.12] hover:bg-white/[0.03] hover:text-white"
+                className="flex items-center justify-center gap-2 rounded-md border border-[var(--border-color)] px-5 py-3 text-[11px] uppercase tracking-[0.1em] text-[var(--text-secondary)] transition-all hover:border-[var(--border-color)] hover:bg-[var(--card-hover)] hover:text-[var(--text-primary)]"
                 style={{ fontFamily: "'DM Mono', monospace" }}
               >
                 <Github size={12} />

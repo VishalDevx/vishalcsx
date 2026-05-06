@@ -1,52 +1,89 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #18181b;
+  --bg-primary: #ffffff;
+  --bg-secondary: #f4f4f5;
+  --bg-tertiary: #e4e4e7;
+  --text-primary: #09090b;
+  --text-secondary: #52525b;
+  --text-muted: #a1a1aa;
+  --border-color: rgba(0, 0, 0, 0.1);
+  --border-subtle: rgba(0, 0, 0, 0.06);
+  --border-hover: rgba(0, 0, 0, 0.18);
+  --accent: #2563eb;
+  --accent-text: #1d4ed8;
+  --accent-bg: rgba(37, 99, 235, 0.08);
+  --accent-bg-hover: rgba(37, 99, 235, 0.15);
+  --card-bg: #ffffff;
+  --card-border: rgba(0, 0, 0, 0.1);
+  --card-hover: #f4f4f5;
+  --glow: rgba(59, 130, 246, 0.08);
+  --stroke: rgba(0, 0, 0, 0.18);
+  --grid: rgba(0, 0, 0, 0.04);
+  --btn-bg: #09090b;
+  --btn-text: #ffffff;
+  --btn-hover: #18181b;
+  --divider-line: rgba(0, 0, 0, 0.1);
+  --icon-color: rgba(0, 0, 0, 0.35);
+  --icon-hover: rgba(0, 0, 0, 0.85);
+  --arrow-color: rgba(0, 0, 0, 0.25);
 }
 
 .dark {
-  --background: #050505;
-  --foreground: #e5e5e5;
+  --bg-primary: #09090b;
+  --bg-secondary: #111113;
+  --bg-tertiary: #18181b;
+  --text-primary: #fafafa;
+  --text-secondary: #a1a1aa;
+  --text-muted: #71717a;
+  --border-color: rgba(255, 255, 255, 0.08);
+  --border-subtle: rgba(255, 255, 255, 0.04);
+  --border-hover: rgba(255, 255, 255, 0.15);
+  --accent: #3b82f6;
+  --accent-text: #60a5fa;
+  --accent-bg: rgba(59, 130, 246, 0.1);
+  --accent-bg-hover: rgba(59, 130, 246, 0.2);
+  --card-bg: #09090b;
+  --card-border: rgba(255, 255, 255, 0.07);
+  --card-hover: #111113;
+  --glow: rgba(59, 130, 246, 0.06);
+  --stroke: rgba(255, 255, 255, 0.18);
+  --grid: rgba(255, 255, 255, 0.04);
+  --btn-bg: #fafafa;
+  --btn-text: #09090b;
+  --btn-hover: #e4e4e7;
+  --divider-line: rgba(255, 255, 255, 0.07);
+  --icon-color: rgba(255, 255, 255, 0.3);
+  --icon-hover: rgba(255, 255, 255, 0.85);
+  --arrow-color: rgba(255, 255, 255, 0.25);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--bg-primary);
+  --color-foreground: var(--text-primary);
+  --font-sans: var(--font-space-grotesk);
+  --font-mono: var(--font-jetbrains-mono);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-space-grotesk), sans-serif;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* subtle terminal grid */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(circle at 20% 10%, rgba(16, 185, 129, 0.10), transparent 45%),
-    radial-gradient(circle at 80% 30%, rgba(99, 102, 241, 0.10), transparent 50%),
-    linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+    radial-gradient(circle at 20% 10%, var(--glow), transparent 45%),
+    radial-gradient(circle at 80% 30%, rgba(99, 102, 241, 0.06), transparent 50%),
+    linear-gradient(to right, var(--grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
   background-size: auto, auto, 40px 40px, 40px 40px;
   background-position: 0 0, 0 0, center, center;
-  opacity: 0.35;
+  opacity: 0.5;
   transition: background 0.3s ease;
-}
-
-.dark body::before {
-  background:
-    radial-gradient(circle at 20% 10%, rgba(16, 185, 129, 0.10), transparent 45%),
-    radial-gradient(circle at 80% 30%, rgba(99, 102, 241, 0.10), transparent 50%),
-    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
-  background-size: auto, auto, 40px 40px, 40px 40px;
-  background-position: 0 0, 0 0, center, center;
 }

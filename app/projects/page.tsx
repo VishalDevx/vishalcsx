@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { ArrowUpRight, Github, ExternalLink, FolderOpen } from "lucide-react";
 import { useData } from "@/lib/use-data";
 
@@ -13,8 +13,6 @@ export default function ProjectsPage() {
   const { data: profile } = useData<any>("profile");
   const { data: site } = useData<any>("site");
   const [expandedSlug, setExpandedSlug] = useState<string | null>(null);
-
-  const whatsappUrl = site?.whatsappNumber ? `https://wa.me/${site.whatsappNumber.replace(/[^0-9]/g, "")}` : profile?.socialLinks?.find((s: any) => s.platform === "whatsapp")?.url || "";
   const [activeFilter, setActiveFilter] = useState("All");
 
   const filters = site?.projectCategories || ["All", "Full-Stack", "Backend", "Frontend"];
@@ -180,7 +178,7 @@ export default function ProjectsPage() {
               </h3>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap md:justify-end">
-              <a href={whatsappUrl || `mailto:${profile?.email || "vishalcsx@gmail.com"}`} target={whatsappUrl ? "_blank" : undefined} className="flex items-center justify-center gap-2 rounded-md px-5 py-3 text-[11px] font-medium uppercase tracking-[0.1em] transition-colors hover:opacity-90" style={{ backgroundColor: "var(--btn-bg)", color: "var(--btn-text)", ...mono }}>{whatsappUrl ? "Hire via WhatsApp" : "Get in touch"} <ArrowUpRight size={12} /></a>
+              <a href={`mailto:${profile?.email || "vishalcsx@gmail.com"}`} className="flex items-center justify-center gap-2 rounded-md px-5 py-3 text-[11px] font-medium uppercase tracking-[0.1em] transition-colors hover:opacity-90" style={{ backgroundColor: "var(--btn-bg)", color: "var(--btn-text)", ...mono }}>Get in touch <ArrowUpRight size={12} /></a>
               <Link href={profile?.socialLinks?.find((s: any) => s.platform === "github")?.url || "https://github.com/VishalDevx"} target="_blank" className="flex items-center justify-center gap-2 rounded-md border px-5 py-3 text-[11px] uppercase tracking-[0.1em] transition-all hover:text-[var(--text-primary)]" style={{ borderColor: "var(--border-color)", color: "var(--text-secondary)", ...mono }}><Github size={12} /> GitHub</Link>
             </div>
           </div>

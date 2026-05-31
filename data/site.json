@@ -10,6 +10,5 @@
   "blogCategories": ["All", "Backend", "Full-Stack", "Frontend", "Web3"],
   "projectCategories": ["All", "Full-Stack", "Backend", "Frontend"],
   "skillCategories": ["All", "Full-Stack", "Backend", "Frontend", "Database", "Infra", "Web3"],
-  "activityFilters": ["All", "Building", "Learning", "Designing", "Studying", "Open Source", "Exploring"],
-  "whatsappNumber": ""
+  "activityFilters": ["All", "Building", "Learning", "Designing", "Studying", "Open Source", "Exploring"]
 }

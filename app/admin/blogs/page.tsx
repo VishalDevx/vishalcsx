@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Plus, Edit3, Trash2, Search } from "lucide-react";
+import { Plus, Edit3, Trash2, Search, ExternalLink } from "lucide-react";
 
 export default function AdminBlogs() {
   const [blogs, setBlogs] = useState<any[]>([]);

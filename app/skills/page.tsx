@@ -2,11 +2,16 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { ArrowUpRight, Github, ShieldCheck, LayoutPanelTop, Server, Database, Braces, Boxes, Cpu } from "lucide-react";
+import { ArrowUpRight, Github, ShieldCheck } from "lucide-react";
 import { useData } from "@/lib/use-data";
 
 const iconMap: Record<string, React.ComponentType<{ size?: number }>> = {
-  LayoutPanelTop, Server, Database, Braces, Boxes, Cpu,
+  LayoutPanelTop: require("lucide-react").LayoutPanelTop,
+  Server: require("lucide-react").Server,
+  Database: require("lucide-react").Database,
+  Braces: require("lucide-react").Braces,
+  Boxes: require("lucide-react").Boxes,
+  Cpu: require("lucide-react").Cpu,
 };
 
 export default function SkillsPage() {
@@ -14,8 +19,6 @@ export default function SkillsPage() {
   const { data: profile } = useData<any>("profile");
   const { data: site } = useData<any>("site");
   const [expandedSlug, setExpandedSlug] = useState<string | null>("backend-systems");
-
-  const whatsappUrl = site?.whatsappNumber ? `https://wa.me/${site.whatsappNumber.replace(/[^0-9]/g, "")}` : profile?.socialLinks?.find((s: any) => s.platform === "whatsapp")?.url || "";
   const [activeFilter, setActiveFilter] = useState("All");
 
   const filters = site?.skillCategories || ["All", "Full-Stack", "Backend", "Frontend", "Database", "Infra", "Web3"];
@@ -196,7 +199,7 @@ export default function SkillsPage() {
               <h3 className="text-[24px] font-bold leading-tight tracking-[-0.02em] text-[var(--text-primary)] sm:text-[28px]" style={{ fontFamily: "'Syne', sans-serif" }}>Need an engineer who can<br /><span className="font-normal text-[var(--text-secondary)]">think in systems and still ship product?</span></h3>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap md:justify-end">
-              <a href={whatsappUrl || `mailto:${profile?.email || "vishalcsx@gmail.com"}`} target={whatsappUrl ? "_blank" : undefined} className="inline-flex items-center justify-center gap-2 rounded-md bg-[var(--btn-bg)] px-5 py-3 text-[11px] font-medium uppercase tracking-[0.1em] text-[var(--btn-text)] transition-colors hover:bg-[var(--btn-hover)]" style={{ fontFamily: "'DM Mono', monospace" }}>{whatsappUrl ? "Hire via WhatsApp" : "Get in touch"} <ArrowUpRight size={12} /></a>
+              <a href={`mailto:${profile?.email || "vishalcsx@gmail.com"}`} className="inline-flex items-center justify-center gap-2 rounded-md bg-[var(--btn-bg)] px-5 py-3 text-[11px] font-medium uppercase tracking-[0.1em] text-[var(--btn-text)] transition-colors hover:bg-[var(--btn-hover)]" style={{ fontFamily: "'DM Mono', monospace" }}>Get in touch <ArrowUpRight size={12} /></a>
               <Link href={profile?.socialLinks?.find((s: any) => s.platform === "github")?.url || "https://github.com/VishalDevx"} target="_blank" className="inline-flex items-center justify-center gap-2 rounded-md border border-[var(--border-color)] px-5 py-3 text-[11px] uppercase tracking-[0.1em] text-[var(--text-secondary)] transition-all hover:border-[var(--border-color)] hover:bg-[var(--card-hover)] hover:text-[var(--text-primary)]" style={{ fontFamily: "'DM Mono', monospace" }}><Github size={12} /> GitHub</Link>
             </div>
           </div>

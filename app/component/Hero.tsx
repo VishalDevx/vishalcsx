@@ -16,15 +16,6 @@ const heading = { fontFamily: "'Space Grotesk', sans-serif" };
 export function Hero() {
   const { data: profile } = useData<any>("profile");
   const { data: blogs } = useData<any[]>("blogs");
-  const { data: site } = useData<any>("site");
-
-  const whatsappUrl = (() => {
-    const fromSite = site?.whatsappNumber;
-    const fromProfile = profile?.socialLinks?.find((s: any) => s.platform === "whatsapp")?.url;
-    if (fromProfile) return fromProfile;
-    if (fromSite) return `https://wa.me/${fromSite.replace(/[^0-9]/g, "")}`;
-    return "";
-  })();
   const [roleIndex, setRoleIndex] = useState(0);
   const [visible, setVisible] = useState(true);
 
@@ -137,9 +128,6 @@ export function Hero() {
                 <Link href="/projects" className="inline-flex min-h-[46px] items-center justify-center gap-2 rounded-md px-5 py-3 text-[11px] font-medium uppercase tracking-[0.1em] transition-colors hover:opacity-90 sm:px-6" style={{ backgroundColor: "var(--btn-bg)", color: "var(--btn-text)", ...mono }}>
                   View Work <ArrowUpRight size={13} />
                 </Link>
-                <a href={whatsappUrl || `mailto:${profile?.email}`} target={whatsappUrl ? "_blank" : undefined} className="inline-flex min-h-[46px] items-center justify-center gap-2 rounded-md border px-5 py-3 text-[11px] uppercase tracking-[0.1em] transition-all hover:text-[var(--text-primary)] sm:px-6" style={{ borderColor: "var(--border-color)", color: "var(--text-secondary)", backgroundColor: "transparent", ...mono }}>
-                  {whatsappUrl ? "Hire Me" : "Contact"} <ArrowUpRight size={12} />
-                </a>
                 <a href={profile.resumeUrl || "/cv/Vishal-Resume.pdf"} download={profile.resumeFilename || "Vishal-Singh-Resume.pdf"} className="inline-flex min-h-[46px] items-center justify-center gap-2 rounded-md border px-5 py-3 text-[11px] uppercase tracking-[0.1em] transition-all hover:text-[var(--text-primary)] sm:px-6" style={{ borderColor: "var(--border-color)", color: "var(--text-secondary)", backgroundColor: "transparent", ...mono }}>
                   <Download size={12} /> Resume
                 </a>

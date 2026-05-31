@@ -4,18 +4,13 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import {
-  LayoutDashboard, FileText, FolderKanban, Settings, LogOut, Menu, X, ExternalLink, Braces,
-  Activity, User, Cpu,
+  LayoutDashboard, FileText, FolderKanban, Settings, LogOut, Menu, X, ExternalLink,
 } from "lucide-react";
 
 const SIDEBAR = [
   { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { label: "Blogs", href: "/admin/blogs", icon: FileText },
   { label: "Projects", href: "/admin/projects", icon: FolderKanban },
-  { label: "Skills", href: "/admin/skills", icon: Braces },
-  { label: "Activity", href: "/admin/activity", icon: Activity },
-  { label: "About", href: "/admin/about", icon: User },
-  { label: "System", href: "/admin/system", icon: Cpu },
   { label: "Settings", href: "/admin/settings", icon: Settings },
 ];
 

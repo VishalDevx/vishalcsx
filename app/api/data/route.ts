@@ -10,7 +10,10 @@ export async function GET(request: Request) {
   }
 
   try {
-    const data = readDataFile(`${file}.json`);
+    const data: any = readDataFile(`${file}.json`);
+    if (file === "site" && process.env.WHATSAPP_NUMBER) {
+      data.whatsappNumber = process.env.WHATSAPP_NUMBER;
+    }
     return NextResponse.json(data);
   } catch {
     return NextResponse.json({ error: "File not found" }, { status: 404 });

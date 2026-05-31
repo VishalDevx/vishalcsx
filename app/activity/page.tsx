@@ -20,10 +20,12 @@ function getActivityIcon(type: string) {
 export default function ActivityPage() {
   const { data: activity, loading } = useData<any>("activity");
   const { data: profile } = useData<any>("profile");
+  const { data: site } = useData<any>("site");
+  const whatsappUrl = site?.whatsappNumber ? `https://wa.me/${site.whatsappNumber.replace(/[^0-9]/g, "")}` : profile?.socialLinks?.find((s: any) => s.platform === "whatsapp")?.url || "";
   const [expandedSlug, setExpandedSlug] = useState<string | null>("school-management-system-work");
   const [activeFilter, setActiveFilter] = useState("All");
 
-  const feed = activity?.feed || [];
+  const feed = useMemo(() => activity?.feed || [], [activity?.feed]);
   const snapshots = activity?.snapshots || [];
   const timeline = activity?.timeline || [];
   const filters = activity?.filters || ["All", "Building", "Learning", "Designing", "Studying", "Open Source", "Exploring"];
@@ -196,7 +198,7 @@ export default function ActivityPage() {
               <h3 className="text-[22px] font-bold leading-tight tracking-[-0.02em] text-[var(--text-primary)] sm:text-[26px] lg:text-[28px]" style={{ fontFamily: "'Syne', sans-serif" }}>Want to follow the work<br /><span className="font-normal text-[var(--text-secondary)]">or build something serious together?</span></h3>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap md:justify-end">
-              <a href={`mailto:${profile?.email || "vishalcsx@gmail.com"}`} className="flex items-center justify-center gap-2 rounded-md bg-[var(--btn-bg)] px-5 py-3 text-[11px] font-medium uppercase tracking-[0.1em] text-[var(--btn-text)] transition-colors hover:bg-[var(--btn-hover)]" style={{ fontFamily: "'DM Mono', monospace" }}>Contact Me <ArrowUpRight size={12} /></a>
+              <a href={whatsappUrl || `mailto:${profile?.email || "vishalcsx@gmail.com"}`} target={whatsappUrl ? "_blank" : undefined} className="flex items-center justify-center gap-2 rounded-md bg-[var(--btn-bg)] px-5 py-3 text-[11px] font-medium uppercase tracking-[0.1em] text-[var(--btn-text)] transition-colors hover:bg-[var(--btn-hover)]" style={{ fontFamily: "'DM Mono', monospace" }}>{whatsappUrl ? "Hire via WhatsApp" : "Contact Me"} <ArrowUpRight size={12} /></a>
               <Link href={profile?.socialLinks?.find((s: any) => s.platform === "github")?.url || "https://github.com/VishalDevx"} target="_blank" className="flex items-center justify-center gap-2 rounded-md border border-[var(--border-color)] px-5 py-3 text-[11px] uppercase tracking-[0.1em] text-[var(--text-secondary)] transition-all hover:border-[var(--border-color)] hover:bg-[var(--card-hover)] hover:text-[var(--text-primary)]" style={{ fontFamily: "'DM Mono', monospace" }}><Github size={12} /> GitHub</Link>
             </div>
           </div>

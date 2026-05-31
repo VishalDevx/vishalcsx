@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { readDataFile, writeDataFile, slugify, generateId } from "@/lib/data";
+import { readDataFile, writeDataFile, slugify } from "@/lib/data";
 
 export async function GET() {
   const skills = readDataFile<unknown[]>("skills.json");

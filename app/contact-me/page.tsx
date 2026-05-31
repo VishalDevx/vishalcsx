@@ -2,17 +2,25 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { ArrowUpRight, Github, Mail, Linkedin } from "lucide-react";
+import { ArrowUpRight, Github, Mail, Linkedin, MessageCircle } from "lucide-react";
 import { useData } from "@/lib/use-data";
 
 export default function ContactPage() {
   const { data: profile } = useData<any>("profile");
+  const { data: site } = useData<any>("site");
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [sent, setSent] = useState(false);
 
+  const whatsappNumber = site?.whatsappNumber || profile?.socialLinks?.find((s: any) => s.platform === "whatsapp")?.url || "";
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    window.open(`mailto:${profile?.email || "vishalcsx@gmail.com"}?subject=Message from ${form.name}&body=${encodeURIComponent(`From: ${form.name} (${form.email})\n\n${form.message}`)}`);
+    if (whatsappNumber) {
+      const text = `Name: ${form.name}%0AEmail: ${form.email}%0AMessage: ${form.message}`;
+      window.open(whatsappNumber.startsWith("http") ? `${whatsappNumber}?text=${text}` : `https://wa.me/${whatsappNumber.replace(/[^0-9]/g, "")}?text=${text}`, "_blank");
+    } else {
+      window.open(`mailto:${profile?.email || "vishalcsx@gmail.com"}?subject=Message from ${form.name}&body=${encodeURIComponent(`From: ${form.name} (${form.email})\n\n${form.message}`)}`);
+    }
     setSent(true);
     setForm({ name: "", email: "", message: "" });
     setTimeout(() => setSent(false), 3000);
@@ -80,6 +88,12 @@ export default function ContactPage() {
                     <div className="flex min-w-0 items-center gap-3 text-sm text-[var(--text-secondary)]"><Mail size={16} className="shrink-0" /><span className="truncate">{profile.email}</span></div>
                     <ArrowUpRight size={14} className="shrink-0 text-[var(--text-secondary)]" />
                   </a>
+                  {whatsappNumber && (
+                    <a href={whatsappNumber.startsWith("http") ? whatsappNumber : `https://wa.me/${whatsappNumber.replace(/[^0-9]/g, "")}`} target="_blank" className="flex items-center justify-between gap-3 rounded-md border border-[var(--border-color)] px-4 py-3 transition-all hover:border-[var(--border-color)] hover:bg-[var(--card-hover)]">
+                      <div className="flex min-w-0 items-center gap-3 text-sm text-[var(--text-secondary)]"><MessageCircle size={16} className="shrink-0 text-green-500" /><span className="truncate">WhatsApp</span></div>
+                      <ArrowUpRight size={14} className="shrink-0 text-[var(--text-secondary)]" />
+                    </a>
+                  )}
                   {profile.socialLinks?.filter((s: any) => s.platform !== "email").map((link: any) => (
                     <Link key={link.platform} href={link.url} target="_blank" className="flex items-center justify-between gap-3 rounded-md border border-[var(--border-color)] px-4 py-3 transition-all hover:border-[var(--border-color)] hover:bg-[var(--card-hover)]">
                       <div className="flex min-w-0 items-center gap-3 text-sm text-[var(--text-secondary)]">

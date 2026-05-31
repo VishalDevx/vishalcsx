@@ -93,9 +93,10 @@ export default function NewProject() {
           </div>
           <div>
             <label className="mb-1.5 block text-xs font-medium" style={{ color: "var(--text-secondary)" }}>GitHub URL</label>
-            <input value={form.githubUrl} onChange={(e) => setForm({ ...form, githubUrl: e.target.value })}
-              className="w-full rounded-lg border px-3 py-2.5 text-sm outline-none focus:border-[var(--accent)]/40"
-              style={{ borderColor: "var(--border-color)", background: "var(--bg-secondary)", color: "var(--text-primary)" }} />
+            <div className="flex gap-2">
+              <input value={form.githubUrl} onChange={(e) => setForm({ ...form, githubUrl: e.target.value })} className="flex-1 rounded-lg border px-3 py-2.5 text-sm outline-none focus:border-[var(--accent)]/40" style={{ borderColor: "var(--border-color)", background: "var(--bg-secondary)", color: "var(--text-primary)" }} />
+              <button type="button" onClick={async () => { if (!form.githubUrl) return; const res = await fetch(`/api/github?url=${encodeURIComponent(form.githubUrl)}`); if (res.ok) { const data = await res.json(); setForm((f) => ({ ...f, title: data.title || f.title, description: data.description || f.description, stack: data.stack?.join(", ") || f.stack })); } }} className="rounded-lg px-3 py-2.5 text-xs font-medium whitespace-nowrap transition-opacity hover:opacity-90" style={{ background: "var(--accent-bg)", color: "var(--accent-text)" }}>Fetch</button>
+            </div>
           </div>
           <div>
             <label className="mb-1.5 block text-xs font-medium" style={{ color: "var(--text-secondary)" }}>Live URL</label>

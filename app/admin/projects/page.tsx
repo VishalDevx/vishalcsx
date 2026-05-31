@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Plus, Edit3, Trash2, ExternalLink, Search, Github } from "lucide-react";
+import { Plus, Edit3, Trash2, Search, Github } from "lucide-react";
 
 export default function AdminProjects() {
   const [projects, setProjects] = useState<any[]>([]);

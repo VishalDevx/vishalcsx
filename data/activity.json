@@ -1,0 +1,121 @@
+{
+  "feed": [
+    {
+      "index": "01",
+      "slug": "school-management-system-work",
+      "category": "Building",
+      "label": "Product System",
+      "title": "Expanding the School Management System",
+      "description": "Continuing work on the multi-tenant school platform with stronger module structure, workflow clarity, and production-focused backend decisions.",
+      "tags": ["Next.js", "TypeScript", "Node.js", "PostgreSQL", "Prisma", "Redis"],
+      "points": [
+        "Refining admin, staff, and student workflows",
+        "Improving modular API structure for long-term maintainability",
+        "Thinking around scale, auth, and production-readiness instead of demo code"
+      ],
+      "type": "building"
+    },
+    {
+      "index": "02",
+      "slug": "dao-framework-research",
+      "category": "Learning",
+      "label": "Protocol Engineering",
+      "title": "Pushing Deeper into DAO Framework Architecture",
+      "description": "Working through Rust, Solana, plugin-based governance design, and protocol-level system thinking beyond standard web app development.",
+      "tags": ["Rust", "Solana", "Anchor", "DAO", "Web3", "Governance"],
+      "points": [
+        "Exploring plugin-based architecture for extensibility",
+        "Studying snapshot voting and dynamic quorum logic",
+        "Using Rust to sharpen lower-level engineering discipline"
+      ],
+      "type": "learning"
+    },
+    {
+      "index": "03",
+      "slug": "portfolio-system-iteration",
+      "category": "Designing",
+      "label": "Brand + Frontend",
+      "title": "Turning the Portfolio into a Structured Product",
+      "description": "Building the portfolio like an actual system — not a random personal site — with reusable sections, better positioning, and stronger frontend structure.",
+      "tags": ["Next.js", "Tailwind CSS", "Framer Motion", "UI Systems"],
+      "points": [
+        "Creating consistent page structure across sections",
+        "Improving frontend quality without adding fluff",
+        "Positioning work around engineering depth instead of generic self-promotion"
+      ],
+      "type": "designing"
+    },
+    {
+      "index": "04",
+      "slug": "system-design-learning",
+      "category": "Studying",
+      "label": "Engineering Thinking",
+      "title": "Studying Production-Grade System Design",
+      "description": "Going deeper into scalability, caching, architecture trade-offs, API design, horizontal scaling, and failure-aware backend engineering.",
+      "tags": ["System Design", "Redis", "Scaling", "Caching", "Architecture"],
+      "points": [
+        "Learning when to use and when not to use caching",
+        "Thinking through scaling models instead of copying buzzwords",
+        "Focusing on real trade-offs in backend architecture"
+      ],
+      "type": "studying"
+    },
+    {
+      "index": "05",
+      "slug": "opensource-contribution",
+      "category": "Open Source",
+      "label": "Public Work",
+      "title": "Contributing Through Public Code and Engineering Learning",
+      "description": "Using GitHub and open source as proof of actual work, experimentation, and exposure to better engineering practices.",
+      "tags": ["GitHub", "Open Source", "Collaboration", "Code Reading"],
+      "points": [
+        "Learning from real repositories instead of isolated tutorial projects",
+        "Improving code quality by reading stronger engineering patterns",
+        "Treating open source as a real training ground"
+      ],
+      "type": "opensource"
+    },
+    {
+      "index": "06",
+      "slug": "ai-ml-exploration",
+      "category": "Exploring",
+      "label": "Next Frontier",
+      "title": "Learning More About AI, ML, and Intelligent Systems",
+      "description": "Exploring AI and ML concepts to understand how modern software systems are shifting beyond traditional CRUD applications.",
+      "tags": ["AI", "ML", "Search", "Embeddings", "Intelligent Systems"],
+      "points": [
+        "Trying to understand AI systems from an engineering angle",
+        "Connecting backend/system thinking with modern AI product directions",
+        "Learning the fundamentals instead of pretending to be an expert already"
+      ],
+      "type": "exploring"
+    }
+  ],
+  "snapshots": [
+    {
+      "name": "Building Systems",
+      "type": "Current Focus",
+      "description": "Backend-heavy products, multi-tenant architecture, and maintainable full-stack systems.",
+      "tech": ["APIs", "RBAC", "Modules"]
+    },
+    {
+      "name": "Learning in Public",
+      "type": "Ongoing",
+      "description": "Rust, Solana, system design, AI concepts, and stronger production engineering habits.",
+      "tech": ["Rust", "Solana", "System Design"]
+    },
+    {
+      "name": "Open Source Direction",
+      "type": "Proof of Work",
+      "description": "Using GitHub work and repository exploration as a visible trail of engineering growth.",
+      "tech": ["GitHub", "Code Reading", "OSS"]
+    }
+  ],
+  "timeline": [
+    { "period": "Now", "title": "Building deeper engineering foundations", "detail": "Focusing on system design, backend architecture, full-stack product quality, and more serious project depth." },
+    { "period": "Current", "title": "B.Tech in Computer Science", "detail": "Continuing formal education while building practical projects and sharpening engineering skills outside the classroom." },
+    { "period": "Ongoing", "title": "Open source and public learning", "detail": "Using GitHub, public repos, and engineering communities to improve through real code exposure." },
+    { "period": "Next", "title": "Protocol + AI systems exploration", "detail": "Pushing toward Rust, Solana, governance systems, and stronger understanding of AI/ML system thinking." }
+  ],
+  "filters": ["All", "Building", "Learning", "Designing", "Studying", "Open Source", "Exploring"]
+}

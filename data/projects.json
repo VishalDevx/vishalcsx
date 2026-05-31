@@ -1,0 +1,56 @@
+[
+  {
+    "index": "01",
+    "slug": "taskmesh",
+    "category": "Full-Stack",
+    "label": "Realtime Collaboration",
+    "title": "TaskMesh",
+    "description": "Realtime collaborative task manager with workspace management, JWT auth, and live updates — built for teams that need synchronized task tracking.",
+    "stack": ["Next.js", "TypeScript", "React", "PostgreSQL", "Prisma", "Redis"],
+    "points": [
+      "Realtime collaboration with WebSocket-based live updates",
+      "JWT authentication with secure workspace isolation",
+      "Scalable architecture with Redis caching and PostgreSQL"
+    ],
+    "githubUrl": "https://github.com/VishalDevx/TaskMesh",
+    "liveUrl": "https://task-mesh-x2wh.vercel.app/workspaces",
+    "caseStudyLabel": "Live Demo",
+    "featured": true
+  },
+  {
+    "index": "02",
+    "slug": "flowforge",
+    "category": "Full-Stack",
+    "label": "Workflow Automation",
+    "title": "FlowForge",
+    "description": "Workflow automation platform for building, deploying, and managing complex pipelines — designed for developers who need flexible orchestration.",
+    "stack": ["TypeScript", "JavaScript", "Node.js", "REST API"],
+    "points": [
+      "Visual workflow builder with drag-and-drop pipeline creation",
+      "Extensible plugin architecture for custom integrations",
+      "Production-ready with error handling and retry logic"
+    ],
+    "githubUrl": "https://github.com/VishalDevx/FlowForge",
+    "liveUrl": "",
+    "caseStudyLabel": "Case Study",
+    "featured": true
+  },
+  {
+    "index": "03",
+    "slug": "rgd-school",
+    "category": "Full-Stack",
+    "label": "Education Platform",
+    "title": "RGD School Management",
+    "description": "Full-featured school management system with multi-role access for admin, staff, students, and parents — handling academics, fees, and operations.",
+    "stack": ["Next.js", "TypeScript", "Node.js", "PostgreSQL", "Prisma"],
+    "points": [
+      "Multi-role dashboards for admin, teachers, students, and parents",
+      "Complete academic workflow from admissions to results",
+      "Fee management, attendance tracking, and report generation"
+    ],
+    "githubUrl": "https://github.com/VishalDevx/rgd-academy",
+    "liveUrl": "https://www.rgd-modern-academy.online/",
+    "caseStudyLabel": "Live Site",
+    "featured": true
+  }
+]

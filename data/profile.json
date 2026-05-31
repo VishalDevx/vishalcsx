@@ -1,0 +1,50 @@
+{
+  "name": "Vishal Singh",
+  "title": "VishalCSx",
+  "domain": "vishal.dev",
+  "location": "Muzaffarnagar, IN",
+  "email": "vishalcsx@gmail.com",
+  "resumeUrl": "/cv/Vishal-Resume.pdf",
+  "resumeFilename": "Vishal-Singh-Resume.pdf",
+  "bio": "Full-stack engineer focused on distributed systems, backend architecture, and production-grade platforms. I ship high-performance, multi-tenant applications that scale under real-world load.",
+  "heroDescription": "I design & build scalable systems and tackle complex backend challenges",
+  "available": true,
+  "availabilityText": "Open to full-time & freelance",
+  "roles": ["Full-Stack Engineer", "Backend Architect", "Systems Builder", "Open Source Dev"],
+  "stats": [
+    { "label": "Projects", "value": "10+" },
+    { "label": "Years Exp.", "value": "2+" },
+    { "label": "Open Source", "value": "Active" }
+  ],
+  "coreStack": ["Next.js", "TypeScript", "Node.js", "PostgreSQL", "Prisma", "Redis", "React", "Docker"],
+  "socialLinks": [
+    { "platform": "github", "label": "GitHub", "url": "https://github.com/VishalDevx", "icon": "BsGithub" },
+    { "platform": "linkedin", "label": "LinkedIn", "url": "https://www.linkedin.com/in/vishal-singh-779054260/", "icon": "BsLinkedin" },
+    { "platform": "twitter", "label": "X", "url": "https://www.x.com/VishalCsx", "icon": "BsTwitter" },
+    { "platform": "email", "label": "Email", "url": "mailto:vishalcsx@gmail.com", "icon": "SiGmail" }
+  ],
+  "navLinks": [
+    { "label": "Work", "href": "/projects" },
+    { "label": "System", "href": "/system" },
+    { "label": "Blog", "href": "/blogs" },
+    { "label": "Skills", "href": "/skills" },
+    { "label": "About", "href": "/about" },
+    { "label": "Activity", "href": "/activity" },
+    { "label": "Contact", "href": "/contact-me" }
+  ],
+  "seo": {
+    "title": "VishalCSx",
+    "description": "Vishal Singh — Senior Backend / Full-Stack Engineer & System Architect.",
+    "googleVerification": "google4aba8522528b17ba.html"
+  },
+  "heroStats": [
+    { "num": "3", "label": "Featured" },
+    { "num": "6+", "label": "Technologies" },
+    { "num": "∞", "label": "Ship mode" }
+  ],
+  "blogStats": [
+    { "num": "0", "label": "Articles" },
+    { "num": "4", "label": "Topics" },
+    { "num": "0", "label": "Fluff" }
+  ]
+}

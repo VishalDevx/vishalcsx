@@ -1,0 +1,98 @@
+[
+  {
+    "index": "01",
+    "slug": "full-stack-engineering",
+    "category": "Full-Stack",
+    "label": "Shipping Systems",
+    "title": "Full-Stack Engineering",
+    "description": "I build end-to-end products with strong backend structure, clean frontend systems, and production-focused engineering decisions.",
+    "stack": ["Next.js", "React", "TypeScript", "Node.js", "Express", "PostgreSQL"],
+    "points": [
+      "Building full-stack applications with clear module boundaries",
+      "Combining UI architecture with backend workflow design",
+      "Writing scalable APIs and frontend systems that stay maintainable"
+    ],
+    "tools": ["Next.js", "React", "TypeScript", "Node.js", "Express", "REST APIs", "Tailwind CSS", "Framer Motion"],
+    "icon": "LayoutPanelTop"
+  },
+  {
+    "index": "02",
+    "slug": "backend-systems",
+    "category": "Backend",
+    "label": "Core Strength",
+    "title": "Backend & System Design",
+    "description": "Backend-heavy engineering around modular APIs, auth, validation, performance, and scalable architecture for real-world usage.",
+    "stack": ["Node.js", "Express", "PostgreSQL", "Redis", "Prisma", "Docker"],
+    "points": [
+      "Designing role-based and multi-tenant backend systems",
+      "Validation-first API design using schema-driven contracts",
+      "Thinking in services, scaling, caching, monitoring, and maintainability"
+    ],
+    "tools": ["Node.js", "Express", "PostgreSQL", "Redis", "Prisma", "JWT", "Zod", "Docker", "System Design", "Caching", "RBAC"],
+    "icon": "Server"
+  },
+  {
+    "index": "03",
+    "slug": "database-data-layer",
+    "category": "Database",
+    "label": "Data Architecture",
+    "title": "Database & Data Layer",
+    "description": "Strong focus on relational modeling, schema design, query structure, and storage decisions that support long-term product growth.",
+    "stack": ["PostgreSQL", "MongoDB", "Prisma", "Redis"],
+    "points": [
+      "Designing normalized relational models for product workflows",
+      "Using Prisma and SQL-backed thinking for clean data access",
+      "Choosing cache and persistence strategies based on workload patterns"
+    ],
+    "tools": ["PostgreSQL", "MongoDB", "Prisma", "Redis", "Schema Design", "Relations", "Indexing", "Query Optimization"],
+    "icon": "Database"
+  },
+  {
+    "index": "04",
+    "slug": "frontend-ui-engineering",
+    "category": "Frontend",
+    "label": "Interface Systems",
+    "title": "Frontend & UI Engineering",
+    "description": "I don't just build pages — I build reusable UI systems, consistent sections, and frontend structure that can scale with the product.",
+    "stack": ["React", "Next.js", "Tailwind CSS", "Framer Motion"],
+    "points": [
+      "Building reusable section-based UI architecture",
+      "Creating developer-focused portfolio and product interfaces",
+      "Balancing visual polish with code cleanliness and maintainability"
+    ],
+    "tools": ["React", "Next.js", "Tailwind CSS", "Framer Motion", "Responsive Design", "Component Design", "UI Systems"],
+    "icon": "Braces"
+  },
+  {
+    "index": "05",
+    "slug": "devops-infra",
+    "category": "Infra",
+    "label": "Production Thinking",
+    "title": "DevOps & Deployment Thinking",
+    "description": "Still growing here, but already working with deployment, containers, CI/CD thinking, infra basics, and production-minded workflows.",
+    "stack": ["Docker", "CI/CD", "Monitoring", "Deployment"],
+    "points": [
+      "Using Docker for local consistency and deployment readiness",
+      "Thinking about observability, scaling, and release workflows",
+      "Building with production constraints instead of demo-only assumptions"
+    ],
+    "tools": ["Docker", "CI/CD", "GitHub Actions", "Linux", "Deployment", "Monitoring", "Horizontal Scaling"],
+    "icon": "Boxes"
+  },
+  {
+    "index": "06",
+    "slug": "web3-rust-learning",
+    "category": "Web3",
+    "label": "Advanced Learning",
+    "title": "Rust, Solana & Protocol Engineering",
+    "description": "I'm actively pushing into lower-level and protocol-oriented engineering through Rust, Solana, DAO frameworks, and governance systems.",
+    "stack": ["Rust", "Solana", "Anchor", "TypeScript", "Web3"],
+    "points": [
+      "Working on plugin-based DAO framework architecture",
+      "Learning protocol-level design with governance and voting logic",
+      "Using Rust to strengthen systems thinking beyond typical web stacks"
+    ],
+    "tools": ["Rust", "Solana", "Anchor", "DAO Design", "Snapshot Voting", "Dynamic Quorum", "Web3.js"],
+    "icon": "Cpu"
+  }
+]

@@ -1,85 +1,48 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { ArrowUpRight, Github, ExternalLink, FolderOpen } from "lucide-react";
+import { useData } from "@/lib/use-data";
 
-const projects = [
-  {
-    index: "01",
-    slug: "taskmesh",
-    category: "Full-Stack",
-    label: "Realtime Collaboration",
-    title: "TaskMesh",
-    description: "Realtime collaborative task manager with workspace management, JWT auth, and live updates — built for teams that need synchronized task tracking.",
-    stack: ["Next.js", "TypeScript", "React", "PostgreSQL", "Prisma", "Redis"],
-    points: ["Realtime collaboration with WebSocket-based live updates", "JWT authentication with secure workspace isolation", "Scalable architecture with Redis caching and PostgreSQL"],
-    githubUrl: "https://github.com/VishalDevx/TaskMesh",
-    liveUrl: "https://task-mesh-x2wh.vercel.app/workspaces",
-    caseStudyLabel: "Live Demo",
-  },
-  {
-    index: "02",
-    slug: "flowforge",
-    category: "Full-Stack",
-    label: "Workflow Automation",
-    title: "FlowForge",
-    description: "Workflow automation platform for building, deploying, and managing complex pipelines — designed for developers who need flexible orchestration.",
-    stack: ["TypeScript", "JavaScript", "Node.js", "REST API"],
-    points: ["Visual workflow builder with drag-and-drop pipeline creation", "Extensible plugin architecture for custom integrations", "Production-ready with error handling and retry logic"],
-    githubUrl: "https://github.com/VishalDevx/FlowForge",
-    liveUrl: "",
-    caseStudyLabel: "Case Study",
-  },
-  {
-    index: "03",
-    slug: "rgd-school",
-    category: "Full-Stack",
-    label: "Education Platform",
-    title: "RGD School Management",
-    description: "Full-featured school management system with multi-role access for admin, staff, students, and parents — handling academics, fees, and operations.",
-    stack: ["Next.js", "TypeScript", "Node.js", "PostgreSQL", "Prisma"],
-    points: ["Multi-role dashboards for admin, teachers, students, and parents", "Complete academic workflow from admissions to results", "Fee management, attendance tracking, and report generation"],
-    githubUrl: "https://github.com/VishalDevx/rgd-academy",
-    liveUrl: "https://www.rgd-modern-academy.online/",
-    caseStudyLabel: "Live Site",
-  },
-];
-
-const githubProjects = [
-  { name: "TaskMesh", type: "Pinned", description: "Realtime collaborative task manager with workspaces and live sync.", tech: ["TypeScript", "React", "Redis", "PostgreSQL"], githubUrl: "https://github.com/VishalDevx/TaskMesh" },
-  { name: "FlowForge", type: "Pinned", description: "Workflow automation platform for building and managing pipelines.", tech: ["TypeScript", "JavaScript", "Node.js"], githubUrl: "https://github.com/VishalDevx/FlowForge" },
-  { name: "rgd-academy", type: "Pinned", description: "School management system with multi-role workflows and full-stack architecture.", tech: ["TypeScript", "Next.js", "PostgreSQL"], githubUrl: "https://github.com/VishalDevx/rgd-academy" },
-];
-
-const filters = ["All", "Full-Stack", "Backend", "Frontend"];
 const mono = { fontFamily: "'JetBrains Mono', monospace" };
 const heading = { fontFamily: "'Space Grotesk', sans-serif" };
 
 export default function ProjectsPage() {
+  const { data: projects, loading } = useData<any[]>("projects");
+  const { data: profile } = useData<any>("profile");
+  const { data: site } = useData<any>("site");
   const [expandedSlug, setExpandedSlug] = useState<string | null>(null);
   const [activeFilter, setActiveFilter] = useState("All");
+
+  const filters = site?.projectCategories || ["All", "Full-Stack", "Backend", "Frontend"];
 
   const toggleCard = (slug: string) => setExpandedSlug((prev) => (prev === slug ? null : slug));
 
   const filteredProjects = useMemo(() => {
+    if (!projects) return [];
     if (activeFilter === "All") return projects;
-    return projects.filter((project) => {
+    return projects.filter((project: any) => {
       const normalized = `${project.category} ${project.label} ${project.title}`.toLowerCase();
       if (activeFilter === "Full-Stack") return normalized.includes("full-stack");
       if (activeFilter === "Backend") return normalized.includes("backend") || normalized.includes("api");
       if (activeFilter === "Frontend") return normalized.includes("frontend") || normalized.includes("ui");
       return true;
     });
-  }, [activeFilter]);
+  }, [projects, activeFilter]);
+
+  const githubProjects = projects?.filter((p: any) => p.githubUrl)?.slice(0, 3) || [];
+
+  if (loading) return (
+    <main className="flex min-h-screen items-center justify-center pt-14" style={{ backgroundColor: "var(--bg-primary)" }}>
+      <div className="h-8 w-8 animate-spin rounded-full border-2 border-[var(--accent)] border-t-transparent" />
+    </main>
+  );
 
   return (
     <>
       <style>{`
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(12px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
         .fade-in { animation: fadeIn 0.5s ease both; }
       `}</style>
 
@@ -108,17 +71,17 @@ export default function ProjectsPage() {
             </div>
 
             <div className="grid grid-cols-3 gap-4 sm:gap-6 lg:flex lg:flex-col lg:items-end lg:gap-4 lg:pb-1">
-              {[{ num: "3", label: "Featured" }, { num: "6+", label: "Technologies" }, { num: "∞", label: "Ship mode" }].map(({ num, label }, i) => (
+              {(profile?.heroStats || [{ num: "3", label: "Featured" }, { num: "6+", label: "Technologies" }, { num: "∞", label: "Ship mode" }]).map((item: any, i: number) => (
                 <div key={i} className="flex flex-col rounded-xl border p-4 text-left lg:items-end lg:rounded-none lg:border-0 lg:p-0" style={{ borderColor: "var(--card-border)", backgroundColor: "var(--bg-secondary)" }}>
-                  <span className="text-[28px] font-bold leading-none sm:text-[34px] lg:text-[40px]" style={{ ...heading, color: "var(--text-primary)" }}>{num}</span>
-                  <span className="mt-2 text-[9px] uppercase tracking-[0.15em] sm:text-[10px]" style={{ ...mono, color: "var(--text-muted)" }}>{label}</span>
+                  <span className="text-[28px] font-bold leading-none sm:text-[34px] lg:text-[40px]" style={{ ...heading, color: "var(--text-primary)" }}>{item.num}</span>
+                  <span className="mt-2 text-[9px] uppercase tracking-[0.15em] sm:text-[10px]" style={{ ...mono, color: "var(--text-muted)" }}>{item.label}</span>
                 </div>
               ))}
             </div>
           </header>
 
           <div className="mb-8 flex flex-wrap gap-2 sm:mb-10">
-            {filters.map((f) => (
+            {filters.map((f: string) => (
               <button key={f} onClick={() => setActiveFilter(f)} className="rounded border px-3 py-2 text-[10px] uppercase tracking-[0.12em] transition-all sm:px-4 sm:py-[7px] sm:text-[11px]" style={{ borderColor: activeFilter === f ? "var(--accent)" : "var(--border-color)", backgroundColor: activeFilter === f ? "var(--accent-bg)" : "transparent", color: activeFilter === f ? "var(--accent-text)" : "var(--text-muted)", ...mono }}>
                 {f}
               </button>
@@ -132,7 +95,7 @@ export default function ProjectsPage() {
                 <p className="text-sm" style={{ color: "var(--text-secondary)" }}>Your filter found nothing — try a different category.</p>
               </div>
             ) : (
-              filteredProjects.map((project) => {
+              filteredProjects.map((project: any) => {
                 const isOpen = expandedSlug === project.slug;
                 return (
                   <article key={project.slug} onClick={() => toggleCard(project.slug)} className="group grid cursor-pointer grid-cols-1 transition-colors sm:grid-cols-[60px_1fr] lg:grid-cols-[72px_1fr_180px]" style={{ borderLeft: isOpen ? "2px solid var(--accent)" : "none", backgroundColor: isOpen ? "var(--card-hover)" : "var(--card-bg)" }}>
@@ -147,7 +110,7 @@ export default function ProjectsPage() {
                       <h2 className="mb-3 text-[20px] font-bold leading-tight tracking-[-0.02em] sm:text-[22px]" style={{ ...heading, color: "var(--text-primary)" }}>{project.title}</h2>
                       <p className="mb-4 max-w-[600px] text-sm font-light leading-relaxed" style={{ color: "var(--text-secondary)" }}>{project.description}</p>
                       <div className="flex flex-wrap gap-[6px]">
-                        {project.stack.map((tech) => (
+                        {project.stack?.map((tech: string) => (
                           <span key={tech} className="rounded border px-2 py-[3px] text-[10px] tracking-[0.05em]" style={{ borderColor: "var(--border-color)", backgroundColor: "var(--bg-secondary)", color: "var(--text-secondary)", ...mono }}>{tech}</span>
                         ))}
                       </div>
@@ -155,9 +118,9 @@ export default function ProjectsPage() {
                         <Link href={project.githubUrl} target="_blank" className="inline-flex items-center justify-center gap-[6px] rounded-md border px-4 py-3 text-[10px] uppercase tracking-[0.1em] transition-all hover:text-[var(--text-primary)]" style={{ borderColor: "var(--border-color)", color: "var(--text-secondary)", ...mono }}><Github size={11} /> GitHub</Link>
                         <Link href={`/projects/${project.slug}`} className="inline-flex items-center justify-center gap-[6px] rounded-md border px-4 py-3 text-[10px] uppercase tracking-[0.1em] transition-all hover:text-[var(--text-primary)]" style={{ borderColor: "var(--border-color)", color: "var(--text-secondary)", ...mono }}><ExternalLink size={11} /> {project.caseStudyLabel}</Link>
                       </div>
-                      {isOpen && (
+                      {isOpen && project.points && (
                         <div className="mt-5 grid grid-cols-1 gap-4 border-t pt-5 md:grid-cols-3" style={{ borderColor: "var(--card-border)" }} onClick={(e) => e.stopPropagation()}>
-                          {project.points.map((point) => (
+                          {project.points.map((point: string) => (
                             <div key={point} className="flex gap-3 text-sm font-light leading-relaxed" style={{ color: "var(--text-secondary)" }}>
                               <span className="mt-[9px] h-1 w-1 flex-shrink-0 rounded-full" style={{ backgroundColor: "var(--accent)" }} />
                               <span>{point}</span>
@@ -182,20 +145,20 @@ export default function ProjectsPage() {
           <div className="mb-6 flex items-center gap-4 sm:mb-7">
             <span className="whitespace-nowrap text-[10px] uppercase tracking-[0.2em] sm:text-[11px]" style={{ ...mono, color: "var(--text-muted)" }}>More from GitHub</span>
             <div className="h-px flex-1" style={{ backgroundColor: "var(--divider-line)" }} />
-            <Link href="https://github.com/VishalDevx" target="_blank" className="hidden whitespace-nowrap rounded border px-3 py-[6px] text-[10px] uppercase tracking-[0.1em] transition-all hover:text-[var(--text-primary)] sm:flex sm:items-center sm:gap-2" style={{ borderColor: "var(--border-color)", color: "var(--text-secondary)", ...mono }}>View Profile <ArrowUpRight size={10} /></Link>
+            <Link href={profile?.socialLinks?.find((s: any) => s.platform === "github")?.url || "https://github.com/VishalDevx"} target="_blank" className="hidden whitespace-nowrap rounded border px-3 py-[6px] text-[10px] uppercase tracking-[0.1em] transition-all hover:text-[var(--text-primary)] sm:flex sm:items-center sm:gap-2" style={{ borderColor: "var(--border-color)", color: "var(--text-secondary)", ...mono }}>View Profile <ArrowUpRight size={10} /></Link>
           </div>
 
           <div className="grid grid-cols-1 gap-px overflow-hidden rounded-xl border md:grid-cols-3" style={{ borderColor: "var(--card-border)", backgroundColor: "var(--card-border)" }}>
-            {githubProjects.map((repo) => (
-              <Link key={repo.name} href={repo.githubUrl} target="_blank" className="group block p-5 transition-colors hover:bg-[var(--card-hover)] sm:p-6" style={{ backgroundColor: "var(--card-bg)" }}>
+            {githubProjects.map((repo: any) => (
+              <Link key={repo.slug} href={repo.githubUrl} target="_blank" className="group block p-5 transition-colors hover:bg-[var(--card-hover)] sm:p-6" style={{ backgroundColor: "var(--card-bg)" }}>
                 <div className="mb-4 flex items-start justify-between">
                   <div className="flex h-8 w-8 items-center justify-center rounded-lg border" style={{ borderColor: "var(--border-color)" }}><FolderOpen size={14} style={{ color: "var(--text-muted)" }} /></div>
-                  <span className="text-[9px] uppercase tracking-[0.15em]" style={{ ...mono, color: "var(--text-muted)" }}>{repo.type}</span>
+                  <span className="text-[9px] uppercase tracking-[0.15em]" style={{ ...mono, color: "var(--text-muted)" }}>Pinned</span>
                 </div>
-                <h4 className="mb-2 text-[15px] font-bold tracking-[-0.01em] transition-colors group-hover:text-[var(--accent)]" style={{ ...heading, color: "var(--text-primary)" }}>{repo.name}</h4>
+                <h4 className="mb-2 text-[15px] font-bold tracking-[-0.01em] transition-colors group-hover:text-[var(--accent)]" style={{ ...heading, color: "var(--text-primary)" }}>{repo.title}</h4>
                 <p className="mb-4 text-[13px] font-light leading-relaxed" style={{ color: "var(--text-secondary)" }}>{repo.description}</p>
                 <div className="flex flex-wrap gap-[5px]">
-                  {repo.tech.map((t) => (
+                  {repo.stack?.map((t: string) => (
                     <span key={t} className="rounded-sm border px-[7px] py-[2px] text-[10px]" style={{ borderColor: "var(--border-color)", color: "var(--text-muted)", ...mono }}>{t}</span>
                   ))}
                 </div>
@@ -204,7 +167,7 @@ export default function ProjectsPage() {
           </div>
 
           <div className="mt-4 sm:hidden">
-            <Link href="https://github.com/VishalDevx" target="_blank" className="inline-flex items-center gap-2 rounded border px-3 py-[8px] text-[10px] uppercase tracking-[0.1em] transition-all hover:text-[var(--text-primary)]" style={{ borderColor: "var(--border-color)", color: "var(--text-secondary)", ...mono }}>View Profile <ArrowUpRight size={10} /></Link>
+            <Link href={profile?.socialLinks?.find((s: any) => s.platform === "github")?.url || "https://github.com/VishalDevx"} target="_blank" className="inline-flex items-center gap-2 rounded border px-3 py-[8px] text-[10px] uppercase tracking-[0.1em] transition-all hover:text-[var(--text-primary)]" style={{ borderColor: "var(--border-color)", color: "var(--text-secondary)", ...mono }}>View Profile <ArrowUpRight size={10} /></Link>
           </div>
 
           <div className="mt-16 grid grid-cols-1 gap-6 rounded-2xl border p-5 sm:mt-20 sm:gap-8 sm:p-8 md:grid-cols-[1fr_auto] md:items-center lg:p-10" style={{ borderColor: "var(--card-border)" }}>
@@ -215,8 +178,8 @@ export default function ProjectsPage() {
               </h3>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap md:justify-end">
-              <a href="mailto:vishalcsx@gmail.com" className="flex items-center justify-center gap-2 rounded-md px-5 py-3 text-[11px] font-medium uppercase tracking-[0.1em] transition-colors hover:opacity-90" style={{ backgroundColor: "var(--btn-bg)", color: "var(--btn-text)", ...mono }}>Get in touch <ArrowUpRight size={12} /></a>
-              <Link href="https://github.com/VishalDevx" target="_blank" className="flex items-center justify-center gap-2 rounded-md border px-5 py-3 text-[11px] uppercase tracking-[0.1em] transition-all hover:text-[var(--text-primary)]" style={{ borderColor: "var(--border-color)", color: "var(--text-secondary)", ...mono }}><Github size={12} /> GitHub</Link>
+              <a href={`mailto:${profile?.email || "vishalcsx@gmail.com"}`} className="flex items-center justify-center gap-2 rounded-md px-5 py-3 text-[11px] font-medium uppercase tracking-[0.1em] transition-colors hover:opacity-90" style={{ backgroundColor: "var(--btn-bg)", color: "var(--btn-text)", ...mono }}>Get in touch <ArrowUpRight size={12} /></a>
+              <Link href={profile?.socialLinks?.find((s: any) => s.platform === "github")?.url || "https://github.com/VishalDevx"} target="_blank" className="flex items-center justify-center gap-2 rounded-md border px-5 py-3 text-[11px] uppercase tracking-[0.1em] transition-all hover:text-[var(--text-primary)]" style={{ borderColor: "var(--border-color)", color: "var(--text-secondary)", ...mono }}><Github size={12} /> GitHub</Link>
             </div>
           </div>
         </div>

@@ -2,16 +2,14 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { ArrowUpRight, Github, ShieldCheck } from "lucide-react";
+import {
+  ArrowUpRight, Github, ShieldCheck,
+  LayoutPanelTop, Server, Database, Braces, Boxes, Cpu,
+} from "lucide-react";
 import { useData } from "@/lib/use-data";
 
 const iconMap: Record<string, React.ComponentType<{ size?: number }>> = {
-  LayoutPanelTop: require("lucide-react").LayoutPanelTop,
-  Server: require("lucide-react").Server,
-  Database: require("lucide-react").Database,
-  Braces: require("lucide-react").Braces,
-  Boxes: require("lucide-react").Boxes,
-  Cpu: require("lucide-react").Cpu,
+  LayoutPanelTop, Server, Database, Braces, Boxes, Cpu,
 };
 
 export default function SkillsPage() {

@@ -69,6 +69,7 @@ export interface GitHubStats {
   totalPRs: number
   totalIssues: number
   totalStars: number
+  totalForks: number
   followers: number
   repos: GitHubRepo[]
   pinnedRepos: GitHubRepo[]

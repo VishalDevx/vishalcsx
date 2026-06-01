@@ -1,9 +1,12 @@
 'use client'
 
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
 import { ArrowLeft, Calendar, Clock, Tag } from 'lucide-react'
 import type { BlogPost } from '@/types'
 import { formatDate, calculateReadingTime } from '@/lib/utils'
+
+const AuroraBackground = dynamic(() => import('@/components/shaders/AuroraBackground').then(mod => ({ default: mod.AuroraBackground })), { ssr: false })
 
 interface BlogDetailClientProps {
   post: BlogPost
@@ -12,7 +15,11 @@ interface BlogDetailClientProps {
 
 export function BlogDetailClient({ post, relatedPosts }: BlogDetailClientProps) {
   return (
-    <div className="pt-32 pb-20 sm:pb-24" style={{ backgroundColor: 'var(--bg-primary)', color: 'var(--text-primary)' }}>
+    <div className="relative min-h-screen overflow-hidden pt-32 pb-20 sm:pb-24" style={{ backgroundColor: 'var(--bg-primary)', color: 'var(--text-primary)' }}>
+      <div className="pointer-events-none fixed inset-0 z-0 opacity-10">
+        <AuroraBackground />
+      </div>
+      <div className="relative z-10">
       <div className="mx-auto max-w-[840px] px-4 sm:px-6 lg:px-8">
         <Link href="/blog" className="tag inline-flex items-center gap-1.5 mb-8">
           <ArrowLeft size={9} /> Back
@@ -71,6 +78,7 @@ export function BlogDetailClient({ post, relatedPosts }: BlogDetailClientProps) 
           </div>
         )}
       </div>
+    </div>
     </div>
   )
 }

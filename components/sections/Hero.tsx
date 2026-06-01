@@ -5,6 +5,9 @@ import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { ArrowUpRight, Download } from 'lucide-react'
 import { profile } from '@/config/site'
+import dynamic from 'next/dynamic'
+
+const HeroBackground = dynamic(() => import('@/components/3d/HeroBackground').then(mod => ({ default: mod.HeroBackground })), { ssr: false })
 
 export function Hero() {
   const [roleIndex, setRoleIndex] = useState(0)
@@ -24,6 +27,7 @@ export function Hero() {
 
   return (
     <section className="relative overflow-hidden pt-14" style={{ backgroundColor: 'var(--bg-primary)', color: 'var(--text-primary)', transition: 'background-color 0.3s ease, color 0.3s ease' }}>
+      <HeroBackground />
       <div className="pointer-events-none absolute inset-0 z-0">
         <div className="glow-blob" style={{ left: '-80px', top: '-60px', width: 260, height: 260, background: 'var(--glow)' }} />
         <div className="glow-blob" style={{ right: '-40px', bottom: '-40px', width: 240, height: 240, background: 'var(--glow)' }} />

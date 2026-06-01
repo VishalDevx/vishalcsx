@@ -2,8 +2,11 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import dynamic from "next/dynamic";
 import { ArrowUpRight, Github, Activity as ActivityIcon, Boxes, Brain, Rocket, BookOpen, FolderGit2, GitCommitHorizontal } from "lucide-react";
 import { useData } from "@/lib/use-data";
+
+const TimelineRiver = dynamic(() => import("@/components/3d/TimelineRiver").then(mod => ({ default: mod.TimelineRiver })), { ssr: false });
 
 function getActivityIcon(type: string) {
   switch (type) {
@@ -48,6 +51,9 @@ export default function ActivityPage() {
       `}</style>
       <main className="relative min-h-screen overflow-x-hidden pt-14" style={{ backgroundColor: "var(--bg-primary)", color: "var(--text-primary)", transition: "background-color 0.3s ease, color 0.3s ease", fontFamily: "'DM Sans', sans-serif" }}>
         <div className="pointer-events-none fixed inset-0 z-0">
+          <div className="absolute inset-0 opacity-25">
+            <TimelineRiver />
+          </div>
           <div className="absolute left-[-80px] top-[-20px] h-[240px] w-[240px] rounded-full bg-[var(--glow)] blur-[80px] sm:left-[4%] sm:top-0 sm:h-[320px] sm:w-[320px] sm:blur-[100px] lg:left-[10%] lg:h-[500px] lg:w-[400px] lg:blur-[120px]" />
           <div className="absolute bottom-[-30px] right-[-60px] h-[220px] w-[220px] rounded-full bg-[var(--glow)] blur-[80px] sm:right-[4%] sm:bottom-0 sm:h-[300px] sm:w-[300px] sm:blur-[95px] lg:right-[8%] lg:h-[400px] lg:w-[400px] lg:blur-[100px]" />
         </div>

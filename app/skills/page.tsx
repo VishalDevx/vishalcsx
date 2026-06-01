@@ -2,11 +2,14 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import dynamic from "next/dynamic";
 import {
   ArrowUpRight, Github, ShieldCheck,
   LayoutPanelTop, Server, Database, Braces, Boxes, Cpu,
 } from "lucide-react";
 import { useData } from "@/lib/use-data";
+
+const SkillsGraph = dynamic(() => import("@/components/3d/SkillsGraph").then(mod => ({ default: mod.SkillsGraph })), { ssr: false });
 
 const iconMap: Record<string, React.ComponentType<{ size?: number }>> = {
   LayoutPanelTop, Server, Database, Braces, Boxes, Cpu,
@@ -50,6 +53,9 @@ export default function SkillsPage() {
       `}</style>
       <main className="relative min-h-screen overflow-x-hidden pt-14" style={{ backgroundColor: "var(--bg-primary)", color: "var(--text-primary)", transition: "background-color 0.3s ease, color 0.3s ease", fontFamily: "'DM Sans', sans-serif" }}>
         <div className="pointer-events-none fixed inset-0 z-0">
+          <div className="absolute inset-0 opacity-20">
+            <SkillsGraph />
+          </div>
           <div className="absolute top-0 left-[10%] h-[260px] w-[260px] rounded-full bg-[var(--glow)] blur-[90px] sm:h-[360px] sm:w-[360px] md:h-[420px] md:w-[420px] md:blur-[120px]" />
           <div className="absolute bottom-0 right-[8%] h-[220px] w-[220px] rounded-full bg-[var(--glow)] blur-[80px] sm:h-[320px] sm:w-[320px] md:h-[380px] md:w-[380px] md:blur-[100px]" />
         </div>

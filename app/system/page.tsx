@@ -1,7 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import { useData } from "@/lib/use-data";
+
+const ArchitectureNetwork = dynamic(() => import("@/components/3d/ArchitectureNetwork").then(mod => ({ default: mod.ArchitectureNetwork })), { ssr: false });
+const DataFlowViz = dynamic(() => import("@/components/3d/DataFlowViz").then(mod => ({ default: mod.DataFlowViz })), { ssr: false });
 
 const RADAR_COLORS: Record<string, string> = {
   Adopt: "var(--accent-text)", Trial: "var(--accent)", Assess: "var(--accent-text)", Hold: "var(--text-muted)",
@@ -93,8 +97,8 @@ export default function SystemsPage() {
         @media (max-width: 768px) { .cs-panel-grid { grid-template-columns: 1fr; } .scale-grid { grid-template-columns: 1fr !important; } .radar-grid { grid-template-columns: 1fr 1fr !important; } .principles-grid { grid-template-columns: 1fr !important; } .metrics-grid { grid-template-columns: repeat(2,1fr) !important; } }
       `}</style>
 
-      <main style={{ minHeight: "100vh", paddingTop: "56px", backgroundColor: "var(--bg-primary)", color: "var(--text-primary)", transition: "background-color 0.3s ease, color 0.3s ease", fontFamily: "'Space Grotesk', sans-serif" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 16px 80px" }} className="sm:px-8">
+      <main style={{ position: "relative", minHeight: "100vh", paddingTop: "56px", backgroundColor: "var(--bg-primary)", color: "var(--text-primary)", transition: "background-color 0.3s ease, color 0.3s ease", fontFamily: "'Space Grotesk', sans-serif" }}>
+        <div style={{ position: "relative", zIndex: 1, maxWidth: 1100, margin: "0 auto", padding: "0 16px 80px" }} className="sm:px-8">
 
           <div style={{ padding: "64px 0 48px", borderBottom: "0.5px solid var(--border-color)", marginBottom: 60 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 18, fontFamily: "'DM Mono', monospace", fontSize: 10, letterSpacing: "0.22em", textTransform: "uppercase", color: "var(--text-muted)" }}>
@@ -123,6 +127,10 @@ export default function SystemsPage() {
                 <div style={{ fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.65, fontWeight: 300 }}>{p.desc}</div>
               </div>
             ))}
+          </div>
+
+          <div className="pointer-events-none fixed inset-0 z-0 opacity-20" style={{ margin: 0, borderRadius: 0, overflow: "hidden", border: "none" }}>
+            <ArchitectureNetwork />
           </div>
 
           <SectionLabel text="System case studies" />
@@ -195,6 +203,11 @@ export default function SystemsPage() {
                 ))}
               </div>
             ))}
+          </div>
+
+          <SectionLabel text="Data flow visualization" />
+          <div style={{ marginBottom: 72, padding: "24px 28px", borderRadius: 14, border: "0.5px solid var(--border-color)", background: "var(--bg-primary)" }}>
+            <DataFlowViz />
           </div>
 
           <SectionLabel text="Scalability patterns I apply" />

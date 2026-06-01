@@ -1,8 +1,11 @@
 'use client'
 
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
 import { ArrowLeft, ExternalLink, Github, Calendar, BarChart3, Shield, Clock, Activity, ArrowUpRight } from 'lucide-react'
 import type { Project } from '@/types'
+
+const ArchitectureExplorer = dynamic(() => import('@/components/3d/ArchitectureExplorer').then(mod => ({ default: mod.ArchitectureExplorer })), { ssr: false })
 
 interface ProjectDetailClientProps {
   project: Project
@@ -10,7 +13,11 @@ interface ProjectDetailClientProps {
 
 export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
   return (
-    <div className="pt-32 pb-20 sm:pb-24" style={{ backgroundColor: 'var(--bg-primary)', color: 'var(--text-primary)' }}>
+    <div className="relative min-h-screen overflow-hidden pt-32 pb-20 sm:pb-24" style={{ backgroundColor: 'var(--bg-primary)', color: 'var(--text-primary)' }}>
+      <div className="pointer-events-none fixed inset-0 z-0 opacity-15">
+        <ArchitectureExplorer />
+      </div>
+      <div className="relative z-10">
       <div className="mx-auto max-w-[840px] px-4 sm:px-6 lg:px-8">
         <Link
           href="/projects"
@@ -173,6 +180,7 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
         </div>
       </div>
     </div>
+    </div>
   )
 }
 
@@ -194,7 +202,7 @@ function MetricCard({
   label,
   value,
 }: {
-  icon: React.ComponentType<{ className?: string; size?: number }>
+  icon: React.ComponentType<{ className?: string; size?: number; style?: React.CSSProperties }>
   label: string
   value: string
 }) {

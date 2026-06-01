@@ -2,9 +2,12 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
 import { Calendar, Clock, Search } from 'lucide-react'
 import { formatDate, calculateReadingTime } from '@/lib/utils'
 import type { BlogPost } from '@/types'
+
+const AuroraBackground = dynamic(() => import('@/components/shaders/AuroraBackground').then(mod => ({ default: mod.AuroraBackground })), { ssr: false })
 
 interface BlogPageClientProps {
   posts: BlogPost[]
@@ -28,20 +31,25 @@ export function BlogPageClient({ posts, categories }: BlogPageClientProps) {
   const featured = posts.find((p) => p.featured)
 
   return (
-    <div className="pt-32 pb-20 sm:pb-24" style={{ backgroundColor: 'var(--bg-primary)', color: 'var(--text-primary)' }}>
+    <div className="relative min-h-screen overflow-hidden pt-14 pb-20 sm:pb-24" style={{ backgroundColor: 'var(--bg-primary)', color: 'var(--text-primary)' }}>
+      <div className="pointer-events-none fixed inset-0 z-0 opacity-10">
+        <AuroraBackground />
+      </div>
+      <div className="relative z-10">
       <div className="mx-auto max-w-[840px] px-4 sm:px-6 lg:px-8">
-        <div className="mb-10 sm:mb-12">
-          <div className="section-header">
-            <span className="section-header-text">Blog</span>
-            <div className="section-header-line" />
+        <header className="mb-12 border-b border-[var(--border-color)] pb-10 pt-12 sm:mb-14 sm:pb-12 sm:pt-14 lg:mb-16 lg:pb-14 lg:pt-20">
+          <div>
+            <div className="mb-4 flex items-center gap-3 text-[10px] uppercase tracking-[0.2em] text-[var(--text-secondary)] sm:mb-5 sm:text-[11px]" style={{ fontFamily: "'DM Mono', monospace" }}>
+              <span className="block h-px w-5 bg-[var(--divider-line)] sm:w-6" /> Blog
+            </div>
+            <h1 className="text-[clamp(36px,11vw,88px)] font-extrabold leading-[0.95] tracking-[-0.03em] text-[var(--text-primary)]" style={{ fontFamily: "'Syne', sans-serif" }}>
+              Technical<br /><span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.28)" }}>Articles</span>
+            </h1>
+            <p className="mt-5 max-w-[580px] text-sm font-light leading-7 text-[var(--text-secondary)] sm:mt-6 sm:text-[15px] sm:leading-8 md:text-base md:leading-[1.75]">
+              Engineering deep-dives, system design concepts, and architectural patterns.
+            </p>
           </div>
-          <h1 className="font-syne text-[clamp(2rem,5vw,4rem)] font-bold tracking-[-0.03em]" style={{ color: 'var(--text-primary)' }}>
-            Technical Articles
-          </h1>
-          <p className="mt-3 max-w-xl text-sm font-light leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
-            Engineering deep-dives, system design concepts, and architectural patterns.
-          </p>
-        </div>
+        </header>
 
         <div className="flex flex-col gap-3 mb-8 sm:flex-row">
           <div className="relative flex-1">
@@ -135,6 +143,7 @@ export function BlogPageClient({ posts, categories }: BlogPageClientProps) {
           </div>
         )}
       </div>
+    </div>
     </div>
   )
 }

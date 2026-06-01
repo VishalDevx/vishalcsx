@@ -15,6 +15,7 @@ const NAV_LINKS = [
   { label: 'Skills', href: '/skills' },
   { label: 'About', href: '/about' },
   { label: 'Activity', href: '/activity' },
+  { label: 'Lab', href: '/engineering-lab' },
   { label: 'Contact', href: '/contact' },
 ]
 
@@ -66,27 +67,44 @@ export function Navbar() {
         </Link>
 
         <nav aria-label="Primary navigation" className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 lg:flex">
-          {NAV_LINKS.map(({ label, href }) => (
-            <Link
-              key={href}
-              href={href}
-              className={`nav-link${isActive(href) ? ' active' : ''}`}
-              aria-current={isActive(href) ? 'page' : undefined}
-            >
-              {label}
-            </Link>
-          ))}
+          {NAV_LINKS.map(({ label, href }) =>
+            label === 'Contact' ? (
+              <span key={href} className="flex items-center gap-1">
+                <Link
+                  href={href}
+                  className={`nav-link${isActive(href) ? ' active' : ''}`}
+                  aria-current={isActive(href) ? 'page' : undefined}
+                >
+                  {label}
+                </Link>
+                <div className="mx-1 h-3 w-px" style={{ background: 'var(--divider-line)' }} />
+                {SOCIALS.map(({ icon: Icon, href: socialHref, label: socialLabel }) => (
+                  <a
+                    key={socialLabel}
+                    href={socialHref}
+                    target={socialHref.startsWith('mailto:') ? undefined : '_blank'}
+                    rel={socialHref.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
+                    aria-label={socialLabel}
+                    className="social-btn-inline flex items-center justify-center"
+                  >
+                    <Icon size={12} />
+                  </a>
+                ))}
+              </span>
+            ) : (
+              <Link
+                key={href}
+                href={href}
+                className={`nav-link${isActive(href) ? ' active' : ''}`}
+                aria-current={isActive(href) ? 'page' : undefined}
+              >
+                {label}
+              </Link>
+            )
+          )}
         </nav>
 
         <div className="flex items-center gap-2 sm:gap-3">
-          <div className="hidden items-center gap-1 lg:flex">
-            {SOCIALS.map(({ icon: Icon, href, label }) => (
-              <a key={label} href={href} target={href.startsWith('mailto:') ? undefined : '_blank'} rel={href.startsWith('mailto:') ? undefined : 'noopener noreferrer'} aria-label={label} className="social-btn flex items-center justify-center">
-                <Icon size={13} />
-              </a>
-            ))}
-          </div>
-          <div className="hidden h-[18px] w-[0.5px] lg:block" style={{ background: 'var(--divider-line)' }} />
           <ThemeToggle />
           <a href="mailto:vishalcsx@gmail.com" className="hire-btn hidden items-center justify-center sm:inline-flex">
             Hire me <ArrowUpRight size={10} />
@@ -99,14 +117,7 @@ export function Navbar() {
 
       {menuOpen && (
         <div id="mobile-navigation" style={{ borderTop: '0.5px solid var(--border-subtle)', backgroundColor: 'var(--bg-primary)' }} className="px-4 pb-5 pt-3 lg:hidden">
-          <nav aria-label="Mobile navigation" className="flex flex-col gap-2">
-            {NAV_LINKS.map(({ label, href }) => (
-              <Link key={href} href={href} className={`mobile-nav-link${isActive(href) ? ' active' : ''}`} aria-current={isActive(href) ? 'page' : undefined}>
-                {label}
-              </Link>
-            ))}
-          </nav>
-          <div className="mt-4 flex flex-wrap items-center gap-2 border-t pt-4" style={{ borderColor: 'var(--border-subtle)' }}>
+          <div className="mb-4 flex flex-wrap items-center gap-2 pb-4" style={{ borderBottom: '0.5px solid var(--border-subtle)' }}>
             {SOCIALS.map(({ icon: Icon, href, label }) => (
               <a key={label} href={href} target={href.startsWith('mailto:') ? undefined : '_blank'} rel={href.startsWith('mailto:') ? undefined : 'noopener noreferrer'} aria-label={label} className="social-btn flex items-center justify-center">
                 <Icon size={13} />
@@ -116,6 +127,13 @@ export function Navbar() {
               Hire me <ArrowUpRight size={10} />
             </a>
           </div>
+          <nav aria-label="Mobile navigation" className="flex flex-col gap-2">
+            {NAV_LINKS.map(({ label, href }) => (
+              <Link key={href} href={href} className={`mobile-nav-link${isActive(href) ? ' active' : ''}`} aria-current={isActive(href) ? 'page' : undefined}>
+                {label}
+              </Link>
+            ))}
+          </nav>
         </div>
       )}
 
@@ -149,6 +167,13 @@ export function Navbar() {
           background: transparent; flex-shrink: 0;
         }
         .social-btn:hover { color: var(--icon-hover); border-color: var(--border-hover); background: var(--bg-secondary); }
+        .social-btn-inline {
+          width: 28px; height: 28px; border-radius: 6px;
+          color: var(--text-muted); text-decoration: none;
+          transition: color 0.15s, background 0.15s;
+          background: transparent;
+        }
+        .social-btn-inline:hover { color: var(--text-primary); background: var(--bg-secondary); }
         .hire-btn {
           font-family: 'JetBrains Mono', monospace;
           font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;

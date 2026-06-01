@@ -245,7 +245,7 @@ export function Navbar() {
           </nav>
 
           {/* Right Actions */}
-          <div className="flex items-center gap-2 sm:gap-3">
+          <div className="flex items-center ml-2 gap-2 sm:gap-3">
             {/* Desktop Social Links */}
             <div className="hidden items-center gap-1 lg:flex">
               {SOCIALS.map(({ icon: Icon, href, label }) => (

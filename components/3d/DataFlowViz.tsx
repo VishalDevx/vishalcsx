@@ -3,7 +3,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowRight, Timer, BarChart3, Activity } from 'lucide-react'
-import { cn } from '@/lib/utils'
 
 interface FlowStep {
   id: string
@@ -38,11 +37,11 @@ export function DataFlowViz() {
   }, [isPaused, nextStep])
 
   return (
-    <div className="w-full" onClick={() => setIsPaused(!isPaused)}>
+    <div className="w-full" onClick={() => setIsPaused(!isPaused)} style={{ cursor: 'pointer' }}>
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <Activity className="h-4 w-4 text-accent" />
-          <span className="text-xs font-mono text-text-muted">
+          <Activity className="h-4 w-4" style={{ color: 'var(--accent)' }} />
+          <span className="text-xs font-mono" style={{ color: 'var(--text-muted)' }}>
             {isPaused ? 'PAUSED — Click to resume' : 'LIVE — Click to pause'}
           </span>
         </div>
@@ -58,43 +57,44 @@ export function DataFlowViz() {
                   opacity: activeStep === i ? 1 : i < activeStep ? 0.6 : 0.3,
                 }}
                 transition={{ duration: 0.3 }}
-                className={cn(
-                  'flex flex-col items-center gap-2 p-3 rounded-xl border transition-colors min-w-[100px]',
-                  activeStep === i
-                    ? 'border-accent/50 bg-accent-bg shadow-lg shadow-accent-glow/20'
-                    : 'border-border-subtle bg-bg-card',
-                )}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: 8,
+                  padding: 12,
+                  borderRadius: 12,
+                  border: '1px solid',
+                  minWidth: 100,
+                  background: activeStep === i ? 'var(--accent-bg)' : 'var(--card-bg)',
+                  borderColor: activeStep === i ? 'var(--accent)' : 'var(--border-subtle)',
+                  boxShadow: activeStep === i ? '0 0 20px var(--glow)' : 'none',
+                  transition: 'background 0.3s, border-color 0.3s',
+                }}
               >
                 <div
-                  className={cn(
-                    'h-8 w-8 rounded-lg flex items-center justify-center text-xs font-bold',
-                    activeStep === i ? 'bg-accent text-white' : 'bg-bg-tertiary text-text-muted',
-                  )}
+                  style={{
+                    height: 32, width: 32, borderRadius: 8,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontSize: 12, fontWeight: 700,
+                    background: activeStep === i ? 'var(--accent)' : 'var(--bg-tertiary)',
+                    color: activeStep === i ? '#fff' : 'var(--text-muted)',
+                  }}
                 >
                   {i + 1}
                 </div>
                 <span
-                  className={cn(
-                    'text-xs font-medium',
-                    activeStep === i ? 'text-accent' : 'text-text-secondary',
-                  )}
+                  style={{
+                    fontSize: 12, fontWeight: 500,
+                    color: activeStep === i ? 'var(--accent)' : 'var(--text-secondary)',
+                  }}
                 >
                   {step.label}
                 </span>
               </motion.div>
               {i < flowSteps.length - 1 && (
-                <motion.div
-                  animate={{
-                    opacity: activeStep === i ? 1 : 0.2,
-                  }}
-                  className="flex items-center px-1"
-                >
-                  <ArrowRight
-                    className={cn(
-                      'h-4 w-4 transition-colors',
-                      activeStep === i ? 'text-accent' : 'text-text-muted',
-                    )}
-                  />
+                <motion.div animate={{ opacity: activeStep === i ? 1 : 0.2 }} className="flex items-center px-1">
+                  <ArrowRight className="h-4 w-4" style={{ color: activeStep === i ? 'var(--accent)' : 'var(--text-muted)' }} />
                 </motion.div>
               )}
             </div>
@@ -108,25 +108,29 @@ export function DataFlowViz() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="mt-4 p-4 rounded-xl border border-border bg-bg-card"
+            style={{
+              marginTop: 16, padding: 16, borderRadius: 12,
+              border: '1px solid var(--border-color)',
+              background: 'var(--card-bg)',
+            }}
           >
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
-                <div className="text-xs text-text-muted mb-1">Step</div>
-                <div className="text-sm font-medium">{flowSteps[activeStep].label}</div>
-                <div className="text-xs text-text-secondary mt-0.5">{flowSteps[activeStep].description}</div>
+                <div className="text-xs mb-1" style={{ color: 'var(--text-muted)' }}>Step</div>
+                <div className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>{flowSteps[activeStep].label}</div>
+                <div className="text-xs mt-0.5" style={{ color: 'var(--text-secondary)' }}>{flowSteps[activeStep].description}</div>
               </div>
               <div>
-                <div className="text-xs text-text-muted mb-1 flex items-center gap-1">
+                <div className="text-xs mb-1 flex items-center gap-1" style={{ color: 'var(--text-muted)' }}>
                   <Timer className="h-3 w-3" /> Latency
                 </div>
-                <div className="text-sm font-mono text-accent">{flowSteps[activeStep].latency}</div>
+                <div className="text-sm font-mono" style={{ color: 'var(--accent)' }}>{flowSteps[activeStep].latency}</div>
               </div>
               <div>
-                <div className="text-xs text-text-muted mb-1 flex items-center gap-1">
+                <div className="text-xs mb-1 flex items-center gap-1" style={{ color: 'var(--text-muted)' }}>
                   <BarChart3 className="h-3 w-3" /> Throughput
                 </div>
-                <div className="text-sm font-mono text-accent">{flowSteps[activeStep].throughput}</div>
+                <div className="text-sm font-mono" style={{ color: 'var(--accent)' }}>{flowSteps[activeStep].throughput}</div>
               </div>
             </div>
           </motion.div>

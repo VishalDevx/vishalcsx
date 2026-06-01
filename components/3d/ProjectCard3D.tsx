@@ -4,7 +4,6 @@ import { useRef } from 'react'
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import Link from 'next/link'
 import { ExternalLink, Github } from 'lucide-react'
-import { cn } from '@/lib/utils'
 import type { Project } from '@/types'
 
 interface ProjectCard3DProps {
@@ -53,17 +52,32 @@ export function ProjectCard3D({ project, index = 0 }: ProjectCard3DProps) {
     >
       <Link href={`/projects/${project.slug}`}>
         <div
-          className={cn(
-            'relative overflow-hidden rounded-card border border-border-subtle bg-bg-card',
-            'transition-all duration-300',
-            'hover:border-border-strong hover:shadow-2xl hover:shadow-accent-glow/20',
-            'transform-gpu',
-          )}
-          style={{ transformStyle: 'preserve-3d' }}
+          style={{
+            position: 'relative',
+            overflow: 'hidden',
+            borderRadius: 16,
+            border: '1px solid var(--border-subtle)',
+            background: 'var(--card-bg)',
+            transition: 'all 0.3s',
+            transformStyle: 'preserve-3d',
+          }}
+          className="hover:shadow-2xl"
+          onMouseEnter={(e) => {
+            e.currentTarget.style.borderColor = 'var(--border-hover)'
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.borderColor = 'var(--border-subtle)'
+          }}
         >
           <div
-            className="relative h-48 sm:h-56 overflow-hidden bg-bg-tertiary"
-            style={{ transform: 'translateZ(20px)' }}
+            style={{
+              position: 'relative',
+              height: '12rem',
+              overflow: 'hidden',
+              background: 'var(--bg-tertiary)',
+              transform: 'translateZ(20px)',
+            }}
+            className="sm:h-56"
           >
             {project.imageUrl ? (
               <img
@@ -74,24 +88,21 @@ export function ProjectCard3D({ project, index = 0 }: ProjectCard3DProps) {
             ) : (
               <div className="flex h-full items-center justify-center">
                 <div className="text-center p-6">
-                  <div className="text-4xl font-bold text-accent/30 mb-2">
+                  <div className="text-4xl font-bold mb-2" style={{ color: 'var(--accent)' }}>
                     {project.title.charAt(0)}
                   </div>
-                  <div className="text-xs text-text-muted font-mono">
+                  <div className="text-xs font-mono" style={{ color: 'var(--text-muted)' }}>
                     {project.category}
                   </div>
                 </div>
               </div>
             )}
-            <div className="absolute inset-0 bg-gradient-to-t from-bg-card via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[var(--card-bg)] via-transparent to-transparent" />
           </div>
 
-          <div
-            className="p-5 sm:p-6"
-            style={{ transform: 'translateZ(30px)' }}
-          >
+          <div className="p-5 sm:p-6" style={{ transform: 'translateZ(30px)' }}>
             <div className="flex items-start justify-between gap-3">
-              <h3 className="text-lg font-semibold tracking-tight">{project.title}</h3>
+              <h3 className="text-lg font-semibold tracking-tight" style={{ color: 'var(--text-primary)' }}>{project.title}</h3>
               <div className="flex items-center gap-1.5 shrink-0">
                 {project.liveUrl && (
                   <a
@@ -99,7 +110,11 @@ export function ProjectCard3D({ project, index = 0 }: ProjectCard3DProps) {
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={(e) => e.stopPropagation()}
-                    className="h-8 w-8 flex items-center justify-center rounded-md text-text-muted hover:text-text-primary hover:bg-bg-tertiary transition-colors"
+                    style={{
+                      height: 32, width: 32, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      borderRadius: 6, color: 'var(--text-muted)',
+                    }}
+                    className="hover:bg-[var(--bg-tertiary)] hover:text-[var(--text-primary)] transition-colors"
                   >
                     <ExternalLink className="h-3.5 w-3.5" />
                   </a>
@@ -110,7 +125,11 @@ export function ProjectCard3D({ project, index = 0 }: ProjectCard3DProps) {
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={(e) => e.stopPropagation()}
-                    className="h-8 w-8 flex items-center justify-center rounded-md text-text-muted hover:text-text-primary hover:bg-bg-tertiary transition-colors"
+                    style={{
+                      height: 32, width: 32, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      borderRadius: 6, color: 'var(--text-muted)',
+                    }}
+                    className="hover:bg-[var(--bg-tertiary)] hover:text-[var(--text-primary)] transition-colors"
                   >
                     <Github className="h-3.5 w-3.5" />
                   </a>
@@ -118,7 +137,7 @@ export function ProjectCard3D({ project, index = 0 }: ProjectCard3DProps) {
               </div>
             </div>
 
-            <p className="mt-2 text-sm text-text-secondary leading-relaxed line-clamp-2">
+            <p className="mt-2 text-sm leading-relaxed line-clamp-2" style={{ color: 'var(--text-secondary)' }}>
               {project.description}
             </p>
 
@@ -126,13 +145,21 @@ export function ProjectCard3D({ project, index = 0 }: ProjectCard3DProps) {
               {project.techStack?.slice(0, 5).map((tech) => (
                 <span
                   key={tech}
-                  className="px-2 py-0.5 text-xs font-mono rounded-md bg-accent-bg text-accent-text border border-accent/20"
+                  style={{
+                    padding: '2px 8px', fontSize: 12, fontFamily: 'var(--font-mono)',
+                    borderRadius: 6, background: 'var(--accent-bg)',
+                    color: 'var(--accent-text)', border: '1px solid var(--accent)',
+                  }}
                 >
                   {tech}
                 </span>
               ))}
               {(project.techStack?.length || 0) > 5 && (
-                <span className="px-2 py-0.5 text-xs font-mono rounded-md bg-bg-tertiary text-text-muted">
+                <span style={{
+                  padding: '2px 8px', fontSize: 12, fontFamily: 'var(--font-mono)',
+                  borderRadius: 6, background: 'var(--bg-tertiary)',
+                  color: 'var(--text-muted)',
+                }}>
                   +{project.techStack!.length - 5}
                 </span>
               )}
@@ -140,8 +167,9 @@ export function ProjectCard3D({ project, index = 0 }: ProjectCard3DProps) {
           </div>
 
           <div
-            className="absolute inset-0 rounded-card opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+            className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
             style={{
+              borderRadius: 16,
               background: 'radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(59,130,246,0.06), transparent 40%)',
               transform: 'translateZ(10px)',
             }}

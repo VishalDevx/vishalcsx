@@ -1,14 +1,19 @@
 import type { Metadata, Viewport } from 'next'
-import { Space_Grotesk, JetBrains_Mono } from 'next/font/google'
+import { Syne, DM_Sans, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 import { CommandPalette } from '@/components/ui/CommandPalette'
-import { ThemeProvider } from 'next-themes'
 import { Providers } from './providers'
 
-const spaceGrotesk = Space_Grotesk({
-  variable: '--font-space-grotesk',
+const syne = Syne({
+  variable: '--font-syne',
+  subsets: ['latin'],
+  display: 'swap',
+})
+
+const dmSans = DM_Sans({
+  variable: '--font-dm-sans',
   subsets: ['latin'],
   display: 'swap',
 })
@@ -54,76 +59,54 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: '(prefers-color-scheme: dark)', color: '#0a0a0a' },
-    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
-  ],
+  themeColor: '#050505',
   width: 'device-width',
   initialScale: 1,
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="/rss.xml" />
-        <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'Person',
-              name: 'Vishal Singh',
-              url: 'https://vishalcsx.dev',
-              sameAs: [
-                'https://github.com/VishalDevx',
-                'https://linkedin.com/in/vishalcsx',
-                'https://x.com/vishalcsx',
-              ],
-              jobTitle: 'Senior Full Stack & Backend Engineer',
-              knowsAbout: [
-                'Full Stack Development',
-                'Backend Engineering',
-                'System Design',
-                'Cloud Architecture',
-                'DevOps',
-                'Distributed Systems',
-              ],
-            }),
-          }}
-        />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                try {
-                  var theme = localStorage.getItem('theme');
-                  if (theme === 'light') {
-                    document.documentElement.classList.remove('dark');
-                  } else if (theme === 'dark') {
-                    document.documentElement.classList.add('dark');
-                  } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                    document.documentElement.classList.add('dark');
-                  } else {
-                    document.documentElement.classList.remove('dark');
-                  }
-                } catch(e) {}
-              })();
-            `,
-          }}
-        />
-      </head>
-      <body className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} antialiased min-h-screen bg-bg-primary text-text-primary`}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+      <html lang="en" className="dark">
+        <head>
+          <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="/rss.xml" />
+          <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                '@context': 'https://schema.org',
+                '@type': 'Person',
+                name: 'Vishal Singh',
+                url: 'https://vishalcsx.dev',
+                sameAs: [
+                  'https://github.com/VishalDevx',
+                  'https://linkedin.com/in/vishalcsx',
+                  'https://x.com/vishalcsx',
+                ],
+                jobTitle: 'Senior Full Stack & Backend Engineer',
+                knowsAbout: [
+                  'Full Stack Development',
+                  'Backend Engineering',
+                  'System Design',
+                  'Cloud Architecture',
+                  'DevOps',
+                  'Distributed Systems',
+                  'Distributed Systems',
+                  'AI Engineering',
+                  'Graphics Programming',
+                ],
+              }),
+            }}
+          />
+        </head>
+        <body className={`${syne.variable} ${dmSans.variable} ${jetbrainsMono.variable} antialiased min-h-screen`} style={{ background: 'var(--bg-primary)', color: 'var(--text-primary)', fontFamily: "'DM Sans', sans-serif" }}>
           <Providers>
             <Navbar />
             <main className="min-h-screen">{children}</main>
             <Footer />
             <CommandPalette />
           </Providers>
-        </ThemeProvider>
-      </body>
-    </html>
+        </body>
+      </html>
   )
 }

@@ -1,17 +1,18 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { motion, useInView } from 'framer-motion'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
+import { useRef, useState, useEffect } from 'react'
 import { ArrowUpRight, Activity, Cpu, GitBranch } from 'lucide-react'
 import { Hero } from '@/components/sections/Hero'
-import { FeaturedProjects } from '@/components/sections/FeaturedProjects'
-import { TechStack } from '@/components/sections/TechStack'
-import { LatestArticles } from '@/components/sections/LatestArticles'
-import { MetricCounter } from '@/components/ui/MetricCounter'
 import { useGitHubStats } from '@/hooks/useGitHub'
 import type { Project, BlogPost } from '@/types'
 
+const FeaturedProjects = dynamic(() => import('@/components/sections/FeaturedProjects').then(mod => ({ default: mod.FeaturedProjects })), { ssr: false })
+const TechStack = dynamic(() => import('@/components/sections/TechStack').then(mod => ({ default: mod.TechStack })), { ssr: false })
+const LatestArticles = dynamic(() => import('@/components/sections/LatestArticles').then(mod => ({ default: mod.LatestArticles })), { ssr: false })
+const MetricCounter = dynamic(() => import('@/components/ui/MetricCounter').then(mod => ({ default: mod.MetricCounter })), { ssr: false })
 const InfraViz = dynamic(() => import('@/components/3d/InfraViz').then(mod => ({ default: mod.InfraViz })), { ssr: false })
 
 interface HomeClientProps {
@@ -26,8 +27,29 @@ const fadeUp = {
   transition: { duration: 0.5, ease: 'easeOut' as const },
 }
 
+function LazySection({ children, className, style }: { children: React.ReactNode; className?: string; style?: React.CSSProperties }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const inView = useInView(ref, { margin: '200px', once: true })
+  return (
+    <div ref={ref} className={className} style={style}>
+      {inView ? children : null}
+    </div>
+  )
+}
+
 export function HomeClient({ projects, posts }: HomeClientProps) {
-  const { data: github } = useGitHubStats()
+  const [ghEnabled, setGhEnabled] = useState(false)
+  const { data: github } = useGitHubStats(ghEnabled)
+
+  useEffect(() => {
+    if (typeof requestIdleCallback !== 'undefined') {
+      const id = requestIdleCallback(() => setGhEnabled(true), { timeout: 3000 })
+      return () => cancelIdleCallback(id)
+    } else {
+      const id = setTimeout(() => setGhEnabled(true), 2000)
+      return () => clearTimeout(id)
+    }
+  }, [])
 
   return (
     <>
@@ -102,14 +124,15 @@ export function HomeClient({ projects, posts }: HomeClientProps) {
       </motion.section>
 
       {/* InfraViz Architecture */}
-      <motion.section
-        {...fadeUp}
-        className="relative overflow-hidden border-y py-14 sm:py-16 lg:py-20"
-        style={{ backgroundColor: 'var(--bg-primary)', borderColor: 'var(--border-subtle)' }}
-      >
-        <div className="pointer-events-none absolute inset-0 z-0 opacity-[0.12]">
-          <InfraViz />
-        </div>
+      <LazySection>
+        <motion.section
+          {...fadeUp}
+          className="relative overflow-hidden border-y py-14 sm:py-16 lg:py-20"
+          style={{ backgroundColor: 'var(--bg-primary)', borderColor: 'var(--border-subtle)' }}
+        >
+          <div className="pointer-events-none absolute inset-0 z-0 opacity-[0.12]">
+            <InfraViz />
+          </div>
         <div className="relative z-10 mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
           <div className="mb-6 flex items-center gap-4 sm:mb-8">
             <Cpu size={14} style={{ color: 'var(--text-muted)' }} />
@@ -173,6 +196,7 @@ export function HomeClient({ projects, posts }: HomeClientProps) {
           </div>
         </div>
       </motion.section>
+      </LazySection>
 
       {/* Activity Snapshot */}
       <motion.section
@@ -209,17 +233,23 @@ export function HomeClient({ projects, posts }: HomeClientProps) {
         </div>
       </motion.section>
 
-      <motion.div {...fadeUp}>
-        <FeaturedProjects projects={projects} />
-      </motion.div>
+      <LazySection>
+        <motion.div {...fadeUp}>
+          <FeaturedProjects projects={projects} />
+        </motion.div>
+      </LazySection>
 
-      <motion.div {...fadeUp}>
-        <TechStack />
-      </motion.div>
+      <LazySection>
+        <motion.div {...fadeUp}>
+          <TechStack />
+        </motion.div>
+      </LazySection>
 
-      <motion.div {...fadeUp}>
-        <LatestArticles posts={posts} />
-      </motion.div>
+      <LazySection>
+        <motion.div {...fadeUp}>
+          <LatestArticles posts={posts} />
+        </motion.div>
+      </LazySection>
     </>
   )
 }

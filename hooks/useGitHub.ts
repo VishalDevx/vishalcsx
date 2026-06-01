@@ -3,7 +3,7 @@
 import { useQuery } from '@tanstack/react-query'
 import type { GitHubStats } from '@/types'
 
-export function useGitHubStats() {
+export function useGitHubStats(enabled = true) {
   return useQuery<GitHubStats>({
     queryKey: ['github-stats'],
     queryFn: async () => {
@@ -13,6 +13,7 @@ export function useGitHubStats() {
     },
     staleTime: 1000 * 60 * 60,
     retry: 2,
+    enabled,
   })
 }
 

@@ -7,7 +7,7 @@ import { Calendar, Clock, Search } from 'lucide-react'
 import { formatDate, calculateReadingTime } from '@/lib/utils'
 import type { BlogPost } from '@/types'
 
-const AuroraBackground = dynamic(() => import('@/components/shaders/AuroraBackground').then(mod => ({ default: mod.AuroraBackground })), { ssr: false })
+const ArchitectureNetwork = dynamic(() => import('@/components/3d/ArchitectureNetwork').then(mod => ({ default: mod.ArchitectureNetwork })), { ssr: false })
 
 interface BlogPageClientProps {
   posts: BlogPost[]
@@ -32,8 +32,8 @@ export function BlogPageClient({ posts, categories }: BlogPageClientProps) {
 
   return (
     <div className="relative min-h-screen overflow-hidden pt-14 pb-20 sm:pb-24" style={{ backgroundColor: 'var(--bg-primary)', color: 'var(--text-primary)' }}>
-      <div className="pointer-events-none fixed inset-0 z-0 opacity-10">
-        <AuroraBackground />
+      <div className="pointer-events-none fixed inset-0 z-0 opacity-15">
+        <ArchitectureNetwork />
       </div>
       <div className="relative z-10">
       <div className="mx-auto max-w-[840px] px-4 sm:px-6 lg:px-8">
@@ -43,7 +43,7 @@ export function BlogPageClient({ posts, categories }: BlogPageClientProps) {
               <span className="block h-px w-5 bg-[var(--divider-line)] sm:w-6" /> Blog
             </div>
             <h1 className="text-[clamp(36px,11vw,88px)] font-extrabold leading-[0.95] tracking-[-0.03em] text-[var(--text-primary)]" style={{ fontFamily: "'Syne', sans-serif" }}>
-              Technical<br /><span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.28)" }}>Articles</span>
+              Technical<br /><span className="text-transparent" style={{ WebkitTextStroke: "1px var(--stroke)" }}>Articles</span>
             </h1>
             <p className="mt-5 max-w-[580px] text-sm font-light leading-7 text-[var(--text-secondary)] sm:mt-6 sm:text-[15px] sm:leading-8 md:text-base md:leading-[1.75]">
               Engineering deep-dives, system design concepts, and architectural patterns.

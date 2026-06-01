@@ -101,7 +101,7 @@ function Edges() {
 
 export function ArchitectureExplorer() {
   return (
-    <Canvas camera={{ position: [0, 0.5, 4], fov: 50 }} dpr={[1, 2]}>
+    <Canvas camera={{ position: [0, 0.5, 4], fov: 50 }} dpr={[1, 2]} gl={{ alpha: true }}>
       <ambientLight intensity={0.5} />
       <pointLight position={[3, 3, 3]} intensity={0.5} />
       {defaultNodes.map((n) => (

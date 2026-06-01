@@ -114,7 +114,7 @@ export function ShaderPlayground() {
         </div>
       </div>
       <div className="overflow-hidden rounded-lg border" style={{ borderColor: 'var(--border-color)', height: 500 }}>
-        <Canvas camera={{ position: [0, 0, 1] }} dpr={[1, 2]}>
+        <Canvas camera={{ position: [0, 0, 1] }} dpr={[1, 2]} gl={{ alpha: true }}>
           <ShaderPlane frag={shaderPresets[active].frag} />
         </Canvas>
       </div>

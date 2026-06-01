@@ -92,7 +92,7 @@ function Scene() {
 
 export function DistributedSystemSim() {
   return (
-    <Canvas camera={{ position: [0, 0, 5], fov: 50 }} dpr={[1, 2]}>
+    <Canvas camera={{ position: [0, 0, 5], fov: 50 }} dpr={[1, 2]} gl={{ alpha: true }}>
       <Scene />
       <ambientLight intensity={0.5} />
       <pointLight position={[3, 5, 5]} intensity={0.5} />

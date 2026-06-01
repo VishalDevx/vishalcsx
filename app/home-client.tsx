@@ -123,7 +123,7 @@ export function HomeClient({ projects, posts }: HomeClientProps) {
             <div>
               <h2 className="mb-4 text-[clamp(28px,5vw,48px)] font-extrabold leading-[0.95] tracking-[-0.03em]" style={{ fontFamily: "'Syne', sans-serif", color: 'var(--text-primary)' }}>
                 Infrastructure<br />
-                <span className="text-transparent" style={{ WebkitTextStroke: '1px rgba(255,255,255,0.28)' }}>at a glance</span>
+                <span className="text-transparent" style={{ WebkitTextStroke: '1px var(--stroke)' }}>at a glance</span>
               </h2>
               <p className="mb-6 max-w-[520px] text-sm font-light leading-7 sm:text-[15px] sm:leading-8" style={{ color: 'var(--text-secondary)' }}>
                 Full-stack architecture from CDN edge to database replicas — designed for latency, resilience, and horizontal scale. Hover any node to see its role.

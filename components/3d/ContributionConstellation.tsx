@@ -74,7 +74,7 @@ export function ContributionConstellation() {
   )
 
   return (
-    <Canvas camera={{ position: [0, 0, 5], fov: 55 }} dpr={[1, 2]}>
+    <Canvas camera={{ position: [0, 0, 5], fov: 55 }} dpr={[1, 2]} gl={{ alpha: true }}>
       <ambientLight intensity={0.4} />
       <pointLight position={[5, 5, 5]} intensity={0.3} />
       {starData.map((s, i) => (

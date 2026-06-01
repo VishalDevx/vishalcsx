@@ -40,7 +40,7 @@ export default function ContactPage() {
               <span className="block h-px w-5 bg-[var(--divider-line)] sm:w-6" /> Contact
             </div>
             <h1 className="text-[clamp(34px,10vw,80px)] font-extrabold leading-[0.95] tracking-[-0.03em]" style={{ fontFamily: "'Syne', sans-serif" }}>
-              Let&apos;s build<br /><span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.28)" }}>something real</span>
+              Let&apos;s build<br /><span className="text-transparent" style={{ WebkitTextStroke: "1px var(--stroke)" }}>something real</span>
             </h1>
             <p className="mt-5 max-w-[520px] text-sm leading-7 text-[var(--text-secondary)] sm:mt-6 sm:text-[15px] sm:leading-[1.8] md:text-base">
               I&apos;m open to serious work — backend-heavy systems, full-stack products, or anything that involves real engineering challenges. If it&apos;s just a quick clone project or low-quality work, I&apos;m not interested.

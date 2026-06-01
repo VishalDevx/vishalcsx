@@ -62,7 +62,7 @@ export default function BlogsPage() {
               </div>
               <h1 className="text-[clamp(34px,10vw,88px)] font-extrabold leading-[0.92] tracking-[-0.03em] text-[var(--text-primary)]" style={{ fontFamily: "'Syne', sans-serif" }}>
                 Notes on<br />
-                <span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.28)" }}>systems</span> & shipping
+                <span className="text-transparent" style={{ WebkitTextStroke: "1px var(--stroke)" }}>systems</span> & shipping
               </h1>
               <p className="mt-5 max-w-[520px] text-sm font-light leading-7 text-[var(--text-secondary)] sm:mt-6 sm:text-[15px] sm:leading-[1.8] md:text-base">
                 Writing about backend architecture, full-stack systems, frontend structure, and the engineering decisions that actually matter once a product starts growing.

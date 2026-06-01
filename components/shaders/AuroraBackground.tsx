@@ -119,8 +119,7 @@ export function AuroraBackground() {
       <Canvas
         camera={{ position: [0, 0, 1] }}
         dpr={[1, 2]}
-        gl={{ antialias: false, alpha: false }}
-        style={{ background: '#050505' }}
+        gl={{ antialias: false, alpha: true }}
       >
         <AuroraScene />
       </Canvas>

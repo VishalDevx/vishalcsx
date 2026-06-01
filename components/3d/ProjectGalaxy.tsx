@@ -62,7 +62,7 @@ function OrbitRing({ radius }: { radius: number }) {
 
 export function ProjectGalaxy() {
   return (
-    <Canvas camera={{ position: [0, 3, 6], fov: 50 }} dpr={[1, 2]}>
+    <Canvas camera={{ position: [0, 3, 6], fov: 50 }} dpr={[1, 2]} gl={{ alpha: true }}>
       <ambientLight intensity={0.4} />
       <pointLight position={[5, 5, 5]} intensity={0.5} />
       {planets.map((p, i) => (

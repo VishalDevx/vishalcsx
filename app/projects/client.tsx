@@ -33,7 +33,7 @@ export function ProjectsPageClient({ projects, categories }: ProjectsPageClientP
               <span className="block h-px w-5 bg-[var(--divider-line)] sm:w-6" /> Projects
             </div>
             <h1 className="text-[clamp(36px,11vw,88px)] font-extrabold leading-[0.95] tracking-[-0.03em] text-[var(--text-primary)]" style={{ fontFamily: "'Syne', sans-serif" }}>
-              Featured Work<br /><span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.28)" }}>& Case Studies</span>
+              Featured Work<br /><span className="text-transparent" style={{ WebkitTextStroke: "1px var(--stroke)" }}>& Case Studies</span>
             </h1>
             <p className="mt-5 max-w-[580px] text-sm font-light leading-7 text-[var(--text-secondary)] sm:mt-6 sm:text-[15px] sm:leading-8 md:text-base md:leading-[1.75]">
               A selection of projects spanning full-stack applications, backend systems, and architectural designs.

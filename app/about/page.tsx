@@ -47,7 +47,7 @@ export default function AboutPage() {
                 <span className="block h-px w-5 bg-[var(--divider-line)] sm:w-6" /> About Me
               </div>
               <h1 className="text-[clamp(34px,11vw,82px)] font-extrabold leading-[0.96] tracking-[-0.035em] text-[var(--text-primary)]" style={{ fontFamily: "'Syne', sans-serif" }}>
-                {header.title}<br /><span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.28)" }}>{header.subtitle}</span>
+                {header.title}<br /><span className="text-transparent" style={{ WebkitTextStroke: "1px var(--stroke)" }}>{header.subtitle}</span>
               </h1>
               <p className="mt-5 max-w-[760px] text-sm font-light leading-7 text-[var(--text-secondary)] sm:mt-6 sm:text-[15px] sm:leading-8 md:text-base md:leading-[1.9]">{header.description}</p>
             </div>

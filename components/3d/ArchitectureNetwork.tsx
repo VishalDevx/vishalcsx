@@ -127,7 +127,7 @@ function Scene() {
 export function ArchitectureNetwork() {
   return (
     <div className="w-full h-[400px] md:h-[500px]">
-      <Canvas camera={{ position: [0, 0, 6], fov: 50 }}>
+      <Canvas camera={{ position: [0, 0, 6], fov: 50 }} gl={{ alpha: true }}>
         <Scene />
         <ambientLight intensity={0.5} />
       </Canvas>

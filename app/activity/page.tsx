@@ -64,7 +64,7 @@ export default function ActivityPage() {
                 <span className="block h-px w-5 bg-[var(--divider-line)] sm:w-6" /> Activity Log
               </div>
               <h1 className="text-[clamp(36px,11vw,88px)] font-extrabold leading-[0.95] tracking-[-0.03em] text-[var(--text-primary)]" style={{ fontFamily: "'Syne', sans-serif" }}>
-                What I&apos;m<br /><span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.28)" }}>doing now</span>
+                What I&apos;m<br /><span className="text-transparent" style={{ WebkitTextStroke: "1px var(--stroke)" }}>doing now</span>
               </h1>
               <p className="mt-5 max-w-[580px] text-sm font-light leading-7 text-[var(--text-secondary)] sm:mt-6 sm:text-[15px] sm:leading-8 md:text-base md:leading-[1.75]">
                 A live view of what I&apos;m building, learning, exploring, and improving — from product systems and backend architecture to open source, protocol engineering, and AI/ML curiosity.

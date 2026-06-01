@@ -24,7 +24,7 @@ export function SystemDesignPageClient() {
               <span className="block h-px w-5 bg-[var(--divider-line)] sm:w-6" /> System Design
             </div>
             <h1 className="text-[clamp(36px,11vw,88px)] font-extrabold leading-[0.95] tracking-[-0.03em] text-[var(--text-primary)]" style={{ fontFamily: "'Syne', sans-serif" }}>
-              Architecture<br /><span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.28)" }}>& System Design</span>
+              Architecture<br /><span className="text-transparent" style={{ WebkitTextStroke: "1px var(--stroke)" }}>& System Design</span>
             </h1>
             <p className="mt-5 max-w-[580px] text-sm font-light leading-7 text-[var(--text-secondary)] sm:mt-6 sm:text-[15px] sm:leading-8 md:text-base md:leading-[1.75]">
               Interactive visualizations and deep dives into system design concepts. Explore architecture patterns, data flow, deployment strategies, and design decisions.

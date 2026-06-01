@@ -138,7 +138,7 @@ function SkillsGraphScene() {
 
 export function SkillsGraph() {
   return (
-    <Canvas camera={{ position: [0, 0, 6], fov: 50 }} dpr={[1, 2]}>
+    <Canvas camera={{ position: [0, 0, 6], fov: 50 }} dpr={[1, 2]} gl={{ alpha: true }}>
       <SkillsGraphScene />
       <ambientLight intensity={0.5} />
     </Canvas>

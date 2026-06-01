@@ -128,7 +128,7 @@ function ArcLines() {
 export function Globe() {
   return (
     <div className="w-full h-[400px] md:h-[500px]">
-      <Canvas camera={{ position: [0, 0, 6], fov: 45 }}>
+      <Canvas camera={{ position: [0, 0, 6], fov: 45 }} gl={{ alpha: true }}>
         <GlobeEarth />
         <ArcLines />
         <OrbitControls

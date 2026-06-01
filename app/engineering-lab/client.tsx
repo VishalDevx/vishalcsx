@@ -27,7 +27,7 @@ export function EngineeringLabClient() {
               <span className="block h-px w-5 bg-[var(--divider-line)] sm:w-6" /> Engineering Lab
             </div>
             <h1 className="text-[clamp(36px,11vw,88px)] font-extrabold leading-[0.95] tracking-[-0.03em] text-[var(--text-primary)]" style={{ fontFamily: "'Syne', sans-serif" }}>
-              Interactive<br /><span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.28)" }}>Playground</span>
+              Interactive<br /><span className="text-transparent" style={{ WebkitTextStroke: "1px var(--stroke)" }}>Playground</span>
             </h1>
             <p className="mt-5 max-w-[580px] text-sm font-light leading-7 text-[var(--text-secondary)] sm:mt-6 sm:text-[15px] sm:leading-8 md:text-base md:leading-[1.75]">
               Algorithm visualizations, physics simulations, and GPU shader experiments — all running in real-time.

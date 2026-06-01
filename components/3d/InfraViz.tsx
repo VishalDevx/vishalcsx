@@ -189,7 +189,7 @@ function Scene() {
 
 export function InfraViz() {
   return (
-    <Canvas camera={{ position: [0, 0.5, 5], fov: 50 }} dpr={[1, 2]}>
+    <Canvas camera={{ position: [0, 0.5, 5], fov: 50 }} dpr={[1, 2]} gl={{ alpha: true }}>
       <Scene />
       <ambientLight intensity={0.8} />
       <pointLight position={[5, 5, 5]} intensity={0.5} />

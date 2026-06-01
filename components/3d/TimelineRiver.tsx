@@ -93,7 +93,7 @@ function Particles() {
 
 export function TimelineRiver() {
   return (
-    <Canvas camera={{ position: [1.5, 0, 3], fov: 50 }} dpr={[1, 2]}>
+    <Canvas camera={{ position: [1.5, 0, 3], fov: 50 }} dpr={[1, 2]} gl={{ alpha: true }}>
       <River />
       {milestones.map((m) => (
         <Milestone key={m.year} data={m} />

@@ -2,6 +2,7 @@
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useState } from 'react'
+import { ThemeProvider } from 'next-themes'
 import { KeyboardShortcuts } from '@/components/layout/KeyboardShortcuts'
 
 export function Providers({ children }: { children: React.ReactNode }) {
@@ -18,9 +19,11 @@ export function Providers({ children }: { children: React.ReactNode }) {
   )
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <KeyboardShortcuts />
-      {children}
-    </QueryClientProvider>
+    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+      <QueryClientProvider client={queryClient}>
+        <KeyboardShortcuts />
+        {children}
+      </QueryClientProvider>
+    </ThemeProvider>
   )
 }

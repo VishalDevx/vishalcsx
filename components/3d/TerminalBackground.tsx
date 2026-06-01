@@ -67,7 +67,7 @@ function CursorParticles() {
 
 export function TerminalBackground() {
   return (
-    <Canvas camera={{ position: [0, 0, 3], fov: 50 }} dpr={[1, 2]}>
+    <Canvas camera={{ position: [0, 0, 3], fov: 50 }} dpr={[1, 2]} gl={{ alpha: true }}>
       <ambientLight intensity={0.3} />
       {commands.map((cmd, i) => (
         <FloatingCommand key={cmd} text={cmd} index={i} />

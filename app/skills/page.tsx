@@ -66,7 +66,7 @@ export default function SkillsPage() {
                 <span className="block h-px w-5 bg-zinc-700 sm:w-6" /> Technical Skills
               </div>
               <h1 className="text-[clamp(2.75rem,10vw,5.5rem)] font-extrabold leading-[0.92] tracking-[-0.03em] text-[var(--text-primary)]" style={{ fontFamily: "'Syne', sans-serif" }}>
-                Stack<br />I&apos;m <span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.28)" }}>building</span>
+                Stack<br />I&apos;m <span className="text-transparent" style={{ WebkitTextStroke: "1px var(--stroke)" }}>building</span>
               </h1>
               <p className="mt-5 max-w-[560px] text-sm font-light leading-7 text-[var(--text-secondary)] sm:mt-6 sm:text-base sm:leading-[1.75]">
                 Full-stack engineering with a strong <span className="font-normal text-[var(--text-primary)]">backend and systems</span> core — shaped by product building, architecture work, open-source learning, and real implementation.

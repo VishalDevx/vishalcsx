@@ -1,8 +1,8 @@
 'use client'
 
-import { useRef, useMemo, useState } from 'react'
+import { useRef, useMemo } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { Text, Html } from '@react-three/drei'
+import { Text } from '@react-three/drei'
 import * as THREE from 'three'
 
 interface SimNode {
@@ -10,16 +10,15 @@ interface SimNode {
   label: string
   position: [number, number, number]
   color: string
-  desc: string
 }
 
 const simNodes: SimNode[] = [
-  { id: 'lb', label: 'Load Balancer', position: [0, 2.5, 0], color: '#3b82f6', desc: 'Round-robin distribution' },
-  { id: 'app1', label: 'App Server 1', position: [-1.5, 1, 0], color: '#06b6d4', desc: 'Handles read operations' },
-  { id: 'app2', label: 'App Server 2', position: [1.5, 1, 0], color: '#06b6d4', desc: 'Handles write operations' },
-  { id: 'cache', label: 'Redis Cluster', position: [0, -0.5, 0], color: '#6366f1', desc: 'In-memory cache · TTL' },
-  { id: 'db1', label: 'DB Primary', position: [-1, -2, 0], color: '#8b5cf6', desc: 'Write master' },
-  { id: 'db2', label: 'DB Replica', position: [1, -2, 0], color: '#8b5cf6', desc: 'Read replica' },
+  { id: 'lb', label: 'Load Balancer', position: [2, 2.5, 0], color: '#00F5FF' },
+  { id: 'app1', label: 'App Server 1', position: [3.5, 1.5, 0], color: '#00F5FF' },
+  { id: 'app2', label: 'App Server 2', position: [5, 1.5, 0], color: '#00F5FF' },
+  { id: 'cache', label: 'Redis Cluster', position: [3.5, 0, 0], color: '#00F5FF' },
+  { id: 'db1', label: 'DB Primary', position: [2, -1.5, 0], color: '#00F5FF' },
+  { id: 'db2', label: 'DB Replica', position: [5, -1.5, 0], color: '#00F5FF' },
 ]
 
 const simEdges: [number, number][] = [[0, 1], [0, 2], [1, 3], [2, 3], [3, 4], [3, 5]]
@@ -34,8 +33,8 @@ function TrafficPacket({ from, to, offset }: { from: THREE.Vector3; to: THREE.Ve
   })
   return (
     <mesh ref={ref}>
-      <sphereGeometry args={[0.03, 6, 6]} />
-      <meshBasicMaterial color="#60a5fa" transparent opacity={0.6} />
+      <sphereGeometry args={[0.02, 6, 6]} />
+      <meshBasicMaterial color="#00F5FF" transparent opacity={0.5} />
     </mesh>
   )
 }
@@ -51,10 +50,10 @@ function SimNodeMesh({ data, index }: { data: SimNode; index: number }) {
   return (
     <group>
       <mesh ref={ref} position={data.position}>
-        <boxGeometry args={[0.4, 0.4, 0.4]} />
-        <meshPhysicalMaterial color={data.color} emissive={data.color} emissiveIntensity={0.1} metalness={0.5} roughness={0.3} transparent opacity={0.85} />
+        <boxGeometry args={[0.3, 0.3, 0.3]} />
+        <meshPhysicalMaterial color={data.color} emissive={data.color} emissiveIntensity={0.1} metalness={0.3} roughness={0.3} transparent opacity={0.7} />
       </mesh>
-      <Text position={[data.position[0], data.position[1] - 0.6, data.position[2]]} fontSize={0.08} color="#666" anchorX="center" anchorY="top">
+      <Text position={[data.position[0], data.position[1] - 0.5, data.position[2]]} fontSize={0.07} color="#666" anchorX="center" anchorY="top">
         {data.label}
       </Text>
     </group>
@@ -78,8 +77,8 @@ function Scene() {
         return (
           <group key={`edge-${i}`}>
             <mesh position={mid} quaternion={new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir)}>
-              <cylinderGeometry args={[0.006, 0.006, len, 4]} />
-              <meshBasicMaterial color="#222" transparent opacity={0.3} />
+              <cylinderGeometry args={[0.005, 0.005, len, 4]} />
+              <meshBasicMaterial color="#00F5FF" transparent opacity={0.15} />
             </mesh>
             <TrafficPacket from={from} to={to} offset={i * 0.2} />
             <TrafficPacket from={to} to={from} offset={i * 0.2 + 0.5} />
@@ -92,7 +91,7 @@ function Scene() {
 
 export function DistributedSystemSim() {
   return (
-    <Canvas camera={{ position: [0, 0, 5], fov: 50 }} dpr={[1, 2]} gl={{ alpha: true }}>
+    <Canvas camera={{ position: [4, 0, 5], fov: 45 }} dpr={[1, 2]} gl={{ alpha: true }}>
       <Scene />
       <ambientLight intensity={0.5} />
       <pointLight position={[3, 5, 5]} intensity={0.5} />

@@ -1,93 +1,85 @@
 'use client'
 
 import Link from 'next/link'
-import { Github, Linkedin, Twitter, Mail, Heart } from 'lucide-react'
-import { siteConfig, navItems } from '@/config/site'
+import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa'
+import { MdEmail } from 'react-icons/md'
+import { AnimateIn } from '@/components/ui/AnimateIn'
+import { siteConfig } from '@/config/site'
+
+const NAV_LINKS = [
+  { label: 'Work', href: '/projects' },
+  { label: 'System', href: '/system' },
+  { label: 'Blog', href: '/blog' },
+  { label: 'Contact', href: '/contact' },
+]
+
+const SOCIALS = [
+  { icon: FaGithub, href: siteConfig.links.github, label: 'GitHub' },
+  { icon: FaLinkedin, href: siteConfig.links.linkedin, label: 'LinkedIn' },
+  { icon: FaTwitter, href: siteConfig.links.twitter, label: 'Twitter' },
+  { icon: MdEmail, href: `mailto:${siteConfig.links.email}`, label: 'Email' },
+]
 
 export function Footer() {
   return (
-    <footer className="border-t border-border-subtle bg-bg-secondary/50">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          <div className="col-span-2 md:col-span-1">
-            <Link href="/" className="flex items-center gap-2 text-lg font-bold">
-              <span className="h-7 w-7 rounded-lg bg-accent flex items-center justify-center">
-                <span className="text-white text-xs font-bold">V</span>
-              </span>
-              {siteConfig.name}
-            </Link>
-            <p className="mt-3 text-sm text-text-secondary leading-relaxed max-w-xs">
-              Senior Full Stack & Backend Engineer. Building scalable products, systems, and developer experiences.
-            </p>
-            <div className="flex items-center gap-2 mt-4">
-              <a href={siteConfig.links.github} target="_blank" rel="noopener noreferrer" className="h-9 w-9 rounded-lg bg-bg-tertiary flex items-center justify-center text-icon-color hover:text-icon-hover hover:bg-bg-tertiary/80 transition-colors">
-                <Github className="h-4 w-4" />
-              </a>
-              <a href={siteConfig.links.linkedin} target="_blank" rel="noopener noreferrer" className="h-9 w-9 rounded-lg bg-bg-tertiary flex items-center justify-center text-icon-color hover:text-icon-hover hover:bg-bg-tertiary/80 transition-colors">
-                <Linkedin className="h-4 w-4" />
-              </a>
-              <a href={siteConfig.links.twitter} target="_blank" rel="noopener noreferrer" className="h-9 w-9 rounded-lg bg-bg-tertiary flex items-center justify-center text-icon-color hover:text-icon-hover hover:bg-bg-tertiary/80 transition-colors">
-                <Twitter className="h-4 w-4" />
-              </a>
-              <a href={`mailto:${siteConfig.links.email}`} className="h-9 w-9 rounded-lg bg-bg-tertiary flex items-center justify-center text-icon-color hover:text-icon-hover hover:bg-bg-tertiary/80 transition-colors">
-                <Mail className="h-4 w-4" />
-              </a>
+    <AnimateIn variant="fadeUp">
+      <footer style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+        <div className="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+          <div className="flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
+            <div>
+              <Link href="/" className="font-syne text-lg font-bold tracking-[-0.04em]" style={{ color: 'var(--text-primary)', textDecoration: 'none' }}>
+                VISHAL.DEV
+              </Link>
+              <p className="mt-2 text-sm font-light" style={{ color: 'var(--text-secondary)' }}>
+                Building systems that scale.
+              </p>
+              <p className="mt-4 text-xs" style={{ color: 'var(--text-muted)' }}>
+                &copy; {new Date().getFullYear()} Vishal Singh
+              </p>
+            </div>
+
+            <div className="flex items-center gap-6">
+              {NAV_LINKS.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="text-xs uppercase tracking-[0.12em] transition-colors hover:text-[var(--text-primary)]"
+                  style={{ fontFamily: "'Space Mono', 'DM Mono', monospace", color: 'var(--text-muted)', textDecoration: 'none' }}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+
+            <div className="flex items-center gap-3">
+              {SOCIALS.map((s) => (
+                <a
+                  key={s.label}
+                  href={s.href}
+                  target="_blank" rel="noopener noreferrer"
+                  aria-label={s.label}
+                  className="flex items-center justify-center rounded-full border transition-all hover:scale-110"
+                  style={{
+                    width: 32, height: 32,
+                    borderColor: 'rgba(255,255,255,0.1)',
+                    color: 'var(--text-muted)',
+                  }}
+                  onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#00F5FF'; e.currentTarget.style.color = '#00F5FF' }}
+                  onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; e.currentTarget.style.color = 'var(--text-muted)' }}
+                >
+                  <s.icon size={13} />
+                </a>
+              ))}
             </div>
           </div>
-          <div>
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-text-muted mb-3">Navigation</h3>
-            <ul className="space-y-2">
-              {navItems.slice(0, 5).map((item) => (
-                <li key={item.href}>
-                  <Link href={item.href} className="text-sm text-text-secondary hover:text-text-primary transition-colors">
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-text-muted mb-3">More</h3>
-            <ul className="space-y-2">
-              {navItems.slice(5).map((item) => (
-                <li key={item.href}>
-                  <Link href={item.href} className="text-sm text-text-secondary hover:text-text-primary transition-colors">
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-              <li>
-                <Link href="/dashboard" className="text-sm text-text-secondary hover:text-text-primary transition-colors">
-                  Dashboard
-                </Link>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-text-muted mb-3">Contact</h3>
-            <ul className="space-y-2">
-              <li>
-                <a href={`mailto:${siteConfig.links.email}`} className="text-sm text-text-secondary hover:text-text-primary transition-colors">
-                  {siteConfig.links.email}
-                </a>
-              </li>
-              <li>
-                <Link href="/contact" className="text-sm text-text-secondary hover:text-text-primary transition-colors">
-                  Send a message
-                </Link>
-              </li>
-            </ul>
+
+          <div className="mt-10 pt-6 text-center" style={{ borderTop: '0.5px solid var(--border-subtle)' }}>
+            <p className="text-[11px] tracking-[0.05em]" style={{ fontFamily: "'Space Mono', 'DM Mono', monospace", color: 'var(--text-muted)' }}>
+              Designed &amp; engineered by Vishal Singh &middot; Next.js &middot; Framer Motion &middot; Three.js
+            </p>
           </div>
         </div>
-        <div className="mt-12 pt-8 border-t border-border-subtle flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-text-muted">
-            &copy; {new Date().getFullYear()} {siteConfig.name}. All rights reserved.
-          </p>
-          <p className="text-xs text-text-muted flex items-center gap-1">
-            Built with <Heart className="h-3 w-3 text-red-500" /> using Next.js & Three.js
-          </p>
-        </div>
-      </div>
-    </footer>
+      </footer>
+    </AnimateIn>
   )
 }

@@ -81,6 +81,7 @@
 }
 
 * { scrollbar-width: thin; scrollbar-color: var(--text-muted) transparent; }
+@media (min-width: 768px) { * { cursor: none !important; } }
 
 ::selection { background: var(--selection); color: white; }
 

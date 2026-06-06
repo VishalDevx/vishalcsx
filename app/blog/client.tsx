@@ -1,13 +1,17 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
+import { motion, AnimatePresence } from 'framer-motion'
 import dynamic from 'next/dynamic'
-import { Calendar, Clock, Search } from 'lucide-react'
+import { Calendar, Clock, Search, ArrowRight } from 'lucide-react'
+import { staggerContainer, scaleIn } from '@/lib/animations'
 import { formatDate, calculateReadingTime } from '@/lib/utils'
 import type { BlogPost } from '@/types'
 
 const ArchitectureNetwork = dynamic(() => import('@/components/3d/ArchitectureNetwork').then(mod => ({ default: mod.ArchitectureNetwork })), { ssr: false })
+
+const PLACEHOLDERS = ['Search articles...', 'Try: multi-tenant...', 'Try: Redis caching...']
 
 interface BlogPageClientProps {
   posts: BlogPost[]
@@ -17,6 +21,16 @@ interface BlogPageClientProps {
 export function BlogPageClient({ posts, categories }: BlogPageClientProps) {
   const [search, setSearch] = useState('')
   const [activeCategory, setActiveCategory] = useState<string>('all')
+  const [placeholderIndex, setPlaceholderIndex] = useState(0)
+  const [focused, setFocused] = useState(false)
+  const searchRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPlaceholderIndex((i) => (i + 1) % PLACEHOLDERS.length)
+    }, 3000)
+    return () => clearInterval(interval)
+  }, [])
 
   const filtered = posts.filter((post) => {
     const matchesSearch =
@@ -32,7 +46,7 @@ export function BlogPageClient({ posts, categories }: BlogPageClientProps) {
 
   return (
     <div className="relative min-h-screen overflow-hidden pt-14 pb-20 sm:pb-24" style={{ backgroundColor: 'var(--bg-primary)', color: 'var(--text-primary)' }}>
-      <div className="pointer-events-none fixed inset-0 z-0 opacity-15">
+      <div className="pointer-events-none fixed inset-0 z-0 opacity-[0.07] dark:opacity-[0.04]" style={{ maskImage: 'linear-gradient(to right, transparent 0%, black 40%)', WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 40%)' }}>
         <ArchitectureNetwork />
       </div>
       <div className="relative z-10">
@@ -55,24 +69,28 @@ export function BlogPageClient({ posts, categories }: BlogPageClientProps) {
           <div className="relative flex-1">
             <Search size={11} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: 'var(--text-muted)' }} />
             <input
+              ref={searchRef}
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search articles..."
-              className="w-full h-9 pl-9 pr-3 text-sm outline-none"
+              onFocus={() => setFocused(true)}
+              onBlur={() => setFocused(false)}
+              placeholder={PLACEHOLDERS[placeholderIndex]}
+              className="w-full h-9 pl-9 pr-3 text-sm outline-none transition-all"
               style={{
                 backgroundColor: 'var(--bg-secondary)',
                 color: 'var(--text-primary)',
-                border: '0.5px solid var(--border-color)',
+                border: `0.5px solid ${focused ? '#00F5FF' : 'var(--border-color)'}`,
                 borderRadius: '6px',
+                boxShadow: focused ? '0 0 0 2px rgba(0,245,255,0.1)' : 'none',
               }}
             />
           </div>
           <div className="flex flex-wrap gap-1.5">
             <button
               onClick={() => setActiveCategory('all')}
-              className="tag"
-              style={activeCategory === 'all' ? { background: 'var(--accent-bg)', color: 'var(--accent-text)', borderColor: 'var(--accent)' } : {}}
+              className="tag transition-all duration-200"
+              style={activeCategory === 'all' ? { background: '#00F5FF', color: '#050505', borderColor: '#00F5FF' } : {}}
             >
               All
             </button>
@@ -80,8 +98,8 @@ export function BlogPageClient({ posts, categories }: BlogPageClientProps) {
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
-                className="tag"
-                style={activeCategory === cat ? { background: 'var(--accent-bg)', color: 'var(--accent-text)', borderColor: 'var(--accent)' } : {}}
+                className="tag transition-all duration-200"
+                style={activeCategory === cat ? { background: '#00F5FF', color: '#050505', borderColor: '#00F5FF' } : {}}
               >
                 {cat}
               </button>
@@ -91,57 +109,79 @@ export function BlogPageClient({ posts, categories }: BlogPageClientProps) {
 
         {featured && (
           <div className="mb-10 overflow-hidden rounded-2xl border" style={{ borderColor: 'var(--card-border)' }}>
-            <Link href={`/blog/${featured.slug}`} className="group block bg-[var(--bg-primary)] p-5 transition-colors hover:bg-[var(--card-hover)] sm:p-6 lg:p-7">
+            <Link href={`/blog/${featured.slug}`} className="group relative block bg-[var(--bg-primary)] p-5 transition-all hover:shadow-[0_0_20px_rgba(0,245,255,0.06)] sm:p-6 lg:p-7">
+              <div className="absolute left-0 top-0 h-full w-[4px] bg-[#00F5FF]" />
               <div className="flex items-center gap-3 mb-3">
                 <span className="tag-accent">Featured</span>
                 <span className="font-dm-mono text-[10px] uppercase tracking-[0.12em]" style={{ color: 'var(--text-muted)' }}>{featured.category}</span>
+                <span className="ml-auto font-dm-mono flex items-center gap-1 rounded border border-[var(--border-color)] px-2 py-[2px] text-[9px] uppercase tracking-[0.12em]" style={{ color: 'var(--text-muted)' }}>
+                  <Clock size={9} /> {calculateReadingTime(featured.content)} min
+                </span>
               </div>
-              <h2 className="font-syne text-xl font-bold tracking-[-0.02em] transition-colors group-hover:text-[var(--accent-text)] sm:text-2xl" style={{ color: 'var(--text-primary)' }}>
+              <h2 className="font-syne text-xl font-bold tracking-[-0.02em] transition-colors group-hover:text-[#00F5FF] sm:text-2xl" style={{ color: 'var(--text-primary)' }}>
                 {featured.title}
               </h2>
               <p className="mt-2 text-sm font-light leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{featured.excerpt}</p>
               <div className="mt-3 flex items-center gap-4 font-dm-mono text-[10px] uppercase tracking-[0.12em]" style={{ color: 'var(--text-muted)' }}>
                 <span className="flex items-center gap-1"><Calendar size={10} /> {formatDate(featured.createdAt)}</span>
-                <span className="flex items-center gap-1"><Clock size={10} /> {calculateReadingTime(featured.content)} min read</span>
+                <span className="flex items-center gap-1 ml-auto transition-all group-hover:translate-x-[4px]">
+                  Read <ArrowRight size={10} />
+                </span>
               </div>
             </Link>
           </div>
         )}
 
-        {filtered.length === 0 ? (
-          <div className="py-20 text-center">
-            <p className="font-dm-mono text-[11px] uppercase tracking-[0.2em]" style={{ color: 'var(--text-muted)' }}>No articles found.</p>
-          </div>
-        ) : (
-          <div className="grid gap-px overflow-hidden rounded-2xl border sm:grid-cols-2" style={{ borderColor: 'var(--card-border)', backgroundColor: 'var(--card-border)' }}>
-            {filtered
-              .filter((p) => !p.featured || p.slug !== featured?.slug)
-              .map((post) => (
-                <Link
-                  key={post.slug}
-                  href={`/blog/${post.slug}`}
-                  className="group bg-[var(--bg-primary)] p-5 transition-colors hover:bg-[var(--card-hover)] sm:p-6"
-                >
-                  <div className="font-dm-mono mb-3 text-[10px] uppercase tracking-[0.12em]" style={{ color: 'var(--text-muted)' }}>{post.category}</div>
-                  <h3 className="font-syne text-sm font-bold tracking-[-0.02em] transition-colors group-hover:text-[var(--accent-text)]" style={{ color: 'var(--text-primary)' }}>
-                    {post.title}
-                  </h3>
-                  <p className="mt-1.5 text-sm font-light leading-relaxed line-clamp-2" style={{ color: 'var(--text-secondary)' }}>{post.excerpt}</p>
-                  <div className="mt-3 flex items-center gap-4 font-dm-mono text-[10px] uppercase tracking-[0.12em]" style={{ color: 'var(--text-muted)' }}>
-                    <span className="flex items-center gap-1"><Calendar size={10} /> {formatDate(post.createdAt)}</span>
-                    <span className="flex items-center gap-1"><Clock size={10} /> {calculateReadingTime(post.content)} min read</span>
-                  </div>
-                  {post.tags && post.tags.length > 0 && (
-                    <div className="mt-3 flex flex-wrap gap-1.5">
-                      {post.tags.slice(0, 3).map((tag) => (
-                        <span key={tag} className="tag">{tag}</span>
-                      ))}
-                    </div>
-                  )}
-                </Link>
-              ))}
-          </div>
-        )}
+        <AnimatePresence mode="wait">
+          {filtered.length === 0 ? (
+            <motion.div
+              key="empty"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="py-20 text-center"
+            >
+              <p className="font-dm-mono text-[11px] uppercase tracking-[0.2em]" style={{ color: 'var(--text-muted)' }}>No articles found.</p>
+            </motion.div>
+          ) : (
+            <motion.div
+              key={activeCategory + search}
+              variants={staggerContainer(0.08)}
+              initial="hidden"
+              animate="show"
+              className="grid gap-px overflow-hidden rounded-2xl border sm:grid-cols-2"
+              style={{ borderColor: 'var(--card-border)', backgroundColor: 'var(--card-border)' }}
+            >
+              {filtered
+                .filter((p) => !p.featured || p.slug !== featured?.slug)
+                .map((post) => (
+                  <motion.div key={post.slug} variants={scaleIn}>
+                    <Link
+                      href={`/blog/${post.slug}`}
+                      className="group block bg-[var(--bg-primary)] p-5 transition-colors hover:bg-[var(--card-hover)] sm:p-6"
+                    >
+                      <div className="font-dm-mono mb-3 text-[10px] uppercase tracking-[0.12em]" style={{ color: 'var(--text-muted)' }}>{post.category}</div>
+                      <h3 className="font-syne text-sm font-bold tracking-[-0.02em] transition-colors group-hover:text-[var(--accent-text)]" style={{ color: 'var(--text-primary)' }}>
+                        {post.title}
+                      </h3>
+                      <p className="mt-1.5 text-sm font-light leading-relaxed line-clamp-2" style={{ color: 'var(--text-secondary)' }}>{post.excerpt}</p>
+                      <div className="mt-3 flex items-center gap-4 font-dm-mono text-[10px] uppercase tracking-[0.12em]" style={{ color: 'var(--text-muted)' }}>
+                        <span className="flex items-center gap-1"><Calendar size={10} /> {formatDate(post.createdAt)}</span>
+                        <span className="flex items-center gap-1"><Clock size={10} /> {calculateReadingTime(post.content)} min read</span>
+                      </div>
+                      {post.tags && post.tags.length > 0 && (
+                        <div className="mt-3 flex flex-wrap gap-1.5">
+                          {post.tags.slice(0, 3).map((tag) => (
+                            <span key={tag} className="tag">{tag}</span>
+                          ))}
+                        </div>
+                      )}
+                    </Link>
+                  </motion.div>
+                ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
     </div>

@@ -1,12 +1,43 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
+import { motion, useMotionValue, useTransform } from "framer-motion";
 import { ArrowUpRight, Github, Activity as ActivityIcon, Boxes, Brain, Rocket, BookOpen, FolderGit2, GitCommitHorizontal } from "lucide-react";
 import { useData } from "@/lib/use-data";
 
 const TimelineRiver = dynamic(() => import("@/components/3d/TimelineRiver").then(mod => ({ default: mod.TimelineRiver })), { ssr: false });
+
+function StatCounter({ value, label, isInfinity }: { value: number; label: string; isInfinity: boolean }) {
+  const [count, setCount] = useState(0);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (isInfinity) return;
+    const duration = 1000;
+    const steps = 40;
+    const increment = value / steps;
+    let current = 0;
+    let step = 0;
+    const timer = setInterval(() => {
+      step++;
+      current = Math.min(current + increment, value);
+      setCount(Math.round(current));
+      if (step >= steps) { setCount(value); clearInterval(timer); }
+    }, duration / steps);
+    return () => clearInterval(timer);
+  }, [value, isInfinity]);
+
+  return (
+    <div ref={ref} className="flex flex-col items-start gap-1 lg:items-end">
+      <span className="text-[28px] font-bold leading-none text-[var(--text-primary)] sm:text-[34px] lg:text-[40px]" style={{ fontFamily: "'Syne', sans-serif" }}>
+        {isInfinity ? "∞" : count}
+      </span>
+      <span className="text-[9px] uppercase tracking-[0.15em] text-[var(--text-muted)] sm:text-[10px]" style={{ fontFamily: "'DM Mono', monospace" }}>{label}</span>
+    </div>
+  );
+}
 
 function getActivityIcon(type: string) {
   switch (type) {
@@ -71,11 +102,12 @@ export default function ActivityPage() {
               </p>
             </div>
             <div className="grid grid-cols-3 gap-4 sm:gap-5 lg:flex lg:flex-col lg:items-end lg:gap-4 lg:pb-1">
-              {[{ num: String(feed.length), label: "Active Tracks" }, { num: "3", label: "Core Focuses" }, { num: "∞", label: "Improvement Loop" }].map(({ num, label }, i) => (
-                <div key={i} className="flex flex-col items-start gap-1 lg:items-end">
-                  <span className="text-[28px] font-bold leading-none text-[var(--text-primary)] sm:text-[34px] lg:text-[40px]" style={{ fontFamily: "'Syne', sans-serif" }}>{num}</span>
-                  <span className="text-[9px] uppercase tracking-[0.15em] text-[var(--text-muted)] sm:text-[10px]" style={{ fontFamily: "'DM Mono', monospace" }}>{label}</span>
-                </div>
+              {[
+                { num: feed.length, label: "Active Tracks", isInfinity: false },
+                { num: 3, label: "Core Focuses", isInfinity: false },
+                { num: 0, label: "Improvement Loop", isInfinity: true },
+              ].map(({ num, label, isInfinity }, i) => (
+                <StatCounter key={i} value={num} label={label} isInfinity={isInfinity} />
               ))}
             </div>
           </header>
@@ -83,17 +115,23 @@ export default function ActivityPage() {
           <div className="mb-8 flex flex-wrap gap-2 sm:mb-10">
             {filters.map((filter: string) => (
               <button key={filter} onClick={() => setActiveFilter(filter)}
-                className={`rounded border px-3 py-[7px] text-[10px] uppercase tracking-[0.12em] transition-all sm:px-4 sm:text-[11px] ${activeFilter === filter ? "border-[var(--accent)] bg-[var(--accent-bg)] text-[var(--accent-text)]" : "border-[var(--border-color)] bg-transparent text-[var(--text-secondary)] hover:border-[var(--border-color)] hover:bg-[var(--card-hover)] hover:text-[var(--text-primary)]"}`}
+                className={`rounded border px-3 py-[7px] text-[10px] uppercase tracking-[0.12em] transition-all duration-200 sm:px-4 sm:text-[11px] ${activeFilter === filter ? "bg-cyan-500 text-[#050505] border-cyan-500" : "border-[var(--border-color)] bg-transparent text-[var(--text-secondary)] hover:border-[var(--border-color)] hover:bg-[var(--card-hover)] hover:text-[var(--text-primary)]"}`}
                 style={{ fontFamily: "'DM Mono', monospace" }}>{filter}</button>
             ))}
           </div>
 
-          <div className="mb-16 flex flex-col gap-px overflow-hidden rounded-2xl border border-[var(--border-color)] bg-[var(--card-border)] sm:mb-20">
+            <div className="mb-16 flex flex-col gap-px overflow-hidden rounded-2xl border border-[var(--border-color)] bg-[var(--card-border)] sm:mb-20">
             {filteredFeed.map((item: any) => {
               const isOpen = expandedSlug === item.slug;
               const Icon = getActivityIcon(item.type);
               return (
-                <article key={item.slug} onClick={() => toggleCard(item.slug)}
+                <motion.article
+                  key={item.slug}
+                  initial={{ opacity: 0, x: -16 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: "-80px" }}
+                  transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                  onClick={() => toggleCard(item.slug)}
                   className={`grid cursor-pointer grid-cols-1 transition-colors md:grid-cols-[64px_1fr] lg:grid-cols-[72px_1fr_170px] ${isOpen ? "border-l-2 border-[var(--accent)] bg-[var(--bg-secondary)]" : "bg-[var(--bg-primary)] hover:bg-[var(--bg-secondary)]"}`}>
                   <div className="flex items-center justify-between border-b border-[var(--border-color)] px-5 py-4 md:hidden">
                     <span className="text-[10px] tracking-[0.1em] text-[var(--text-muted)]" style={{ fontFamily: "'DM Mono', monospace" }}>{item.index}</span>
@@ -143,12 +181,15 @@ export default function ActivityPage() {
                     <div className="flex flex-col items-end gap-[8px]">
                       <div className="text-[10px] uppercase tracking-[0.1em] text-[var(--text-muted)]" style={{ fontFamily: "'DM Mono', monospace" }}>Status</div>
                       <div className="flex items-center gap-2">
-                        <span className="h-2 w-2 rounded-full bg-blue-500" />
+                        <span className="relative flex h-2 w-2">
+                          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-500 opacity-75" />
+                          <span className="relative inline-flex h-2 w-2 rounded-full bg-blue-500" />
+                        </span>
                         <span className="text-[11px] uppercase tracking-[0.1em] text-[var(--text-secondary)]" style={{ fontFamily: "'DM Mono', monospace" }}>Active</span>
                       </div>
                     </div>
                   </div>
-                </article>
+                </motion.article>
               );
             })}
           </div>

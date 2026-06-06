@@ -2,15 +2,14 @@
 
 import { motion } from 'framer-motion'
 
-const pageVariants = {
-  initial: { opacity: 0, y: -10 },
-  enter: { opacity: 1, y: 0, transition: { duration: 0.3, ease: 'easeOut' as const, delay: 0.1 } },
-  exit: { opacity: 0, y: -10, transition: { duration: 0.2, ease: 'easeOut' as const } },
-}
-
 export function PageTransition({ children }: { children: React.ReactNode }) {
   return (
-    <motion.div variants={pageVariants} initial="initial" animate="enter" exit="exit">
+    <motion.div
+      initial={{ opacity: 0, y: 16, filter: 'blur(4px)' }}
+      animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+      exit={{ opacity: 0, y: -16, filter: 'blur(4px)' }}
+      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+    >
       {children}
     </motion.div>
   )

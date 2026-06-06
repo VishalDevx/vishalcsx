@@ -239,6 +239,51 @@ export function HomeClient({ projects, posts }: HomeClientProps) {
         </motion.div>
       </LazySection>
 
+      {/* Currently Building */}
+      <LazySection>
+        <motion.section {...fadeUp} className="relative overflow-hidden border-y py-14 sm:py-16 lg:py-20" style={{ backgroundColor: 'var(--bg-primary)', borderColor: 'var(--border-subtle)' }}>
+          <div className="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+            <div className="mb-8 flex items-center gap-4 sm:mb-10">
+              <span className="font-dm-mono whitespace-nowrap text-[10px] uppercase tracking-[0.2em]" style={{ color: 'var(--text-muted)' }}>CHAPTER // NOW</span>
+              <div className="h-px flex-1" style={{ backgroundColor: 'var(--divider-line)' }} />
+            </div>
+            <div className="grid gap-8 lg:grid-cols-[320px_1fr] lg:gap-12">
+              <div>
+                <h2 className="font-syne text-[clamp(28px,5vw,42px)] font-bold leading-[0.95] tracking-[-0.03em]" style={{ color: 'var(--text-primary)' }}>
+                  Currently in<br />motion.
+                </h2>
+              </div>
+              <div className="space-y-px overflow-hidden rounded-2xl border" style={{ borderColor: 'var(--card-border)', backgroundColor: 'var(--card-border)' }}>
+                {[
+                  { color: 'bg-emerald-500', status: 'ACTIVE', label: 'Product System', title: 'Expanding the School Management System', desc: 'Multi-tenant school platform with stronger module structure, workflow clarity, and production-focused backend decisions.', tags: ['Next.js', 'TypeScript', 'PostgreSQL', 'Redis'] },
+                  { color: 'bg-blue-500', status: 'LEARNING', label: 'Protocol Engineering', title: 'Pushing Deeper into DAO Framework Architecture', desc: 'Rust, Solana, plugin-based governance design, and protocol-level system thinking.', tags: ['Rust', 'Solana', 'Anchor', 'DAO'] },
+                  { color: 'bg-amber-500', status: 'BUILDING', label: 'Brand + Frontend', title: 'Turning the Portfolio into a Structured Product', desc: 'Building the portfolio like an actual system — with reusable sections and stronger frontend structure.', tags: ['Next.js', 'Tailwind', 'Framer Motion', 'UI Systems'] },
+                ].map((item, i) => (
+                  <div key={i} className="group bg-[var(--bg-primary)] p-5 transition-colors hover:bg-[var(--bg-secondary)] sm:p-6">
+                    <div className="flex items-start gap-4">
+                      <div className={`mt-1 h-10 w-1 flex-shrink-0 rounded-full ${item.color}`} />
+                      <div className="flex-1 min-w-0">
+                        <div className="mb-2 flex items-center gap-3">
+                          <span className="tag-accent">{item.label}</span>
+                          <span className="font-dm-mono text-[9px] uppercase tracking-[0.15em]" style={{ color: 'var(--text-muted)' }}>{item.status}</span>
+                        </div>
+                        <h3 className="mb-2 text-[17px] font-bold tracking-[-0.02em] transition-colors group-hover:text-[var(--accent-text)]" style={{ fontFamily: "'Syne', sans-serif", color: 'var(--text-primary)' }}>{item.title}</h3>
+                        <p className="mb-3 text-sm font-light leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{item.desc}</p>
+                        <div className="flex flex-wrap gap-[6px]">
+                          {item.tags.map((tag) => (
+                            <span key={tag} className="tag">{tag}</span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </motion.section>
+      </LazySection>
+
       <LazySection>
         <motion.div {...fadeUp}>
           <TechStack />

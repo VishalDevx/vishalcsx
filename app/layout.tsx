@@ -4,6 +4,7 @@ import './globals.css'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 import { CommandPalette } from '@/components/ui/CommandPalette'
+import { RouteProgress } from '@/components/global/RouteProgress'
 import { Providers } from './providers'
 
 const syne = Syne({
@@ -101,6 +102,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </head>
         <body className={`${syne.variable} ${dmSans.variable} ${jetbrainsMono.variable} antialiased min-h-screen`} style={{ background: 'var(--bg-primary)', color: 'var(--text-primary)', fontFamily: "'DM Sans', sans-serif" }}>
           <Providers>
+            <RouteProgress />
             <Navbar />
             <main className="min-h-screen">{children}</main>
             <Footer />

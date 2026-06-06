@@ -1,8 +1,9 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { motion, useMotionValue, useSpring } from 'framer-motion'
 import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa'
 import { SiGmail } from 'react-icons/si'
 import { ArrowUpRight, Menu, X } from 'lucide-react'
@@ -26,13 +27,74 @@ const SOCIALS = [
   { icon: SiGmail, href: 'mailto:vishalcsx@gmail.com', label: 'Email' },
 ]
 
+function MagneticHire({ children }: { children: React.ReactNode }) {
+  const ref = useRef<HTMLAnchorElement>(null)
+  const x = useMotionValue(0)
+  const y = useMotionValue(0)
+  const springX = useSpring(x, { stiffness: 100, damping: 20 })
+  const springY = useSpring(y, { stiffness: 100, damping: 20 })
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const el = ref.current
+    if (!el) return
+    const rect = el.getBoundingClientRect()
+    const dx = e.clientX - rect.left - rect.width / 2
+    const dy = e.clientY - rect.top - rect.height / 2
+    const dist = Math.sqrt(dx * dx + dy * dy)
+    if (dist < 60) {
+      const maxOffset = 8
+      const offset = Math.min(dist, maxOffset)
+      const angle = Math.atan2(dy, dx)
+      x.set(Math.cos(angle) * offset)
+      y.set(Math.sin(angle) * offset)
+    } else {
+      x.set(0)
+      y.set(0)
+    }
+  }
+
+  const handleMouseLeave = () => {
+    x.set(0)
+    y.set(0)
+  }
+
+  return (
+    <a
+      ref={ref}
+      href="mailto:vishalcsx@gmail.com"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className="hire-btn hidden items-center justify-center sm:inline-flex"
+      style={{ transform: `translate(${springX.get()}px, ${springY.get()}px)` }}
+    >
+      {children}
+    </a>
+  )
+}
+
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false)
+  const [hidden, setHidden] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [scrollProgress, setScrollProgress] = useState(0)
   const pathname = usePathname()
+  const lastScrollRef = useRef(0)
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24)
+    const onScroll = () => {
+      const y = window.scrollY
+      setScrolled(y > 24)
+
+      if (y > 100) {
+        setHidden(y > lastScrollRef.current)
+      } else {
+        setHidden(false)
+      }
+      lastScrollRef.current = y
+
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight
+      setScrollProgress(docHeight > 0 ? Math.min((y / docHeight) * 100, 100) : 0)
+    }
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
@@ -46,8 +108,10 @@ export function Navbar() {
   }
 
   return (
-    <header
+    <motion.header
       className="fixed inset-x-0 top-0 z-50"
+      animate={{ y: hidden ? -100 : 0 }}
+      transition={{ duration: 0.3, ease: 'easeInOut' }}
       style={{
         backgroundColor: scrolled ? 'var(--bg-secondary)' : 'var(--bg-primary)',
         borderBottom: `0.5px solid ${scrolled ? 'var(--border-color)' : 'var(--border-subtle)'}`,
@@ -99,6 +163,14 @@ export function Navbar() {
                 aria-current={isActive(href) ? 'page' : undefined}
               >
                 {label}
+                {isActive(href) && (
+                  <motion.div
+                    layoutId="nav-indicator"
+                    className="absolute bottom-0 left-1/2 h-[2px] w-[60%] -translate-x-1/2 rounded-full"
+                    style={{ backgroundColor: '#00F5FF' }}
+                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                  />
+                )}
               </Link>
             )
           )}
@@ -106,14 +178,29 @@ export function Navbar() {
 
         <div className="flex items-center gap-2 sm:gap-3">
           <ThemeToggle />
-          <a href="mailto:vishalcsx@gmail.com" className="hire-btn hidden items-center justify-center sm:inline-flex">
+          <MagneticHire>
             Hire me <ArrowUpRight size={10} />
-          </a>
+          </MagneticHire>
           <button type="button" className="hamburger-btn flex items-center justify-center lg:hidden" onClick={() => setMenuOpen((prev) => !prev)} aria-label={menuOpen ? 'Close menu' : 'Open menu'} aria-expanded={menuOpen}>
             {menuOpen ? <X size={16} /> : <Menu size={16} />}
           </button>
         </div>
       </div>
+
+      <div
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: '2px',
+          background: 'linear-gradient(90deg, #00F5FF, #7B2FFF)',
+          transform: `scaleX(${scrollProgress / 100})`,
+          transformOrigin: 'left',
+          opacity: scrollProgress > 0 ? 1 : 0,
+          transition: 'opacity 0.3s ease',
+        }}
+      />
 
       {menuOpen && (
         <div id="mobile-navigation" style={{ borderTop: '0.5px solid var(--border-subtle)', backgroundColor: 'var(--bg-primary)' }} className="px-4 pb-5 pt-3 lg:hidden">
@@ -146,6 +233,7 @@ export function Navbar() {
           color: var(--text-muted);
           transition: color 0.15s, background 0.15s, border-color 0.15s;
           white-space: nowrap; text-decoration: none;
+          position: relative;
         }
         .nav-link:hover { color: var(--text-primary); background: var(--bg-secondary); }
         .nav-link.active { color: var(--text-primary); border-color: var(--border-color); background: var(--bg-secondary); }
@@ -192,6 +280,6 @@ export function Navbar() {
         }
         .hamburger-btn:hover { border-color: var(--border-hover); color: var(--text-primary); background: var(--bg-secondary); }
       `}</style>
-    </header>
+    </motion.header>
   )
 }

@@ -9,7 +9,7 @@ const DistributedSystemSim = dynamic(() => import('@/components/3d/DistributedSy
 export function SystemDesignPageClient() {
   return (
     <div className="relative pt-14 pb-20">
-      <div className="pointer-events-none fixed inset-0 z-0 opacity-25">
+      <div className="pointer-events-none fixed inset-0 z-0 opacity-[0.07] dark:opacity-[0.04]" style={{ maskImage: 'linear-gradient(to right, transparent 0%, black 40%)', WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 40%)' }}>
         <DistributedSystemSim />
       </div>
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

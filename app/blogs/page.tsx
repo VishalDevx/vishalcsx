@@ -130,8 +130,8 @@ export default function BlogsPage() {
                     ))}
                   </div>
                   <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                    <Link href={`/blogs/${featuredArticle.slug}`} className="inline-flex items-center justify-center gap-2 rounded-md bg-[var(--btn-bg)] px-5 py-3 text-[11px] font-medium uppercase tracking-[0.1em] text-[var(--btn-text)] transition-colors hover:bg-[var(--btn-hover)]" style={{ fontFamily: "'DM Mono', monospace" }}>Read article <ArrowUpRight size={12} /></Link>
-                    <Link href={`/blogs/${featuredArticle.slug}`} className="inline-flex items-center justify-center gap-2 rounded-md border border-[var(--border-color)] px-5 py-3 text-[11px] uppercase tracking-[0.1em] text-[var(--text-secondary)] transition-all hover:border-[var(--border-color)] hover:bg-[var(--card-hover)] hover:text-[var(--text-primary)]" style={{ fontFamily: "'DM Mono', monospace" }}>Open page <ExternalLink size={12} /></Link>
+                    <Link href={`/blog/${featuredArticle.slug}`} className="inline-flex items-center justify-center gap-2 rounded-md bg-[var(--btn-bg)] px-5 py-3 text-[11px] font-medium uppercase tracking-[0.1em] text-[var(--btn-text)] transition-colors hover:bg-[var(--btn-hover)]" style={{ fontFamily: "'DM Mono', monospace" }}>Read article <ArrowUpRight size={12} /></Link>
+                    <Link href={`/blog/${featuredArticle.slug}`} className="inline-flex items-center justify-center gap-2 rounded-md border border-[var(--border-color)] px-5 py-3 text-[11px] uppercase tracking-[0.1em] text-[var(--text-secondary)] transition-all hover:border-[var(--border-color)] hover:bg-[var(--card-hover)] hover:text-[var(--text-primary)]" style={{ fontFamily: "'DM Mono', monospace" }}>Open page <ExternalLink size={12} /></Link>
                   </div>
                 </div>
                 <div className="flex flex-col justify-between bg-[var(--bg-secondary)] p-5 sm:p-7 md:p-8 lg:p-10">
@@ -176,7 +176,7 @@ export default function BlogsPage() {
                 </div>
               ) : (
                 filteredArticles.map((article) => (
-                  <Link key={article.slug} href={`/blogs/${article.slug}`} className="group grid grid-cols-1 bg-[var(--bg-primary)] transition-colors hover:bg-[var(--bg-secondary)] sm:grid-cols-[60px_1fr] md:grid-cols-[70px_1fr_auto]">
+                  <Link key={article.slug} href={`/blog/${article.slug}`} className="group grid grid-cols-1 bg-[var(--bg-primary)] transition-colors hover:bg-[var(--bg-secondary)] sm:grid-cols-[60px_1fr] md:grid-cols-[70px_1fr_auto]">
                     <div className="hidden border-r border-[var(--border-color)] pt-7 sm:flex sm:items-start sm:justify-center">
                       <span className="text-[11px] tracking-[0.1em] text-[var(--text-muted)]" style={{ fontFamily: "'DM Mono', monospace" }}>{article.id}</span>
                     </div>

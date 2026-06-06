@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import dynamic from "next/dynamic";
+import { motion, AnimatePresence } from "framer-motion";
 import { useData } from "@/lib/use-data";
 
 const ArchitectureNetwork = dynamic(() => import("@/components/3d/ArchitectureNetwork").then(mod => ({ default: mod.ArchitectureNetwork })), { ssr: false });
@@ -11,16 +12,94 @@ const RADAR_COLORS: Record<string, string> = {
   Adopt: "var(--accent-text)", Trial: "var(--accent)", Assess: "var(--accent-text)", Hold: "var(--text-muted)",
 };
 
-const NODE_STYLES: Record<string, string> = {
-  client: "color:var(--accent-text);background:var(--accent-bg);borderColor:var(--accent)",
-  gateway: "color:var(--accent-text);background:var(--accent-bg);borderColor:var(--accent)",
-  service: "color:var(--accent-text);background:var(--accent-bg);borderColor:var(--accent)",
-  infra: "color:var(--icon-color);background:var(--accent-bg);borderColor:var(--accent)",
-  db: "color:var(--accent-text);background:var(--accent-bg);borderColor:var(--accent)",
-};
-
 function Mono({ children }: { children: React.ReactNode }) {
   return <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: "var(--icon-color)" }}>{children}</span>;
+}
+
+function ArchSvg({ id }: { id: string }) {
+
+  const diagrams: Record<string, { nodes: { x: number; y: number; label: string; color: string }[]; edges: [number, number][] }> = {
+    "cs-01": {
+      nodes: [
+        { x: 50, y: 20, label: "Client", color: "#a0a0a0" },
+        { x: 160, y: 20, label: "API Gateway", color: "#00F5FF" },
+        { x: 270, y: 20, label: "Auth", color: "#00F5FF" },
+        { x: 50, y: 80, label: "Tenant Resolver", color: "#00F5FF" },
+        { x: 170, y: 80, label: "Schema A", color: "#8b5cf6" },
+        { x: 270, y: 80, label: "Schema B", color: "#8b5cf6" },
+        { x: 370, y: 80, label: "Schema C", color: "#8b5cf6" },
+      ],
+      edges: [[0, 1], [1, 2], [1, 3], [3, 4], [3, 5], [3, 6]],
+    },
+    "cs-02": {
+      nodes: [
+        { x: 50, y: 20, label: "External API", color: "#a0a0a0" },
+        { x: 160, y: 20, label: "Rate Limiter", color: "#00F5FF" },
+        { x: 270, y: 20, label: "Router", color: "#00F5FF" },
+        { x: 50, y: 80, label: "Cache Layer", color: "#00F5FF" },
+        { x: 160, y: 80, label: "Queue", color: "#00F5FF" },
+        { x: 280, y: 80, label: "Worker Pool", color: "#00F5FF" },
+        { x: 400, y: 80, label: "DB Cluster", color: "#8b5cf6" },
+      ],
+      edges: [[0, 1], [1, 2], [2, 3], [2, 4], [4, 5], [5, 6]],
+    },
+  };
+
+  const d = diagrams[id] || diagrams["cs-01"];
+
+  const edgePaths = d.edges.map(([f, t]) => {
+    const from = d.nodes[f];
+    const to = d.nodes[t];
+    const dx = to.x - from.x;
+    const dy = to.y - from.y;
+    const cx1 = from.x + dx * 0.4;
+    const cy1 = from.y;
+    const cx2 = to.x - dx * 0.4;
+    const cy2 = to.y;
+    return { path: `M${from.x},${from.y} C${cx1},${cy1} ${cx2},${cy2} ${to.x},${to.y}`, key: `${f}-${t}` };
+  });
+
+  return (
+    <div style={{ padding: "22px 28px", borderTop: "0.5px solid var(--border-color)", background: "var(--bg-primary)" }}>
+      <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 9, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--text-muted)", marginBottom: 14 }}>Architecture flow</p>
+      <svg viewBox="0 0 440 110" style={{ width: "100%", maxHeight: 120 }}>
+        {edgePaths.map((ep) => (
+          <path
+            key={ep.key}
+            d={ep.path}
+            fill="none"
+            stroke="rgba(0,245,255,0.3)"
+            strokeWidth="1"
+            strokeDasharray="4 3"
+          />
+        ))}
+        {d.nodes.map((node, i) => (
+          <g key={i}>
+            <rect
+              x={node.x - 4}
+              y={node.y - 8}
+              width={node.label.length * 6 + 8}
+              height={16}
+              rx={4}
+              fill={node.color === "#8b5cf6" ? "rgba(139,92,246,0.15)" : "rgba(0,245,255,0.08)"}
+              stroke={node.color}
+              strokeWidth="0.5"
+            />
+            <text
+              x={node.x + node.label.length * 3}
+              y={node.y + 3.5}
+              fill={node.color}
+              fontSize="7"
+              fontFamily="DM Mono, monospace"
+              textAnchor="middle"
+            >
+              {node.label}
+            </text>
+          </g>
+        ))}
+      </svg>
+    </div>
+  );
 }
 
 function SectionLabel({ text }: { text: string }) {
@@ -29,50 +108,6 @@ function SectionLabel({ text }: { text: string }) {
       <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, letterSpacing: "0.22em", textTransform: "uppercase", color: "var(--text-muted)", whiteSpace: "nowrap" }}>{text}</span>
       <div style={{ flex: 1, height: "0.5px", background: "var(--border-color)" }} />
     </div>
-  );
-}
-
-function ArchDiagram({ rows, colors }: { rows: string[][]; colors: string[][] }) {
-  return (
-    <div style={{ padding: "22px 28px", borderTop: "0.5px solid var(--border-color)", background: "var(--bg-primary)" }}>
-      <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 9, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--text-muted)", marginBottom: 14 }}>Architecture flow</p>
-      {rows.map((row, ri) => (
-        <div key={ri} style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap", marginBottom: 6, paddingLeft: ri === 1 ? 160 : 0 }}>
-          {row.map((node, ni) => (
-            <span key={ni} style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, letterSpacing: "0.08em", padding: "6px 12px", borderRadius: 4, border: "0.5px solid", whiteSpace: "nowrap", ...Object.fromEntries(NODE_STYLES[colors[ri][ni]]?.split(";").map((s) => { const [k, v] = s.split(":"); return [k.trim(), v?.trim()]; }) || []) }}>
-              {node}
-            </span>
-          ))}
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function DecisionTable({ rows }: { rows: { decision: string; chosen: string; rejected: string }[] }) {
-  return (
-    <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12, marginTop: 8 }}>
-      <thead>
-        <tr>
-          {["Decision", "Chosen", "Rejected"].map((h) => (
-            <th key={h} style={{ fontFamily: "'DM Mono', monospace", fontSize: 9, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--text-muted)", padding: "8px 10px", textAlign: "left", borderBottom: "0.5px solid var(--border-color)" }}>{h}</th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {rows.map((r) => (
-          <tr key={r.decision}>
-            <td style={{ padding: "9px 10px", borderBottom: "0.5px solid var(--border-subtle)", color: "var(--text-muted)", fontFamily: "'DM Mono', monospace", fontSize: 10, whiteSpace: "nowrap", verticalAlign: "top" }}>{r.decision}</td>
-            <td style={{ padding: "9px 10px", borderBottom: "0.5px solid var(--border-subtle)", verticalAlign: "top" }}>
-              <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 9, letterSpacing: "0.08em", padding: "2px 7px", borderRadius: 3, color: "var(--accent-text)", background: "rgba(52,211,153,0.1)", border: "0.5px solid var(--accent)" }}>{r.chosen}</span>
-            </td>
-            <td style={{ padding: "9px 10px", borderBottom: "0.5px solid var(--border-subtle)", verticalAlign: "top" }}>
-              <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 9, letterSpacing: "0.08em", padding: "2px 7px", borderRadius: 3, color: "var(--accent-text)", background: "var(--accent-bg)", border: "0.5px solid var(--accent)" }}>{r.rejected}</span>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
   );
 }
 
@@ -92,7 +127,6 @@ export default function SystemsPage() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap');
         .cs-panel-grid { display: grid; grid-template-columns: 1fr 1fr; }
         @media (max-width: 768px) { .cs-panel-grid { grid-template-columns: 1fr; } .scale-grid { grid-template-columns: 1fr !important; } .radar-grid { grid-template-columns: 1fr 1fr !important; } .principles-grid { grid-template-columns: 1fr !important; } .metrics-grid { grid-template-columns: repeat(2,1fr) !important; } }
       `}</style>
@@ -156,7 +190,7 @@ export default function SystemsPage() {
                   </div>
                   {isOpen && (
                     <>
-                      <ArchDiagram rows={cs.archRows} colors={cs.archColors} />
+                      <ArchSvg id={cs.id} />
                       <div className="cs-panel-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1px", background: "var(--border-color)" }}>
                         {cs.panels?.map((panel: any) => (
                           <div key={panel.label} style={{ background: "var(--bg-primary)", padding: "22px 26px" }}>
@@ -171,9 +205,30 @@ export default function SystemsPage() {
                       </div>
                       <div style={{ background: "var(--bg-primary)", padding: "22px 26px", borderTop: "0.5px solid var(--border-color)" }}>
                         <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 9, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--text-muted)", marginBottom: 10 }}>Key decisions</p>
-                        <DecisionTable rows={cs.decisions} />
+                        <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12, marginTop: 8 }}>
+                          <thead>
+                            <tr>
+                              {["Decision", "Chosen", "Rejected"].map((h) => (
+                                <th key={h} style={{ fontFamily: "'DM Mono', monospace", fontSize: 9, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--text-muted)", padding: "8px 10px", textAlign: "left", borderBottom: "0.5px solid var(--border-color)" }}>{h}</th>
+                              ))}
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {cs.decisions?.map((r: any) => (
+                              <tr key={r.decision}>
+                                <td style={{ padding: "9px 10px", borderBottom: "0.5px solid var(--border-subtle)", color: "var(--text-muted)", fontFamily: "'DM Mono', monospace", fontSize: 10, whiteSpace: "nowrap", verticalAlign: "top" }}>{r.decision}</td>
+                                <td style={{ padding: "9px 10px", borderBottom: "0.5px solid var(--border-subtle)", verticalAlign: "top" }}>
+                                  <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 9, letterSpacing: "0.08em", padding: "2px 7px", borderRadius: 3, color: "var(--accent-text)", background: "rgba(52,211,153,0.1)", border: "0.5px solid var(--accent)" }}>{r.chosen}</span>
+                                </td>
+                                <td style={{ padding: "9px 10px", borderBottom: "0.5px solid var(--border-subtle)", verticalAlign: "top" }}>
+                                  <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 9, letterSpacing: "0.08em", padding: "2px 7px", borderRadius: 3, color: "var(--accent-text)", background: "var(--accent-bg)", border: "0.5px solid var(--accent)" }}>{r.rejected}</span>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
                       </div>
-                      <div className="metrics-grid" style={{ display: "grid", gridTemplateColumns: `repeat(${cs.metrics.length},1fr)`, gap: "1px", background: "var(--border-color)", borderTop: "0.5px solid var(--border-color)" }}>
+                      <div className="metrics-grid" style={{ display: "grid", gridTemplateColumns: `repeat(${cs.metrics?.length || 1},1fr)`, gap: "1px", background: "var(--border-color)", borderTop: "0.5px solid var(--border-color)" }}>
                         {cs.metrics?.map((m: any) => (
                           <div key={m.label} style={{ background: "var(--bg-primary)", padding: "18px 20px", textAlign: "center" }}>
                             <div style={{ fontFamily: "'Syne', sans-serif", fontSize: 26, fontWeight: 700, color: "var(--text-primary)", lineHeight: 1 }}>{m.val}</div>

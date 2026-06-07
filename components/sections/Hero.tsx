@@ -329,7 +329,7 @@ export function Hero() {
             <motion.div variants={heroItem} className="flex flex-wrap items-center gap-2">
               {[
                 { icon: FaGithub, label: 'GitHub', url: 'https://github.com/VishalDevx' },
-                { icon: FaLinkedin, label: 'LinkedIn', url: 'https://linkedin.com/in/vishalcsx' },
+                { icon: FaLinkedin, label: 'LinkedIn', url: 'https://www.linkedin.com/in/vishal-singh-779054260/' },
                 { icon: FaTwitter, label: 'Twitter', url: 'https://x.com/vishalcsx' },
                 { icon: MdEmail, label: 'Email', url: 'mailto:vishalcsx@gmail.com' },
               ].map((s) => (

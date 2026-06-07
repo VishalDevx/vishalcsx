@@ -9,7 +9,7 @@ export const siteConfig: SiteConfig = {
   ogImage: '/og/default.png',
   links: {
     github: 'https://github.com/VishalDevx',
-    linkedin: 'https://linkedin.com/in/vishalcsx',
+    linkedin: 'https://www.linkedin.com/in/vishal-singh-779054260/',
     twitter: 'https://x.com/vishalcsx',
     email: 'vishalcsx@gmail.com',
   },
@@ -45,7 +45,7 @@ export const profile: Profile = {
   ],
   social: {
     github: 'https://github.com/VishalDevx',
-    linkedin: 'https://linkedin.com/in/vishalcsx',
+    linkedin: 'https://www.linkedin.com/in/vishal-singh-779054260/',
     twitter: 'https://x.com/vishalcsx',
     email: 'vishalcsx@gmail.com',
   },

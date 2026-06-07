@@ -15,7 +15,7 @@ interface BlogDetailClientProps {
 
 export function BlogDetailClient({ post, relatedPosts }: BlogDetailClientProps) {
   return (
-    <div className="relative min-h-screen overflow-hidden pt-32 pb-20 sm:pb-24" style={{ backgroundColor: 'var(--bg-primary)', color: 'var(--text-primary)' }}>
+    <div className="relative min-h-screen overflow-hidden pt-14 pb-20 sm:pb-24" style={{ backgroundColor: 'var(--bg-primary)', color: 'var(--text-primary)' }}>
       <div className="pointer-events-none fixed inset-0 z-0 opacity-15">
         <Globe />
       </div>

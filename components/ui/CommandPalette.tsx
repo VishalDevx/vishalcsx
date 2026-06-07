@@ -31,7 +31,7 @@ const commands: CommandItem[] = [
   { id: 'engine', label: 'Engineering Playground', description: 'Pathfinding, sorting, physics demos', href: '/engine', icon: <Beaker className="h-4 w-4" />, shortcut: 'G X', keywords: ['playground', 'experiments', 'algorithms', 'physics', 'demos'], section: 'Navigation' },
   { id: 'resume', label: 'Download Resume', description: 'Download Vishal\'s CV (PDF)', action: () => { const a = document.createElement('a'); a.href = '/cv/Vishal-Resume.pdf'; a.download = ''; a.click(); }, icon: <FileDown className="h-4 w-4" />, shortcut: 'R', keywords: ['resume', 'cv', 'download', 'pdf'], section: 'Actions' },
   { id: 'github-link', label: 'Open GitHub Profile', description: 'github.com/VishalDevx', action: () => window.open('https://github.com/VishalDevx', '_blank'), icon: <Github className="h-4 w-4" />, keywords: ['github', 'profile', 'repos'], section: 'Actions' },
-  { id: 'linkedin-link', label: 'Open LinkedIn Profile', description: 'linkedin.com/in/vishalcsx', action: () => window.open('https://linkedin.com/in/vishalcsx', '_blank'), icon: <Linkedin className="h-4 w-4" />, keywords: ['linkedin', 'profile', 'connect'], section: 'Actions' },
+  { id: 'linkedin-link', label: 'Open LinkedIn Profile', description: 'linkedin.com/in/vishal-singh-779054260/', action: () => window.open('https://www.linkedin.com/in/vishal-singh-779054260/', '_blank'), icon: <Linkedin className="h-4 w-4" />, keywords: ['linkedin', 'profile', 'connect'], section: 'Actions' },
   { id: 'terminal', label: 'Terminal Contact', description: 'Interactive terminal interface', href: '/contact', icon: <Terminal className="h-4 w-4" />, keywords: ['terminal', 'contact', 'cli', 'command'], section: 'Actions' },
 ]
 

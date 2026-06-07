@@ -82,7 +82,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 url: 'https://vishalcsx.dev',
                 sameAs: [
                   'https://github.com/VishalDevx',
-                  'https://linkedin.com/in/vishalcsx',
+                  'https://www.linkedin.com/in/vishal-singh-779054260/',
                   'https://x.com/vishalcsx',
                 ],
                 jobTitle: 'Senior Full Stack & Backend Engineer',

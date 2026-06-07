@@ -5,14 +5,17 @@ import { useEffect, useRef } from 'react'
 export function CustomCursor() {
   const dotRef = useRef<HTMLDivElement>(null)
   const ringRef = useRef<HTMLDivElement>(null)
+  const trailRef = useRef<HTMLDivElement>(null)
   const posRef = useRef({ x: 0, y: 0 })
   const ringPosRef = useRef({ x: 0, y: 0 })
+  const trailPosRef = useRef({ x: 0, y: 0 })
   const rafRef = useRef<number>(0)
 
   useEffect(() => {
     const dot = dotRef.current
     const ring = ringRef.current
-    if (!dot || !ring) return
+    const trail = trailRef.current
+    if (!dot || !ring || !trail) return
 
     let isPointer = false
     let isText = false
@@ -45,27 +48,39 @@ export function CustomCursor() {
         y: lerp(ringPosRef.current.y, posRef.current.y, 0.12),
       }
 
+      trailPosRef.current = {
+        x: lerp(trailPosRef.current.x, ringPosRef.current.x, 0.08),
+        y: lerp(trailPosRef.current.y, ringPosRef.current.y, 0.08),
+      }
+
       if (isPointer) {
         ring.style.width = '48px'
         ring.style.height = '48px'
         ring.style.background = 'rgba(0,245,255,0.08)'
+        ring.style.borderColor = 'rgba(0,245,255,0.4)'
         dot.style.width = '3px'
         dot.style.height = '3px'
+        trail.style.opacity = '0.6'
       } else if (isText) {
         ring.style.width = '2px'
         ring.style.height = '24px'
         ring.style.background = 'transparent'
+        ring.style.borderColor = 'rgba(0,245,255,0.8)'
         dot.style.width = '6px'
         dot.style.height = '6px'
+        trail.style.opacity = '0.3'
       } else {
         ring.style.width = '28px'
         ring.style.height = '28px'
         ring.style.background = 'transparent'
+        ring.style.borderColor = 'rgba(0,245,255,0.6)'
         dot.style.width = '6px'
         dot.style.height = '6px'
+        trail.style.opacity = '0.15'
       }
 
       ring.style.transform = `translate(${ringPosRef.current.x - parseInt(ring.style.width) / 2}px, ${ringPosRef.current.y - parseInt(ring.style.height) / 2}px)`
+      trail.style.transform = `translate(${trailPosRef.current.x - 16}px, ${trailPosRef.current.y - 16}px)`
 
       rafRef.current = requestAnimationFrame(loop)
     }
@@ -86,6 +101,22 @@ export function CustomCursor() {
   return (
     <>
       <div
+        ref={trailRef}
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '32px',
+          height: '32px',
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(0,245,255,0.15), transparent 70%)',
+          pointerEvents: 'none',
+          zIndex: 9998,
+          transition: 'opacity 0.3s ease',
+          opacity: 0.15,
+        }}
+      />
+      <div
         ref={dotRef}
         style={{
           position: 'fixed',
@@ -98,6 +129,7 @@ export function CustomCursor() {
           pointerEvents: 'none',
           zIndex: 9999,
           transition: 'width 0.15s, height 0.15s, background 0.15s',
+          boxShadow: '0 0 8px rgba(0,245,255,0.6), 0 0 16px rgba(0,245,255,0.3)',
         }}
       />
       <div
@@ -112,7 +144,7 @@ export function CustomCursor() {
           border: '1.5px solid rgba(0,245,255,0.6)',
           pointerEvents: 'none',
           zIndex: 9999,
-          transition: 'width 0.15s, height 0.15s, background 0.15s',
+          transition: 'width 0.15s, height 0.15s, background 0.15s, border-color 0.15s',
         }}
       />
     </>

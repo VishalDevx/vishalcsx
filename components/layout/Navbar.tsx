@@ -72,6 +72,44 @@ function MagneticHire({ children }: { children: React.ReactNode }) {
   )
 }
 
+function NavLink({ href, label, isActive: active }: { href: string; label: string; isActive: boolean }) {
+  const [hovered, setHovered] = useState(false)
+
+  return (
+    <Link
+      href={href}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className={`nav-link${active ? ' active' : ''}`}
+      aria-current={active ? 'page' : undefined}
+    >
+      {label}
+      {active && (
+        <motion.div
+          layoutId="nav-indicator"
+          className="absolute bottom-0 left-1/2 h-[2px] w-[60%] -translate-x-1/2 rounded-full"
+          style={{
+            background: 'linear-gradient(90deg, #00F5FF, #A855F7)',
+          }}
+          transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+        />
+      )}
+      {hovered && !active && (
+        <motion.div
+          className="absolute bottom-0 left-1/2 h-[1.5px] w-[30%] -translate-x-1/2 rounded-full"
+          style={{
+            background: 'var(--text-muted)',
+          }}
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          exit={{ scaleX: 0 }}
+          transition={{ duration: 0.2 }}
+        />
+      )}
+    </Link>
+  )
+}
+
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [hidden, setHidden] = useState(false)
@@ -113,16 +151,32 @@ export function Navbar() {
       animate={{ y: hidden ? -100 : 0 }}
       transition={{ duration: 0.3, ease: 'easeInOut' }}
       style={{
-        backgroundColor: scrolled ? 'var(--bg-secondary)' : 'var(--bg-primary)',
-        borderBottom: `0.5px solid ${scrolled ? 'var(--border-color)' : 'var(--border-subtle)'}`,
-        backdropFilter: scrolled ? 'blur(16px)' : 'none',
-        WebkitBackdropFilter: scrolled ? 'blur(16px)' : 'none',
-        transition: 'background-color 0.3s ease, border-color 0.3s ease',
+        backgroundColor: scrolled ? 'rgba(5, 5, 5, 0.75)' : 'transparent',
+        borderBottom: `0.5px solid ${scrolled ? 'var(--border-color)' : 'transparent'}`,
+        backdropFilter: scrolled ? 'blur(20px) saturate(1.4)' : 'none',
+        WebkitBackdropFilter: scrolled ? 'blur(20px) saturate(1.4)' : 'none',
+        transition: 'background-color 0.4s ease, border-color 0.4s ease',
       }}
     >
+      {/* Gradient bottom border line */}
+      <div
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: '1.5px',
+          background: 'linear-gradient(90deg, transparent, #00F5FF, #A855F7, transparent)',
+          transform: `scaleX(${scrollProgress / 100})`,
+          transformOrigin: 'left',
+          opacity: scrollProgress > 0 ? 0.6 : 0,
+          transition: 'opacity 0.3s ease',
+        }}
+      />
+
       <div className="mx-auto flex h-14 max-w-[1200px] items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-baseline gap-[3px] no-underline" aria-label="Go to homepage">
-          <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.04em' }}>
+          <span style={{ fontFamily: "'Syne', sans-serif", fontSize: 20, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.04em' }}>
             Vishal
           </span>
           <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: '0.12em', color: 'var(--text-muted)', textTransform: 'uppercase' }}>
@@ -134,13 +188,7 @@ export function Navbar() {
           {NAV_LINKS.map(({ label, href }) =>
             label === 'Contact' ? (
               <span key={href} className="flex items-center gap-1">
-                <Link
-                  href={href}
-                  className={`nav-link${isActive(href) ? ' active' : ''}`}
-                  aria-current={isActive(href) ? 'page' : undefined}
-                >
-                  {label}
-                </Link>
+                <NavLink href={href} label={label} isActive={isActive(href)} />
                 <div className="mx-1 h-3 w-px" style={{ background: 'var(--divider-line)' }} />
                 {SOCIALS.map(({ icon: Icon, href: socialHref, label: socialLabel }) => (
                   <a
@@ -156,22 +204,7 @@ export function Navbar() {
                 ))}
               </span>
             ) : (
-              <Link
-                key={href}
-                href={href}
-                className={`nav-link${isActive(href) ? ' active' : ''}`}
-                aria-current={isActive(href) ? 'page' : undefined}
-              >
-                {label}
-                {isActive(href) && (
-                  <motion.div
-                    layoutId="nav-indicator"
-                    className="absolute bottom-0 left-1/2 h-[2px] w-[60%] -translate-x-1/2 rounded-full"
-                    style={{ backgroundColor: '#00F5FF' }}
-                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                  />
-                )}
-              </Link>
+              <NavLink key={href} href={href} label={label} isActive={isActive(href)} />
             )
           )}
         </nav>
@@ -187,23 +220,20 @@ export function Navbar() {
         </div>
       </div>
 
-      <div
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height: '2px',
-          background: 'linear-gradient(90deg, #00F5FF, #7B2FFF)',
-          transform: `scaleX(${scrollProgress / 100})`,
-          transformOrigin: 'left',
-          opacity: scrollProgress > 0 ? 1 : 0,
-          transition: 'opacity 0.3s ease',
-        }}
-      />
-
       {menuOpen && (
-        <div id="mobile-navigation" style={{ borderTop: '0.5px solid var(--border-subtle)', backgroundColor: 'var(--bg-primary)' }} className="px-4 pb-5 pt-3 lg:hidden">
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.2 }}
+          style={{
+            borderTop: '0.5px solid var(--border-subtle)',
+            backgroundColor: 'rgba(5, 5, 5, 0.9)',
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+          }}
+          className="px-4 pb-5 pt-3 lg:hidden"
+        >
           <div className="mb-4 flex flex-wrap items-center gap-2 pb-4" style={{ borderBottom: '0.5px solid var(--border-subtle)' }}>
             {SOCIALS.map(({ icon: Icon, href, label }) => (
               <a key={label} href={href} target={href.startsWith('mailto:') ? undefined : '_blank'} rel={href.startsWith('mailto:') ? undefined : 'noopener noreferrer'} aria-label={label} className="social-btn flex items-center justify-center">
@@ -221,7 +251,7 @@ export function Navbar() {
               </Link>
             ))}
           </nav>
-        </div>
+        </motion.div>
       )}
 
       <style>{`
@@ -235,8 +265,8 @@ export function Navbar() {
           white-space: nowrap; text-decoration: none;
           position: relative;
         }
-        .nav-link:hover { color: var(--text-primary); background: var(--bg-secondary); }
-        .nav-link.active { color: var(--text-primary); border-color: var(--border-color); background: var(--bg-secondary); }
+        .nav-link:hover { color: var(--text-primary); background: var(--bg-secondary); border-color: rgba(0,245,255,0.1); }
+        .nav-link.active { color: var(--text-primary); border-color: rgba(0,245,255,0.15); background: rgba(0,245,255,0.05); }
         .mobile-nav-link {
           font-family: 'JetBrains Mono', monospace;
           font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
@@ -246,7 +276,7 @@ export function Navbar() {
           transition: color 0.15s, background 0.15s;
         }
         .mobile-nav-link:hover { color: var(--text-primary); background: var(--bg-secondary); }
-        .mobile-nav-link.active { color: var(--text-primary); background: var(--bg-secondary); border-color: var(--border-color); }
+        .mobile-nav-link.active { color: var(--text-primary); background: rgba(0,245,255,0.05); border-color: rgba(0,245,255,0.15); }
         .social-btn {
           width: 34px; height: 34px; border-radius: 8px;
           border: 0.5px solid var(--border-color);
@@ -268,17 +298,32 @@ export function Navbar() {
           color: var(--btn-text); background: var(--btn-bg);
           border: 0.5px solid var(--border-color); border-radius: 8px;
           padding: 8px 14px; text-decoration: none; gap: 6px;
-          transition: background 0.15s, border-color 0.15s;
+          transition: all 0.2s ease;
           white-space: nowrap;
+          position: relative;
+          overflow: hidden;
         }
-        .hire-btn:hover { background: var(--btn-hover); }
+        .hire-btn::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(135deg, rgba(0,245,255,0.1), transparent);
+          opacity: 0;
+          transition: opacity 0.3s ease;
+        }
+        .hire-btn:hover::after { opacity: 1; }
+        .hire-btn:hover { background: var(--btn-hover); border-color: var(--accent); transform: translateY(-1px); }
         .hamburger-btn {
           background: transparent; border: 0.5px solid var(--border-color);
           border-radius: 8px; color: var(--text-secondary); cursor: pointer;
           width: 36px; height: 36px;
           transition: color 0.15s, background 0.15s, border-color 0.15s;
         }
-        .hamburger-btn:hover { border-color: var(--border-hover); color: var(--text-primary); background: var(--bg-secondary); }
+        .hamburger-btn:hover {
+          border-color: rgba(0,245,255,0.2);
+          color: var(--text-primary);
+          background: rgba(0,245,255,0.05);
+        }
       `}</style>
     </motion.header>
   )

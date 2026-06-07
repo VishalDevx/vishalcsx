@@ -50,7 +50,7 @@ export function BlogPageClient({ posts, categories }: BlogPageClientProps) {
         <ArchitectureNetwork />
       </div>
       <div className="relative z-10">
-      <div className="mx-auto max-w-[840px] px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
         <header className="mb-12 border-b border-[var(--border-color)] pb-10 pt-12 sm:mb-14 sm:pb-12 sm:pt-14 lg:mb-16 lg:pb-14 lg:pt-20">
           <div>
             <div className="mb-4 flex items-center gap-3 text-[10px] uppercase tracking-[0.2em] text-[var(--text-secondary)] sm:mb-5 sm:text-[11px]" style={{ fontFamily: "'DM Mono', monospace" }}>

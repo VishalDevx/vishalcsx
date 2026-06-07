@@ -260,12 +260,12 @@ export function Hero() {
 
             <motion.h1 variants={heroItem} className="text-[clamp(40px,15vw,96px)] leading-[0.92] tracking-[-0.05em] font-extrabold font-syne" style={{ color: 'var(--text-primary)' }}>
               <motion.span
-                className="flex"
+                className="flex flex-col"
                 variants={heroContainer}
                 initial="hidden"
                 animate="show"
               >
-                {firstName.map((char, i) => (
+                <div>{firstName.map((char, i) => (
                   <motion.span
                     key={`fn-${i}`}
                     custom={i}
@@ -277,25 +277,22 @@ export function Hero() {
                   >
                     {char === ' ' ? '\u00A0' : char}
                   </motion.span>
+                ))}</div>
+                <div>
+  {lastName.map((char, i) => (
+                  <motion.span
+                    key={`ln-${i}`}
+                    className="inline-block"
+                    style={{ color: 'transparent', WebkitTextStroke: '1px var(--stroke)' }}
+                    variants={heroItem}
+                    transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.3 + (firstName.length + i) * 0.04 }}
+                  >
+                    {char === ' ' ? '\u00A0' : char}
+                  </motion.span>
                 ))}
+                </div>
+              
               </motion.span>
-              <br />
-              {lastName.map((char, i) => (
-                <motion.span
-                  key={`ln-${i}`}
-                  className="inline-block"
-                  style={{
-                    background: 'linear-gradient(135deg, #00F5FF, #A855F7, #EC4899)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text',
-                  }}
-                  variants={heroItem}
-                  transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.3 + i * 0.04 }}
-                >
-                  {char === ' ' ? '\u00A0' : char}
-                </motion.span>
-              ))}
             </motion.h1>
 
             <motion.p variants={heroItem} className="max-w-[620px] text-lg font-light leading-relaxed sm:text-xl md:text-2xl" style={{ color: 'var(--text-secondary)' }}>

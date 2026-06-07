@@ -6,7 +6,7 @@ import { useState, useEffect, useRef } from 'react'
 import { ArrowUpRight, Download } from 'lucide-react'
 import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa'
 import { MdEmail } from 'react-icons/md'
-import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion'
+import { motion, useMotionValue, useSpring } from 'framer-motion'
 import { profile } from '@/config/site'
 import { heroContainer, heroItem, heroImage } from '@/lib/animations'
 import dynamic from 'next/dynamic'
@@ -23,7 +23,6 @@ const STATS = [
 function AnimatedStat({ value, suffix, label }: { value: number; suffix: string; label: string }) {
   const ref = useRef<HTMLDivElement>(null)
   const motionValue = useMotionValue(0)
-  const rounded = useTransform(motionValue, (v) => Math.round(v))
   const [display, setDisplay] = useState(0)
 
   useEffect(() => {
@@ -86,39 +85,97 @@ function MagneticButton({ children, className, href, download }: { children: Rea
     y.set(0)
   }
 
-  const Tag = href.startsWith('/') ? Link : 'a'
-  const linkProps = href.startsWith('/') ? { href } : { href, target: '_blank', rel: 'noopener noreferrer' }
-
   return (
     <a
       ref={ref}
-      {...linkProps}
+      href={href}
       download={download}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       className={className}
+      target={href.startsWith('http') ? '_blank' : undefined}
+      rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
       style={{ transform: `translate(${springX.get()}px, ${springY.get()}px)` }}
     >
       {children}
     </a>
-  ) as any
+  )
+}
+
+function TypewriterRole() {
+  const [roleIndex, setRoleIndex] = useState(0)
+  const [displayText, setDisplayText] = useState('')
+  const [isDeleting, setIsDeleting] = useState(false)
+
+  useEffect(() => {
+    const currentRole = ROLES[roleIndex]
+    let timeout: ReturnType<typeof setTimeout>
+
+    if (!isDeleting) {
+      if (displayText.length < currentRole.length) {
+        timeout = setTimeout(() => {
+          setDisplayText(currentRole.slice(0, displayText.length + 1))
+        }, 60)
+      } else {
+        timeout = setTimeout(() => setIsDeleting(true), 2000)
+      }
+    } else {
+      if (displayText.length > 0) {
+        timeout = setTimeout(() => {
+          setDisplayText(displayText.slice(0, -1))
+        }, 30)
+      } else {
+        setIsDeleting(false)
+        setRoleIndex((i) => (i + 1) % ROLES.length)
+      }
+    }
+
+    return () => clearTimeout(timeout)
+  }, [displayText, isDeleting, roleIndex])
+
+  return (
+    <span style={{ color: 'var(--accent-text)' }}>
+      {displayText}
+      <motion.span
+        animate={{ opacity: [1, 0] }}
+        transition={{ duration: 0.5, repeat: Infinity, repeatType: 'reverse' }}
+        style={{ color: 'var(--accent-text)' }}
+      >|</motion.span>
+    </span>
+  )
+}
+
+function AnimatedGradientOrb() {
+  return (
+    <motion.div
+      className="pointer-events-none absolute z-0"
+      style={{
+        width: 400,
+        height: 400,
+        borderRadius: '50%',
+        background: 'radial-gradient(circle, rgba(0,245,255,0.08) 0%, transparent 70%)',
+        filter: 'blur(60px)',
+      }}
+      animate={{
+        x: [0, 50, -30, 0],
+        y: [0, -40, 20, 0],
+        scale: [1, 1.1, 0.95, 1],
+      }}
+      transition={{
+        duration: 12,
+        repeat: Infinity,
+        ease: 'easeInOut',
+      }}
+    />
+  )
 }
 
 export function Hero() {
-  const [roleIndex, setRoleIndex] = useState(0)
   const heroRef = useRef<HTMLDivElement>(null)
   const imageX = useMotionValue(0)
   const imageY = useMotionValue(0)
   const springImageX = useSpring(imageX, { stiffness: 100, damping: 20 })
   const springImageY = useSpring(imageY, { stiffness: 100, damping: 20 })
-
-  useEffect(() => {
-    if (!profile?.roles?.length) return
-    const interval = setInterval(() => {
-      setRoleIndex((i) => (i + 1) % ROLES.length)
-    }, 2500)
-    return () => clearInterval(interval)
-  }, [])
 
   useEffect(() => {
     const el = heroRef.current
@@ -138,11 +195,22 @@ export function Hero() {
   const lastName = (profile.name?.split(' ').slice(1).join(' ') || 'Singh').split('')
 
   return (
-    <section ref={heroRef} className="relative overflow-hidden pt-14" style={{ backgroundColor: 'var(--bg-primary)', color: 'var(--text-primary)', transition: 'background-color 0.3s ease, color 0.3s ease' }}>
+    <section ref={heroRef} className="relative overflow-hidden pt-14" style={{ backgroundColor: 'var(--bg-primary)', color: 'var(--text-primary)' }}>
       <HeroBackground />
       <div className="pointer-events-none absolute inset-0 z-0">
-        <div className="glow-blob" style={{ left: '-80px', top: '-60px', width: 260, height: 260, background: 'var(--glow)' }} />
-        <div className="glow-blob" style={{ right: '-40px', bottom: '-40px', width: 240, height: 240, background: 'var(--glow)' }} />
+        <AnimatedGradientOrb />
+        <motion.div
+          className="glow-blob"
+          style={{
+            right: '-40px',
+            bottom: '-40px',
+            width: 240,
+            height: 240,
+            background: 'radial-gradient(circle, rgba(123,47,255,0.15), transparent)',
+          }}
+          animate={{ scale: [1, 1.2, 1] }}
+          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+        />
       </div>
 
       <div className="relative z-10 mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
@@ -171,36 +239,57 @@ export function Hero() {
             </motion.div>
 
             <motion.div variants={heroItem}>
-              <div className="inline-flex max-w-full items-center gap-2 rounded-md border px-3 py-2 sm:gap-3" style={{ borderColor: 'var(--border-color)' }}>
+              <div className="inline-flex max-w-full items-center gap-2 rounded-md border px-3 py-2 sm:gap-3 relative overflow-hidden" style={{ borderColor: 'var(--border-color)' }}>
+                <motion.div
+                  className="absolute inset-0"
+                  style={{
+                    background: 'linear-gradient(90deg, transparent, rgba(0,245,255,0.03), transparent)',
+                  }}
+                  animate={{ x: ['-100%', '100%'] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
+                />
                 <span className="font-dm-mono text-[10px] uppercase tracking-[0.18em]" style={{ color: 'var(--text-muted)' }}>Role</span>
                 <span className="h-3 w-px" style={{ backgroundColor: 'var(--border-color)' }} />
                 <div className="relative h-[18px] overflow-hidden">
-                  <AnimatePresence mode="wait">
-                    <motion.span
-                      key={roleIndex}
-                      className="block truncate font-dm-mono text-[10px] uppercase tracking-[0.14em] sm:text-[11px]"
-                      style={{ color: 'var(--accent-text)' }}
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 10 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      {ROLES[roleIndex]}
-                    </motion.span>
-                  </AnimatePresence>
+                  <span className="block truncate font-dm-mono text-[10px] uppercase tracking-[0.14em] sm:text-[11px]">
+                    <TypewriterRole />
+                  </span>
                 </div>
               </div>
             </motion.div>
 
             <motion.h1 variants={heroItem} className="text-[clamp(40px,15vw,96px)] leading-[0.92] tracking-[-0.05em] font-extrabold font-syne" style={{ color: 'var(--text-primary)' }}>
-              {firstName.map((char, i) => (
-                <motion.span key={`fn-${i}`} variants={heroItem} className="inline-block">{char === ' ' ? '\u00A0' : char}</motion.span>
-              ))}
+              <motion.span
+                className="flex"
+                variants={heroContainer}
+                initial="hidden"
+                animate="show"
+              >
+                {firstName.map((char, i) => (
+                  <motion.span
+                    key={`fn-${i}`}
+                    custom={i}
+                    variants={{
+                      hidden: { opacity: 0, y: 40, rotateX: -60 },
+                      show: { opacity: 1, y: 0, rotateX: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] as const } },
+                    }}
+                    className="inline-block"
+                  >
+                    {char === ' ' ? '\u00A0' : char}
+                  </motion.span>
+                ))}
+              </motion.span>
               <br />
               {lastName.map((char, i) => (
                 <motion.span
                   key={`ln-${i}`}
-                  className="inline-block text-stroke"
+                  className="inline-block"
+                  style={{
+                    background: 'linear-gradient(135deg, #00F5FF, #A855F7, #EC4899)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                  }}
                   variants={heroItem}
                   transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.3 + i * 0.04 }}
                 >
@@ -217,7 +306,13 @@ export function Hero() {
               {profile.bio}
             </motion.p>
 
-            <motion.div variants={heroItem} className="grid w-full max-w-[640px] grid-cols-3 overflow-hidden rounded-xl border" style={{ borderColor: 'var(--card-border)' }}>
+            <motion.div variants={heroItem} className="grid w-full max-w-[640px] grid-cols-3 overflow-hidden rounded-xl border relative" style={{ borderColor: 'var(--card-border)' }}>
+              <motion.div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(0,245,255,0.03), transparent)',
+                }}
+              />
               {STATS.map((s, i) => (
                 <div key={s.label} className={`${i < 2 ? 'border-b sm:border-b-0 sm:border-r' : ''}`} style={{ borderColor: 'var(--card-border)' }}>
                   <AnimatedStat value={s.value} suffix={s.suffix} label={s.label} />
@@ -229,9 +324,9 @@ export function Hero() {
               <Link href="/projects" className="btn-primary min-h-[46px]">
                 View Work <ArrowUpRight size={13} />
               </Link>
-              <a href={profile.resume} download="Vishal-Singh-Resume.pdf" className="btn-secondary min-h-[46px]">
+              <MagneticButton href={profile.resume} className="btn-secondary min-h-[46px]">
                 <Download size={12} /> Resume
-              </a>
+              </MagneticButton>
             </motion.div>
 
             <motion.div variants={heroItem} className="flex flex-wrap items-center gap-2">
@@ -246,7 +341,7 @@ export function Hero() {
                   href={s.url}
                   target="_blank" rel="noopener noreferrer"
                   aria-label={s.label}
-                  className="group relative flex h-10 w-10 items-center justify-center rounded-md border transition-all hover:text-[var(--text-primary)]"
+                  className="group relative flex h-10 w-10 items-center justify-center rounded-md border transition-all hover:text-[var(--text-primary)] hover:border-[rgba(0,245,255,0.2)] hover:bg-[rgba(0,245,255,0.04)]"
                   style={{ borderColor: 'var(--border-color)', color: 'var(--icon-color)' }}
                 >
                   <s.icon size={15} />
@@ -263,36 +358,43 @@ export function Hero() {
               variants={heroImage}
               animate={{ y: [0, -8, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-              className="overflow-hidden rounded-2xl border"
+              className="overflow-hidden rounded-2xl border relative group"
               style={{
                 borderColor: 'var(--card-border)',
                 backgroundColor: 'var(--bg-secondary)',
                 transform: `translate(${springImageX.get()}px, ${springImageY.get()}px)`,
               }}
             >
+              <div className="absolute inset-0 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(0,245,255,0.05), rgba(123,47,255,0.05))',
+                }}
+              />
               <div className="relative aspect-square w-full">
-                <Image src="https://avatars.githubusercontent.com/VishalDevx" alt={profile.name} fill className="object-cover grayscale transition-all duration-500 hover:grayscale-0" priority />
+                <Image src="https://avatars.githubusercontent.com/VishalDevx" alt={profile.name} fill className="object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-105" priority />
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-4">
                   <p className="font-dm-mono text-[10px] uppercase tracking-[0.18em]" style={{ color: 'rgba(161,161,170,0.8)' }}>{profile.name} — {profile.location}</p>
                 </div>
               </div>
             </motion.div>
 
-            <motion.div variants={heroItem} className="rounded-xl border p-4" style={{ borderColor: 'var(--card-border)', backgroundColor: 'var(--card-bg)' }}>
+            <motion.div variants={heroItem} className="rounded-xl border p-4 relative overflow-hidden" style={{ borderColor: 'var(--card-border)', backgroundColor: 'var(--card-bg)' }}>
+              <div className="absolute inset-0 pointer-events-none" style={{ background: 'var(--gradient-surface)' }} />
               <p className="font-dm-mono mb-3 text-[10px] uppercase tracking-[0.18em]" style={{ color: 'var(--text-muted)' }}>Core Stack</p>
-              <div className="flex flex-wrap gap-[6px]">
+              <div className="flex flex-wrap gap-[6px] relative z-[1]">
                 {profile.coreStack?.map((tech) => (
                   <span key={tech} className="tag">{tech}</span>
                 ))}
               </div>
             </motion.div>
 
-            <motion.div variants={heroItem} className="flex items-center justify-between rounded-xl border p-4" style={{ borderColor: 'var(--card-border)', backgroundColor: 'var(--card-bg)' }}>
-              <div>
+            <motion.div variants={heroItem} className="flex items-center justify-between rounded-xl border p-4 relative overflow-hidden" style={{ borderColor: 'var(--card-border)', backgroundColor: 'var(--card-bg)' }}>
+              <div className="absolute inset-0 pointer-events-none" style={{ background: 'var(--gradient-surface)' }} />
+              <div className="relative z-[1]">
                 <p className="font-dm-mono mb-1 text-[10px] uppercase tracking-[0.18em]" style={{ color: 'var(--text-muted)' }}>Availability</p>
                 <p className="text-sm font-light" style={{ color: 'var(--text-primary)' }}>Open to full-time & freelance</p>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="relative z-[1] flex items-center gap-2">
                 <span className="relative flex h-2 w-2">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-75" />
                   <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />

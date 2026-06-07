@@ -1,14 +1,24 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { usePathname } from 'next/navigation'
+import { pageTransitionVariants } from '@/lib/animations'
+
+const EXCLUDED_PATHS = ['/admin']
 
 export function PageTransition({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname()
+  const isExcluded = EXCLUDED_PATHS.some((p) => pathname.startsWith(p))
+
+  if (isExcluded) return <>{children}</>
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 16, filter: 'blur(4px)' }}
-      animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-      exit={{ opacity: 0, y: -16, filter: 'blur(4px)' }}
-      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+      key={pathname}
+      variants={pageTransitionVariants}
+      initial="initial"
+      animate="enter"
+      exit="exit"
     >
       {children}
     </motion.div>

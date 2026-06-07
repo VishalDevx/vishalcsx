@@ -2,17 +2,41 @@
   "header": {
     "title": "Full-stack engineer",
     "subtitle": "building real systems",
-    "description": "I'm Vishal Singh — a full-stack developer currently pursuing B.Tech in Computer Science under Dr. A.P.J. Abdul Kalam Technical University (AKTU), with a school background from UP Board. I am focused on building backend-heavy systems, scalable full-stack products, and stronger engineering depth through real projects, open-source learning, and continuous study in AI, ML, and system design.",
+    "description": "I'm Vishal Singh \u2014 a full-stack developer currently pursuing B.Tech in Computer Science under Dr. A.P.J. Abdul Kalam Technical University (AKTU), with a school background from UP Board. I am focused on building backend-heavy systems, scalable full-stack products, and stronger engineering depth through real projects, open-source learning, and continuous study in AI, ML, and system design.",
     "badges": [
-      { "num": "CS", "label": "B.Tech CSE" },
-      { "num": "FS", "label": "Full-Stack" },
-      { "num": "AI", "label": "Learning path" }
+      {
+        "num": "CS",
+        "label": "B.Tech CSE"
+      },
+      {
+        "num": "FS",
+        "label": "Full-Stack"
+      },
+      {
+        "num": "AI",
+        "label": "Learning path"
+      }
     ]
   },
   "quickFacts": [
-    { "label": "Current Education", "value": "B.Tech in Computer Science", "sub": "Dr. A.P.J. Abdul Kalam Technical University (AKTU)", "icon": "GraduationCap" },
-    { "label": "Class 12", "value": "Higher Secondary", "sub": "UP Board", "icon": "BookOpen" },
-    { "label": "Class 10", "value": "Secondary Education", "sub": "UP Board", "icon": "BookOpen" }
+    {
+      "label": "Current Education",
+      "value": "B.Tech in Computer Science",
+      "sub": "Dr. A.P.J. Abdul Kalam Technical University (AKTU)",
+      "icon": "GraduationCap"
+    },
+    {
+      "label": "Class 12",
+      "value": "Higher Secondary",
+      "sub": "UP Board",
+      "icon": "BookOpen"
+    },
+    {
+      "label": "Class 10",
+      "value": "Secondary Education",
+      "sub": "UP Board",
+      "icon": "BookOpen"
+    }
   ],
   "introSection": {
     "title": "I build across frontend, backend, and system design",
@@ -27,17 +51,20 @@
   },
   "identityCards": [
     {
-      "label": "Who I am", "icon": "Code2",
+      "label": "Who I am",
+      "icon": "Code2",
       "title": "Full-stack developer with strong backend focus",
       "desc": "I build across frontend, backend, APIs, database design, and overall product structure. My strongest interest is in backend-heavy systems, scalable architecture, and full-stack products that solve real problems instead of looking good only in screenshots."
     },
     {
-      "label": "What I care about", "icon": "Workflow",
+      "label": "What I care about",
+      "icon": "Workflow",
       "title": "Clean systems, clear structure, real engineering",
       "desc": "I care about authentication, validation, role-based access, multi-tenant architecture, frontend consistency, API structure, database design, and maintainable code that does not collapse when complexity grows."
     },
     {
-      "label": "Where I am going", "icon": "Cpu",
+      "label": "Where I am going",
+      "icon": "Cpu",
       "title": "Toward deeper production-grade engineering",
       "desc": "Right now I am pushing deeper into system design, backend architecture, infrastructure thinking, AI and ML learning, open-source contribution quality, and stronger engineering discipline across the full stack."
     }
@@ -60,30 +87,119 @@
     }
   ],
   "currentWork": [
-    { "tag": "Building now", "title": "Multi-tenant school management system", "desc": "A full-stack school management platform for admin, staff, and students with modular APIs, role-based workflows, academic operations, fee handling, and production-minded backend structure." },
-    { "tag": "Learning now", "title": "AI and ML concepts", "desc": "I am actively learning AI and ML concepts to understand how intelligent systems work, how models and data fit into real products, and how these ideas connect with backend engineering and product systems." },
-    { "tag": "Exploring now", "title": "Rust, Solana, and DAO architecture", "desc": "I am also exploring a plugin-based DAO framework on Solana, going deeper into Rust, protocol constraints, on-chain architecture, and system-level design decisions." },
-    { "tag": "Improving now", "title": "Portfolio and engineering presentation", "desc": "I am improving how I present my work, making my portfolio feel like a structured product system with better technical storytelling, better UI quality, and clearer engineering proof." }
+    {
+      "tag": "Building now",
+      "title": "Multi-tenant school management system",
+      "desc": "A full-stack school management platform for admin, staff, and students with modular APIs, role-based workflows, academic operations, fee handling, and production-minded backend structure."
+    },
+    {
+      "tag": "Learning now",
+      "title": "AI and ML concepts",
+      "desc": "I am actively learning AI and ML concepts to understand how intelligent systems work, how models and data fit into real products, and how these ideas connect with backend engineering and product systems."
+    },
+    {
+      "tag": "Exploring now",
+      "title": "AI/ML engineering and LLM systems",
+      "desc": "I am also exploring RAG pipelines, LLM integration patterns, AI agent architectures, and how modern AI systems connect with backend engineering."
+    },
+    {
+      "tag": "Improving now",
+      "title": "Portfolio and engineering presentation",
+      "desc": "I am improving how I present my work, making my portfolio feel like a structured product system with better technical storytelling, better UI quality, and clearer engineering proof."
+    }
   ],
   "stackGroups": [
-    { "title": "Frontend", "icon": "Monitor", "items": ["React", "Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "Reusable UI Systems"] },
-    { "title": "Backend", "icon": "Server", "items": ["Node.js", "Express", "REST APIs", "Authentication", "Authorization", "Zod"] },
-    { "title": "Data & Infra", "icon": "Database", "items": ["PostgreSQL", "Prisma", "Redis", "Docker", "Caching", "Scalability"] },
-    { "title": "Exploration", "icon": "Boxes", "items": ["Rust", "Solana", "Anchor", "System Design", "Plugin Architecture", "Web3"] }
+    {
+      "title": "Frontend",
+      "icon": "Monitor",
+      "items": [
+        "React",
+        "Next.js",
+        "TypeScript",
+        "Tailwind CSS",
+        "Framer Motion",
+        "Reusable UI Systems"
+      ]
+    },
+    {
+      "title": "Backend",
+      "icon": "Server",
+      "items": [
+        "Node.js",
+        "Express",
+        "REST APIs",
+        "Authentication",
+        "Authorization",
+        "Zod"
+      ]
+    },
+    {
+      "title": "Data & Infra",
+      "icon": "Database",
+      "items": [
+        "PostgreSQL",
+        "Prisma",
+        "Redis",
+        "Docker",
+        "Caching",
+        "Scalability"
+      ]
+    },
+    {
+      "title": "Exploration",
+      "icon": "Boxes",
+      "items": [
+        "Python",
+        "LangChain",
+        "Chroma",
+        "System Design",
+        "RAG",
+        "AI/ML"
+      ]
+    }
   ],
   "learningNow": [
-    "Advanced backend architecture", "System design tradeoffs", "AI and machine learning fundamentals",
-    "Scalability patterns and caching", "Production-ready frontend systems", "Rust and Solana development",
-    "DevOps and deployment thinking", "Open-source contribution quality"
+    "Advanced backend architecture",
+    "System design tradeoffs",
+    "AI and machine learning fundamentals",
+    "Scalability patterns and caching",
+    "Production-ready frontend systems",
+    "LLM integration and RAG pipelines",
+    "DevOps and deployment thinking",
+    "Open-source contribution quality"
   ],
   "openSourceItems": [
-    { "label": "Open Source", "title": "Learning from real codebases", "desc": "Open source matters because it exposes real standards. You see how good engineers structure systems, debug issues, review code, and handle complexity in actual software instead of isolated toy projects." },
-    { "label": "Why it matters", "title": "Better engineering, not fake contribution counts", "desc": "My goal is not random commit numbers. It is to improve how I read mature codebases, debug faster, understand architecture better, and contribute in a way that actually improves my engineering depth." }
+    {
+      "label": "Open Source",
+      "title": "Learning from real codebases",
+      "desc": "Open source matters because it exposes real standards. You see how good engineers structure systems, debug issues, review code, and handle complexity in actual software instead of isolated toy projects."
+    },
+    {
+      "label": "Why it matters",
+      "title": "Better engineering, not fake contribution counts",
+      "desc": "My goal is not random commit numbers. It is to improve how I read mature codebases, debug faster, understand architecture better, and contribute in a way that actually improves my engineering depth."
+    }
   ],
   "journey": [
-    { "year": "Started with", "title": "Core full-stack development", "desc": "I built my foundation around JavaScript, TypeScript, React, Next.js, Node.js, API development, and database-backed web applications." },
-    { "year": "Moved into", "title": "Backend-heavy systems and scalable products", "desc": "I shifted more toward validation-first APIs, modular backend structure, PostgreSQL design, caching with Redis, multi-tenant application architecture, and scalable product thinking." },
-    { "year": "Now focused on", "title": "Real engineering proof and deeper technical growth", "desc": "Right now I am focused on building projects that show stronger architecture, better system structure, sharper frontend execution, and more serious full-stack engineering quality." },
-    { "year": "Next direction", "title": "Production-grade depth with broader technical range", "desc": "The next phase is stronger infrastructure knowledge, deeper AI and ML understanding, more meaningful open-source participation, and better system-level problem solving." }
+    {
+      "year": "Started with",
+      "title": "Core full-stack development",
+      "desc": "I built my foundation around JavaScript, TypeScript, React, Next.js, Node.js, API development, and database-backed web applications."
+    },
+    {
+      "year": "Moved into",
+      "title": "Backend-heavy systems and scalable products",
+      "desc": "I shifted more toward validation-first APIs, modular backend structure, PostgreSQL design, caching with Redis, multi-tenant application architecture, and scalable product thinking."
+    },
+    {
+      "year": "Now focused on",
+      "title": "Real engineering proof and deeper technical growth",
+      "desc": "Right now I am focused on building projects that show stronger architecture, better system structure, sharper frontend execution, and more serious full-stack engineering quality."
+    },
+    {
+      "year": "Next direction",
+      "title": "Production-grade depth with broader technical range",
+      "desc": "The next phase is stronger infrastructure knowledge, deeper AI and ML understanding, more meaningful open-source participation, and better system-level problem solving."
+    }
   ]
 }

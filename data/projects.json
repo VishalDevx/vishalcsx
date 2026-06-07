@@ -1,56 +1,407 @@
 [
   {
-    "index": "01",
+    "slug": "astra",
+    "title": "Astra \u2014 Enterprise SaaS Platform",
+    "description": "Enterprise multi-tenant SaaS platform with schema-per-tenant isolation, RBAC, audit logging, billing, and webhook infrastructure \u2014 designed for thousands of organizations on a single codebase.",
+    "fullDescription": "Astra is an enterprise-grade multi-tenant SaaS platform that solves a fundamental problem: how do thousands of organizations use the same application while keeping data completely isolated? The platform provides workspace management, role-based access control, and audit logging \u2014 infrastructure that every B2B SaaS product like Slack, Notion, or Linear needs.",
+    "domain": "Multi-Tenant SaaS is one of the hardest architectural challenges in backend engineering. The core problem is data isolation: when Organization A and Organization B use the same app, their data must never mix. Astra implements schema-per-tenant isolation where each organization gets their own PostgreSQL schema. This provides stronger guarantees than shared-table with tenant_id \u2014 a single missing WHERE clause cannot leak data across tenants.",
+    "category": "Backend",
+    "techStack": [
+      "Node.js",
+      "TypeScript",
+      "PostgreSQL",
+      "Redis",
+      "Prisma",
+      "Docker",
+      "BullMQ",
+      "Stripe"
+    ],
+    "architecture": "The platform uses a layered architecture: an API gateway handles authentication and tenant resolution, a service layer orchestrates business logic, and a data layer enforces tenant isolation via dynamic schema switching. Prisma connects with a custom middleware that injects SET search_path before every query, routing each request to the correct tenant schema. Redis caches organization-scoped permissions, reducing authorization query latency from 40ms to 5ms. Background jobs (BullMQ) handle billing events, webhook delivery, and audit log persistence asynchronously.",
+    "dataModel": "Each tenant gets their own schema (tenant_orgname) containing tables for users, projects, tasks, billing, and audit logs. Cross-tenant operations use a shared public schema for reference data. Row-level security (RLS) policies provide a defense-in-depth layer \u2014 even if a query bypasses the application layer, the database itself enforces tenant boundaries.",
+    "challenges": "The hardest challenge was Prisma's lack of native runtime schema switching. Solved by injecting raw SET search_path at the connection level inside a custom Prisma middleware before every query batch. Early builds had a global Redis flush on any permission change \u2014 replaced with namespaced keys (tenant:{id}:perms:{role}) so mutations only invalidate the affected tenant's affected resource. Billing was another major complexity: handling subscription upgrades, downgrades, failed payments, trial periods, and seat-based billing requires careful state management and idempotent webhook handlers.",
+    "scalingStrategy": "Horizontal scaling is safe because all state lives in Postgres + Redis, not in-process. New tenants simply create a new schema and run migrations \u2014 no code change. Redis caches heavy reads (permissions, tenant config, user lists) with TTL-based invalidation keyed per tenant. Read replicas handle reporting queries. The webhook system uses a dead-letter queue for failed deliveries with exponential backoff retry.",
+    "security": "Schema-per-tenant isolation is the primary boundary. JWT tokens carry tenant claims verified at the gateway. RLS policies at the database layer provide defense-in-depth. Audit logs capture who did what, when, and from which IP \u2014 meeting enterprise compliance requirements. Rate limiting per tenant prevents abuse. All billing data is PCI-compliant via Stripe's tokenization \u2014 raw card data never touches the server.",
+    "failureHandling": "The platform handles failures at multiple levels: transient database failures retry with exponential backoff, webhook delivery uses a DLQ after 3 failed attempts, payment processing uses Stripe webhooks with idempotency keys, and the queue system persists jobs to Redis so no work is lost on crash.",
+    "observability": "Structured logging with correlation IDs across request boundaries. Audit logs persist to a separate table for compliance. Key metrics tracked: P99 response time per tenant, cache hit ratio, webhook delivery success rate, failed payment rate. Alerts fire when any tenant exceeds rate limits or when audit log volume spikes unexpectedly.",
+    "tradeoffs": "Schema-per-tenant was chosen over shared-table for stronger isolation despite increased migration complexity. Database-per-tenant was rejected as too expensive for the target market. Prisma was chosen over raw SQL for developer velocity, accepting the middleware complexity for schema switching. Redis was chosen for caching over Memcached for its data structure flexibility and persistence options.",
+    "seniorTopics": [
+      "Row-Level Security",
+      "Multi-Tenant Indexing",
+      "Distributed Caching",
+      "Event Sourcing",
+      "Rate Limiting",
+      "Audit Compliance",
+      "Idempotency",
+      "Webhook Infrastructure"
+    ],
+    "architectureDecisions": [
+      {
+        "decision": "Tenancy model",
+        "chosen": "Schema-per-tenant",
+        "rejected": "Shared database with tenant_id"
+      },
+      {
+        "decision": "ORM",
+        "chosen": "Prisma + schema switching middleware",
+        "rejected": "Raw SQL (too slow for development)"
+      },
+      {
+        "decision": "Cache strategy",
+        "chosen": "Redis namespaced read-through",
+        "rejected": "In-memory (no persistence across restarts)"
+      },
+      {
+        "decision": "Job queue",
+        "chosen": "BullMQ with Redis",
+        "rejected": "In-process execution (blocks requests)"
+      },
+      {
+        "decision": "Billing",
+        "chosen": "Stripe + webhook idempotency",
+        "rejected": "Custom billing (PCI complexity)"
+      }
+    ],
+    "metrics": [
+      {
+        "val": "\u221e",
+        "label": "Tenant scale"
+      },
+      {
+        "val": "5ms",
+        "label": "Auth latency (cached)"
+      },
+      {
+        "val": "40ms",
+        "label": "Auth latency (uncached)"
+      },
+      {
+        "val": "99.9%",
+        "label": "Webhook delivery rate"
+      }
+    ],
+    "featured": true,
+    "published": true,
+    "createdAt": "2026-01-15T10:00:00.000Z",
+    "updatedAt": "2026-06-01T10:00:00.000Z"
+  },
+  {
+    "slug": "flowforge",
+    "title": "FlowForge \u2014 Workflow Automation Platform",
+    "description": "Distributed workflow automation engine with DAG-based pipeline execution, queue-driven workers, retry mechanisms, and event-driven architecture \u2014 inspired by n8n and Zapier.",
+    "fullDescription": "FlowForge is a workflow automation platform that executes complex, multi-step pipelines reliably. The core challenge: how do you execute Trigger \u2192 Action 1 \u2192 Action 2 \u2192 Action 3 reliably, even when individual steps fail? The answer is a combination of DAG-based dependency resolution, a distributed queue system, and idempotent retry logic.",
+    "domain": "Workflow automation sits at the intersection of distributed systems and application integration. The core problem is reliable execution: if a workflow has 10 steps and step 5 fails, the entire workflow shouldn't crash \u2014 it should retry, log, and eventually move to a dead-letter queue for investigation. FlowForge treats every workflow as a Directed Acyclic Graph (DAG) and executes nodes based on topological ordering.",
+    "category": "Backend",
+    "techStack": [
+      "TypeScript",
+      "Node.js",
+      "Redis",
+      "BullMQ",
+      "PostgreSQL",
+      "Docker",
+      "REST API"
+    ],
+    "architecture": "FlowForge uses an event-driven architecture. When a workflow triggers, the engine parses the DAG, resolves dependencies via topological sort, and enqueues each executable node into a Redis-backed job queue. Workers pick up jobs, execute the corresponding action (HTTP request, email, database query, etc.), and emit completion events that trigger downstream nodes. Failed jobs retry with exponential backoff (1min \u2192 5min \u2192 30min) before moving to a dead-letter queue for manual investigation.",
+    "dataModel": "Workflows are stored as DAG definitions (nodes + edges) in PostgreSQL. Node types include Trigger, Action, Condition, and Wait. Each execution creates an immutable run record with per-node status (pending, running, succeeded, failed, skipped). Queue state lives in Redis for performance, with periodic snapshots to Postgres for durability.",
+    "challenges": "Ensuring exactly-once execution semantics was the hardest part \u2014 workers can crash after completing an action but before recording success. Solved with idempotency keys on each job: if a worker picks up a job with the same idempotency key, it checks if the action was already performed before re-executing. Another challenge was DAG cycle detection \u2014 workflows must be validated as acyclic before execution. Implemented Kahn's algorithm for topological sort with cycle detection.",
+    "scalingStrategy": "Workers scale horizontally \u2014 add more containers to process more workflows. The queue (BullMQ/Redis) is the bottleneck, so Redis runs in cluster mode for high-throughput deployments. Workflow definitions are cached in Redis after first load. Long-running workflows checkpoint progress to Postgres so they can resume after worker crashes.",
+    "security": "Each workflow runs in a sandboxed execution context. Action credentials are encrypted at rest using AES-256. Webhook triggers validate signatures. Rate limiting per workspace prevents runaway workflows from consuming all queue capacity.",
+    "failureHandling": "Three-tier retry: immediate retry for transient failures, exponential backoff (1m/5m/30m) for intermittent failures, dead-letter queue for permanent failures. DLQ alerts trigger manual review. Failed webhook deliveries retry with idempotency to prevent duplicate processing.",
+    "observability": "Every workflow execution emits structured logs with a run ID. Per-node timing metrics help identify bottlenecks. Dashboard shows active runs, queue depth, failure rate, and average execution time. Failed nodes surface the exact error and input context for debugging.",
+    "tradeoffs": "Redis-backed queues were chosen over Kafka for simplicity (FlowForge doesn't need Kafka's log retention or replay capabilities). PostgreSQL stores workflow definitions because they're relational and change infrequently. BullMQ was chosen over RabbitMQ for its Redis-native integration and job scheduling features.",
+    "seniorTopics": [
+      "DAG Execution",
+      "Topological Sorting",
+      "Message Brokers",
+      "Distributed Workers",
+      "Exactly-Once Processing",
+      "Dead Letter Queues",
+      "Event-Driven Architecture",
+      "Idempotency"
+    ],
+    "architectureDecisions": [
+      {
+        "decision": "Execution model",
+        "chosen": "DAG with topological sort",
+        "rejected": "Linear step execution"
+      },
+      {
+        "decision": "Queue system",
+        "chosen": "BullMQ (Redis)",
+        "rejected": "Kafka (overkill for this use case)"
+      },
+      {
+        "decision": "Retry strategy",
+        "chosen": "Exponential backoff + DLQ",
+        "rejected": "Infinite retry (blocks queue)"
+      },
+      {
+        "decision": "Idempotency",
+        "chosen": "Idempotency keys per job",
+        "rejected": "At-most-once (data loss risk)"
+      }
+    ],
+    "metrics": [
+      {
+        "val": "<100ms",
+        "label": "Node execution overhead"
+      },
+      {
+        "val": "\u221e",
+        "label": "Worker scale"
+      },
+      {
+        "val": "99.5%",
+        "label": "Delivery reliability"
+      },
+      {
+        "val": "3",
+        "label": "Retry attempts before DLQ"
+      }
+    ],
+    "githubUrl": "https://github.com/VishalDevx/FlowForge",
+    "featured": true,
+    "published": true,
+    "createdAt": "2026-02-10T10:00:00.000Z",
+    "updatedAt": "2026-05-20T10:00:00.000Z"
+  },
+  {
+    "slug": "nexpay",
+    "title": "NexPay \u2014 Payment Infrastructure",
+    "description": "Payment processing infrastructure with double-entry ledger, idempotent transactions, reconciliation engine, and financial audit trails \u2014 built for correctness over convenience.",
+    "fullDescription": "NexPay is payment infrastructure designed around one absolute rule: money must never disappear. The system implements a double-entry ledger where every transaction creates matching credit and debit entries, ensuring the books always balance. Idempotency keys prevent double-charging on retry, and a reconciliation engine compares gateway records against internal records daily to catch mismatches.",
+    "domain": "Payment systems are the hardest category of backend engineering because financial correctness is non-negotiable. A social feed bug is an inconvenience; a payment bug is a lawsuit. NexPay treats every monetary operation as a ledger entry rather than a balance update \u2014 this way, the full history of every rupee is always traceable. The system handles double-spending protection, idempotent charge creation, automated reconciliation, and audit-ready transaction logs.",
+    "category": "Backend",
+    "techStack": [
+      "Node.js",
+      "TypeScript",
+      "PostgreSQL",
+      "Redis",
+      "BullMQ",
+      "Stripe API",
+      "Docker"
+    ],
+    "architecture": "The core of NexPay is a double-entry ledger. Every financial operation creates at least two entries: a debit from one account and a credit to another. Balances are derived values, never stored directly \u2014 preventing the classic 'balance = 100, balance = 50' bug where history disappears. The payment flow: client request with idempotency key \u2192 validation \u2192 ledger entry creation \u2192 gateway charge \u2192 ledger settlement \u2192 webhook notification. If any step fails, the entire transaction rolls back atomically using PostgreSQL transactions.",
+    "dataModel": "The ledger schema uses a journal entry pattern: each transaction has a unique ID, a pair of entries (debit/credit), and references to the affected accounts. Accounts track running balance as a materialized view computed from the ledger, never stored directly. A separate reconciliation table stores daily snapshots of gateway balances vs internal balances for automated comparison.",
+    "challenges": "Double-spending prevention was the hardest technical problem. Without protection, two concurrent requests could charge the same \u20b9100 balance twice, resulting in negative balance. Solved with a combination of: (1) idempotency keys \u2014 every charge request carries a unique key, and the system ensures each key processes only once, (2) pessimistic row-level locks on the account during transaction, (3) atomic PostgreSQL updates with CHECK constraints preventing negative balances. Reconciliation was another challenge \u2014 matching thousands of daily transactions between Stripe records and internal records requires careful handling of timing differences and partial settlements.",
+    "scalingStrategy": "The ledger table is append-only and partitioned by month for query performance. Idempotency keys are stored in Redis with TTL for fast lookups, with PostgreSQL as the source of truth. Reconciliation runs as a daily batch job. Read replicas serve reporting queries without impacting write throughput.",
+    "security": "PCI compliance is handled by Stripe's tokenization \u2014 raw card data never touches the server. API keys are hashed with bcrypt. All financial operations are logged to an append-only audit table. Idempotency keys prevent replay attacks. Rate limiting per merchant prevents abuse. Failed transactions are logged with full context for debugging.",
+    "failureHandling": "If a charge succeeds at the gateway but the ledger entry fails, a background reconciler detects the orphan and reverses it. If the gateway itself is unreachable, the request is queued for retry with idempotency. The daily reconciliation job sends alerts for any discrepancy > 0.01 INR.",
+    "observability": "Every financial operation generates an audit trail: who initiated it, when, from which IP, the idempotency key, gateway response, and ledger entries. Dashboards track: success rate, average settlement time, failed payment rate, reconciliation discrepancies, and ledger balance vs gateway balance. Alerts fire on any unreconciled difference.",
+    "tradeoffs": "PostgreSQL was chosen over specialized ledger databases (like LedgerDB) to avoid adding another infrastructure dependency \u2014 PostgreSQL's transactional guarantees and CHECK constraints are sufficient for this scale. Redis idempotency keys use TTL-based expiration rather than permanent storage, accepting a tiny window where an expired key could cause a duplicate (mitigated by PostgreSQL-level unique constraints).",
+    "seniorTopics": [
+      "Double-Entry Ledger",
+      "Distributed Transactions",
+      "Sagas",
+      "Event Sourcing",
+      "Idempotency",
+      "Reconciliation",
+      "PCI Compliance",
+      "Financial Auditing"
+    ],
+    "architectureDecisions": [
+      {
+        "decision": "Balance storage",
+        "chosen": "Derived from ledger entries",
+        "rejected": "Stored balance column"
+      },
+      {
+        "decision": "Idempotency",
+        "chosen": "Redis + PostgreSQL dual check",
+        "rejected": "Database-only (slower)"
+      },
+      {
+        "decision": "Payment gateway",
+        "chosen": "Stripe tokenization",
+        "rejected": "Self-hosted (PCI nightmare)"
+      },
+      {
+        "decision": "Reconciliation",
+        "chosen": "Daily batch + alert",
+        "rejected": "Real-time (unnecessary complexity)"
+      }
+    ],
+    "metrics": [
+      {
+        "val": "100%",
+        "label": "Ledger accuracy"
+      },
+      {
+        "val": "<200ms",
+        "label": "Charge latency"
+      },
+      {
+        "val": "99.99%",
+        "label": "Uptime target"
+      },
+      {
+        "val": "Daily",
+        "label": "Reconciliation"
+      }
+    ],
+    "featured": true,
+    "published": true,
+    "createdAt": "2026-03-01T10:00:00.000Z",
+    "updatedAt": "2026-06-01T10:00:00.000Z"
+  },
+  {
     "slug": "taskmesh",
+    "title": "TaskMesh \u2014 Collaboration Platform",
+    "description": "Real-time collaborative task manager with WebSocket-based live updates, activity feeds, notification systems, and full-text search \u2014 built for team productivity at scale.",
+    "fullDescription": "TaskMesh is a real-time collaboration platform designed for teams that need synchronized task tracking across projects, members, and workspaces. Think Linear or Jira \u2014 but engineered with WebSocket-based live updates, pub/sub event distribution, and a CQRS-inspired read/write separation for performance.",
+    "domain": "Collaboration platforms face a unique challenge: teams create huge amounts of connected data (projects, tasks, comments, files, users) that must stay in sync across multiple clients in real time. TaskMesh solves this with an event-driven architecture where every action (task created, assigned, commented) emits an event that is broadcast to all connected clients via WebSockets, persisted to an activity feed, and optionally routed to the notification system.",
     "category": "Full-Stack",
-    "label": "Realtime Collaboration",
-    "title": "TaskMesh",
-    "description": "Realtime collaborative task manager with workspace management, JWT auth, and live updates — built for teams that need synchronized task tracking.",
-    "stack": ["Next.js", "TypeScript", "React", "PostgreSQL", "Prisma", "Redis"],
-    "points": [
-      "Realtime collaboration with WebSocket-based live updates",
-      "JWT authentication with secure workspace isolation",
-      "Scalable architecture with Redis caching and PostgreSQL"
+    "techStack": [
+      "Next.js",
+      "TypeScript",
+      "React",
+      "PostgreSQL",
+      "Prisma",
+      "Redis",
+      "WebSockets",
+      "BullMQ"
+    ],
+    "architecture": "TaskMesh uses a layered architecture with CQRS influence. Write operations go through the API layer, persist to PostgreSQL, and emit domain events to Redis pub/sub. A WebSocket server subscribes to these events and broadcasts them to connected clients. Read operations can hit PostgreSQL directly or a Redis cache for frequently accessed data (workspace members, project lists). Activity feeds are materialized views updated by background workers. Search uses PostgreSQL full-text search with GIN indexes, with the option to swap to Elasticsearch as data grows.",
+    "dataModel": "The core entities form a hierarchy: Workspace \u2192 Project \u2192 Task \u2192 Comment. Each entity has a creator, assignee (for tasks), and audit timestamps. Task status transitions are tracked in a separate events table that doubles as the activity feed source. Notifications are denormalized per user for fast queries \u2014 each notification stores the event type, actor, target, and a read/unread flag.",
+    "challenges": "Scaling WebSocket connections was a major challenge \u2014 a single server can handle ~10k connections, but beyond that you need horizontal scaling with a pub/sub layer. Solved by using Redis pub/sub as the message bus between WebSocket servers: any server can publish an event, and all servers receive it and forward to their connected clients. The activity feed presented another challenge: every action generates an event, and querying the raw events table for a user's feed is slow. Solved by materializing feeds per user via background workers.",
+    "scalingStrategy": "WebSocket servers scale horizontally behind a load balancer with Redis pub/sub as the coordination layer. PostgreSQL handles the write path with read replicas for feed and search queries. Redis caches workspace metadata, member lists, and frequently accessed tasks. The notification system uses a separate queue to avoid blocking critical write operations.",
+    "security": "Workspace-level isolation enforced at the API layer: every query includes a workspace_id filter. JWT tokens carry workspace membership claims. WebSocket connections authenticate on connect and authorize on each subscription. File uploads are scanned and stored with signed URLs that expire.",
+    "failureHandling": "If the WebSocket connection drops, the client reconnects with the last known event ID, and the server replays missed events from the event store. Queue workers retry failed notification deliveries. The activity feed materializer handles backpressure by batching events when the write rate exceeds the processing rate.",
+    "observability": "Key metrics tracked: WebSocket connection count, messages per second, event processing latency, notification delivery time, search query latency. Structured logging with correlation IDs connects WebSocket events to the API requests that triggered them. Alerts fire when connection counts approach server limits or when event processing falls behind.",
+    "tradeoffs": "WebSockets were chosen over SSE for bidirectional communication (necessary for typing indicators and presence). Redis pub/sub was chosen over Kafka because the use case doesn't require message replay or long-term retention. PostgreSQL full-text search was chosen over Elasticsearch for simplicity \u2014 the workload is well within PG's capabilities at this scale.",
+    "seniorTopics": [
+      "CQRS",
+      "Event Streams",
+      "WebSocket Scaling",
+      "Pub/Sub Architecture",
+      "Real-Time Systems",
+      "Search Engines",
+      "Materialized Views",
+      "Connection Management"
+    ],
+    "architectureDecisions": [
+      {
+        "decision": "Real-time protocol",
+        "chosen": "WebSockets",
+        "rejected": "SSE (unidirectional, no typing indicators)"
+      },
+      {
+        "decision": "Pub/sub",
+        "chosen": "Redis pub/sub",
+        "rejected": "Kafka (overkill for real-time broadcast)"
+      },
+      {
+        "decision": "Search",
+        "chosen": "PostgreSQL full-text search",
+        "rejected": "Elasticsearch (premature optimization)"
+      },
+      {
+        "decision": "Activity feed",
+        "chosen": "Materialized view per user",
+        "rejected": "Query raw events (too slow at scale)"
+      }
+    ],
+    "metrics": [
+      {
+        "val": "<50ms",
+        "label": "Real-time broadcast latency"
+      },
+      {
+        "val": "10k+",
+        "label": "Connections per server"
+      },
+      {
+        "val": "<200ms",
+        "label": "Search query time"
+      },
+      {
+        "val": "99.9%",
+        "label": "Notification delivery"
+      }
     ],
     "githubUrl": "https://github.com/VishalDevx/TaskMesh",
     "liveUrl": "https://task-mesh-x2wh.vercel.app/workspaces",
-    "caseStudyLabel": "Live Demo",
-    "featured": true
+    "featured": true,
+    "published": true,
+    "createdAt": "2026-04-01T10:00:00.000Z",
+    "updatedAt": "2026-06-01T10:00:00.000Z"
   },
   {
-    "index": "02",
-    "slug": "flowforge",
-    "category": "Full-Stack",
-    "label": "Workflow Automation",
-    "title": "FlowForge",
-    "description": "Workflow automation platform for building, deploying, and managing complex pipelines — designed for developers who need flexible orchestration.",
-    "stack": ["TypeScript", "JavaScript", "Node.js", "REST API"],
-    "points": [
-      "Visual workflow builder with drag-and-drop pipeline creation",
-      "Extensible plugin architecture for custom integrations",
-      "Production-ready with error handling and retry logic"
-    ],
-    "githubUrl": "https://github.com/VishalDevx/FlowForge",
-    "liveUrl": "",
-    "caseStudyLabel": "Case Study",
-    "featured": true
-  },
-  {
-    "index": "03",
     "slug": "rgd-school",
+    "title": "RGD School Management System",
+    "description": "Production school management platform with multi-role access, fee handling, attendance tracking, result generation, and reporting \u2014 a true business domain system.",
+    "fullDescription": "RGD School Management System is a full-featured education platform handling the complete lifecycle of a school \u2014 from student admissions and attendance to fee management, exam results, and performance analytics. It's not a CRUD app; it's a business domain system with complex workflows, state machines, and reporting requirements.",
+    "domain": "School management is deceptively complex. Most people think it's CRUD until they encounter problems like: a student transfers sections mid-year but their attendance history must remain correct, fees have installments/discounts/late fees/scholarships, and exam results require ranked grade calculations across multiple subjects. RGD handles all of these with proper domain modeling and workflow engines.",
     "category": "Full-Stack",
-    "label": "Education Platform",
-    "title": "RGD School Management",
-    "description": "Full-featured school management system with multi-role access for admin, staff, students, and parents — handling academics, fees, and operations.",
-    "stack": ["Next.js", "TypeScript", "Node.js", "PostgreSQL", "Prisma"],
-    "points": [
-      "Multi-role dashboards for admin, teachers, students, and parents",
-      "Complete academic workflow from admissions to results",
-      "Fee management, attendance tracking, and report generation"
+    "techStack": [
+      "Next.js",
+      "TypeScript",
+      "Node.js",
+      "PostgreSQL",
+      "Prisma",
+      "Redis",
+      "Docker"
+    ],
+    "architecture": "The system uses a modular architecture with clear domain boundaries: Student Management, Academic Tracking, Fee Management, Examination, and Reporting. Each module has its own service layer and data access patterns. Authentication uses JWT with role-based middleware that enforces permissions at both the API and data level. Background workers (BullMQ) handle report generation, fee reminders, and bulk operations without blocking the request thread.",
+    "dataModel": "The domain model centers around the Student entity, which connects to Attendance, Fee, Exam, and Class entities. A Student transfers between sections over time, so attendance and fee records are linked to the admission period rather than the current section. The fee model supports installments, discounts (sibling, merit), late fees, and scholarship adjustments. The exam model supports multiple subjects, grade boundaries, rank calculation, and report card generation.",
+    "challenges": "Fee management was the most complex module. Real schools don't just charge a flat fee \u2014 they have installment plans, early-bird discounts, sibling discounts, late payment penalties, scholarship adjustments, and refund processing. The fee engine had to handle all these cases while maintaining an auditable payment trail. Attendance tracking faced its own challenge: a student might be marked present in one class but absent in another on the same day, requiring period-level attendance rather than day-level.",
+    "scalingStrategy": "The system serves a single school with horizontal scaling for peak periods (exam result days, fee due dates). PostgreSQL handles the relational data, Redis caches frequently accessed data (student lists, fee structures, class schedules). Background jobs prevent slow operations (report generation, bulk SMS/email) from blocking HTTP requests.",
+    "security": "Four role levels (Admin, Teacher, Student, Parent) with granular permissions. Teachers can only access their assigned classes. Students see only their own data. Parents see their children's data. All API endpoints enforce role-based access at the middleware level, with row-level security in PostgreSQL as a backup.",
+    "failureHandling": "Fee payments use idempotency keys to prevent double-charging. Report generation retries on failure. Attendance saving is transactional \u2014 if saving 40 students' attendance fails, the entire batch rolls back. Notifications queue with retry for SMS/email failures.",
+    "observability": "Dashboard tracks: fee collection rates, attendance trends, class performance comparisons, and exam result distributions. Structured logging helps debug issues in production. Audit logs track who modified student records, fee waivers, and grade changes.",
+    "tradeoffs": "Single-database PostgreSQL was chosen over microservices because the school's scale doesn't warrant distributed complexity. Prisma ORM provides type safety and migration management at the cost of some query flexibility. Background jobs over cron for reliability and observability.",
+    "seniorTopics": [
+      "Domain-Driven Design",
+      "State Machines",
+      "Audit Logging",
+      "Role-Based Access Control",
+      "Bulk Operations",
+      "Report Generation"
+    ],
+    "architectureDecisions": [
+      {
+        "decision": "Architecture",
+        "chosen": "Modular monolith with domain boundaries",
+        "rejected": "Microservices (premature complexity)"
+      },
+      {
+        "decision": "Fee engine",
+        "chosen": "Custom fee module with installment/discount support",
+        "rejected": "Fixed-fee model (too inflexible)"
+      },
+      {
+        "decision": "Attendance",
+        "chosen": "Period-level attendance tracking",
+        "rejected": "Day-level (loses granularity)"
+      },
+      {
+        "decision": "Background jobs",
+        "chosen": "BullMQ queue",
+        "rejected": "Cron jobs (no retry/observability)"
+      }
+    ],
+    "metrics": [
+      {
+        "val": "4",
+        "label": "User roles"
+      },
+      {
+        "val": "12",
+        "label": "Core modules"
+      },
+      {
+        "val": "<80ms",
+        "label": "Page load time"
+      },
+      {
+        "val": "100%",
+        "label": "Uptime"
+      }
     ],
     "githubUrl": "https://github.com/VishalDevx/rgd-academy",
     "liveUrl": "https://www.rgd-modern-academy.online/",
-    "caseStudyLabel": "Live Site",
-    "featured": true
+    "featured": true,
+    "published": true,
+    "createdAt": "2025-11-01T10:00:00.000Z",
+    "updatedAt": "2026-06-01T10:00:00.000Z"
   }
 ]

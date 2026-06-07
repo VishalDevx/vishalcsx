@@ -82,7 +82,7 @@ export default function EditBlog() {
             <select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })}
               className="w-full rounded-lg border px-3 py-2.5 text-sm outline-none focus:border-[var(--accent)]/40"
               style={{ borderColor: "var(--border-color)", background: "var(--bg-secondary)", color: "var(--text-primary)" }}>
-              {["Backend", "Full-Stack", "Frontend", "Web3"].map((c) => <option key={c}>{c}</option>)}
+              {["Backend", "Full-Stack", "Frontend", "AI/ML"].map((c) => <option key={c}>{c}</option>)}
             </select>
           </div>
           <div>

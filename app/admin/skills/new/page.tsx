@@ -58,7 +58,7 @@ export default function NewSkill() {
             <select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })}
               className="w-full rounded-lg border px-3 py-2.5 text-sm outline-none focus:border-[var(--accent)]/40"
               style={{ borderColor: "var(--border-color)", background: "var(--bg-secondary)", color: "var(--text-primary)" }}>
-              {["Full-Stack", "Backend", "Frontend", "Database", "Infra", "Web3"].map((c) => <option key={c}>{c}</option>)}
+              {["Full-Stack", "Backend", "Frontend", "Database", "Infra", "AI/ML"].map((c) => <option key={c}>{c}</option>)}
             </select>
           </div>
           <div>

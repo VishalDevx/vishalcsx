@@ -22,7 +22,7 @@ export default function SkillsPage() {
   const [expandedSlug, setExpandedSlug] = useState<string | null>("backend-systems");
   const [activeFilter, setActiveFilter] = useState("All");
 
-  const filters = site?.skillCategories || ["All", "Full-Stack", "Backend", "Frontend", "Database", "Infra", "Web3"];
+  const filters = site?.skillCategories || ["All", "Full-Stack", "Backend", "Frontend", "Database", "Infra", "AI/ML"];
 
   const filteredSkills = useMemo(() => {
     if (!skillGroups) return [];
@@ -189,7 +189,7 @@ export default function SkillsPage() {
             <div className="rounded-2xl border border-[var(--border-color)] bg-[var(--bg-secondary)] p-6 sm:p-8">
               <div className="mb-4 text-[10px] uppercase tracking-[0.16em] text-[var(--text-muted)]" style={{ fontFamily: "'DM Mono', monospace" }}>Current Direction</div>
               <h3 className="mb-4 text-[24px] font-bold leading-tight tracking-[-0.02em] text-[var(--text-primary)] sm:text-[28px]" style={{ fontFamily: "'Syne', sans-serif" }}>What I&apos;m learning now</h3>
-              <p className="max-w-[560px] text-sm font-light leading-7 text-[var(--text-secondary)] sm:leading-[1.9]">Right now I&apos;m pushing deeper into Rust, Solana, protocol design, stronger system design thinking, and more production-grade engineering patterns. I&apos;m also refining frontend quality so my work doesn&apos;t just function well — it also presents clearly.</p>
+              <p className="max-w-[560px] text-sm font-light leading-7 text-[var(--text-secondary)] sm:leading-[1.9]">Right now I&apos;m learning AI/ML concepts, studying LLM integration and RAG pipeline patterns, while continuing to build production-grade backend systems. I&apos;m also refining frontend quality so my work doesn&apos;t just function well — it also presents clearly.</p>
             </div>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
               {learningItems.map((item) => (

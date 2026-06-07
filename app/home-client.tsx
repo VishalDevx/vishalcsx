@@ -77,7 +77,7 @@ export function HomeClient({ projects, posts }: HomeClientProps) {
             <div className="grid gap-6 md:grid-cols-3">
               {[
                 { color: 'bg-emerald-500', title: 'Distributed Systems & APIs', desc: 'Multi-tenant platforms, caching layers, and event-driven backend services.' },
-                { color: 'bg-blue-500', title: 'Rust, Solana & Protocol Design', desc: 'Systems-level engineering and blockchain-adjacent architecture patterns.' },
+                { color: 'bg-blue-500', title: 'Learning AI, LLMs & ML', desc: 'Studying LLM integration, RAG pipelines, AI agents, and ML system concepts.' },
                 { color: 'bg-amber-500', title: 'AI Engineering & Graphics', desc: 'GPU shaders, 3D visualization, and practical LLM integration patterns.' },
               ].map((item, i) => (
                 <motion.div
@@ -283,7 +283,7 @@ export function HomeClient({ projects, posts }: HomeClientProps) {
                 <div className="space-y-px overflow-hidden rounded-2xl border" style={{ borderColor: 'var(--card-border)', backgroundColor: 'var(--card-border)' }}>
                   {[
                     { color: 'bg-emerald-500', status: 'ACTIVE', label: 'Product System', title: 'Expanding the School Management System', desc: 'Multi-tenant school platform with stronger module structure, workflow clarity, and production-focused backend decisions.', tags: ['Next.js', 'TypeScript', 'PostgreSQL', 'Redis'] },
-                    { color: 'bg-[#A855F7]', status: 'LEARNING', label: 'Protocol Engineering', title: 'Pushing Deeper into DAO Framework Architecture', desc: 'Rust, Solana, plugin-based governance design, and protocol-level system thinking.', tags: ['Rust', 'Solana', 'Anchor', 'DAO'] },
+                    { color: 'bg-[#A855F7]', status: 'LEARNING', label: 'AI Engineering', title: 'Studying LLM Integration & AI Concepts', desc: 'Learning LLM APIs, RAG concepts, AI agent architecture, and ML system fundamentals.', tags: ['AI', 'LLMs', 'RAG', 'Python'] },
                     { color: 'bg-[#00F5FF]', status: 'BUILDING', label: 'Brand + Frontend', title: 'Turning the Portfolio into a Structured Product', desc: 'Building the portfolio like an actual system — with reusable sections and stronger frontend structure.', tags: ['Next.js', 'Tailwind', 'Framer Motion', 'UI Systems'] },
                   ].map((item, i) => (
                     <motion.div

@@ -11,7 +11,7 @@ export default function BlogsPage() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [query, setQuery] = useState("");
 
-  const categories = site?.blogCategories || ["All", "Backend", "Full-Stack", "Frontend", "Web3"];
+  const categories = site?.blogCategories || ["All", "Backend", "Full-Stack", "Frontend", "AI/ML"];
 
   const filteredArticles = useMemo(() => {
     if (!articles) return [];

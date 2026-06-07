@@ -3,7 +3,7 @@
     {
       "num": "01",
       "title": "Isolation over convenience",
-      "desc": "Every tenant gets schema-level isolation. Shared tables with a tenant_id column is a time bomb — one bad query leaks data. Row-level security adds cognitive overhead. Separate schemas make the blast radius explicit."
+      "desc": "Every tenant gets schema-level isolation. Shared tables with a tenant_id column is a time bomb \u2014 one bad query leaks data. Row-level security adds cognitive overhead. Separate schemas make the blast radius explicit."
     },
     {
       "num": "02",
@@ -13,7 +13,7 @@
     {
       "num": "03",
       "title": "Cache reads, not writes",
-      "desc": "Redis sits in front of expensive reads only. Write-through caching without careful invalidation creates stale state bugs that are nearly impossible to reproduce. Cache invalidation is hard — scope it narrowly."
+      "desc": "Redis sits in front of expensive reads only. Write-through caching without careful invalidation creates stale state bugs that are nearly impossible to reproduce. Cache invalidation is hard \u2014 scope it narrowly."
     }
   ],
   "caseStudies": [
@@ -21,113 +21,264 @@
       "id": "cs1",
       "tag": "Case study 01",
       "title": "Multi-Tenant School Management System",
-      "sub": "Schema-per-tenant PostgreSQL · Redis read cache · Role-based access · 3 roles, 12 modules",
-      "stack": ["Next.js", "TypeScript", "Node.js", "PostgreSQL", "Prisma", "Redis", "Docker"],
+      "sub": "Schema-per-tenant PostgreSQL \u00b7 Redis read cache \u00b7 Role-based access \u00b7 3 roles, 12 modules",
+      "stack": [
+        "Next.js",
+        "TypeScript",
+        "Node.js",
+        "PostgreSQL",
+        "Prisma",
+        "Redis",
+        "Docker"
+      ],
       "archRows": [
-        ["Browser / Mobile", "Next.js API Routes", "Auth Middleware", "Service Layer"],
-        ["Redis Cache", "Prisma ORM", "PG: tenant_[id] schema"]
+        [
+          "Browser / Mobile",
+          "Next.js API Routes",
+          "Auth Middleware",
+          "Service Layer"
+        ],
+        [
+          "Redis Cache",
+          "Prisma ORM",
+          "PG: tenant_[id] schema"
+        ]
       ],
       "archColors": [
-        ["client", "gateway", "service", "service"],
-        ["infra", "db", "db"]
+        [
+          "client",
+          "gateway",
+          "service",
+          "service"
+        ],
+        [
+          "infra",
+          "db",
+          "db"
+        ]
       ],
       "panels": [
         {
           "label": "Problem",
-          "content": "A single school app needed to serve multiple independent institutions — each with its own staff, students, fee structures, and academic calendar. The core constraint: zero data leakage between tenants, even under misconfigured queries. A shared-table approach with tenant_id would require every query to carry a WHERE clause that could be accidentally omitted.",
-          "highlight": ["multiple independent institutions", "zero data leakage between tenants"]
+          "content": "A single school app needed to serve multiple independent institutions \u2014 each with its own staff, students, fee structures, and academic calendar. The core constraint: zero data leakage between tenants, even under misconfigured queries. A shared-table approach with tenant_id would require every query to carry a WHERE clause that could be accidentally omitted.",
+          "highlight": [
+            "multiple independent institutions",
+            "zero data leakage between tenants"
+          ]
         },
         {
           "label": "Architecture decision",
           "content": "Chose PostgreSQL schema-per-tenant over shared tables or separate databases. Each school gets its own PG schema (e.g. tenant_rgd, tenant_dav). Prisma connects with a dynamic schema prefix. A connection pool middleware resolves the active schema from the JWT tenant claim before any query executes. Physical isolation without the cost of separate DB instances.",
-          "highlight": ["PostgreSQL schema-per-tenant", "tenant_rgd", "tenant_dav"]
+          "highlight": [
+            "PostgreSQL schema-per-tenant",
+            "tenant_rgd",
+            "tenant_dav"
+          ]
         },
         {
           "label": "Scaling strategy",
           "content": "Horizontal scaling is safe because all state lives in Postgres + Redis, not in-process. New tenants = new schema + migration run, no code change. Redis caches heavy reads (student lists, fee summaries) with TTL-based invalidation keyed per tenant. Background jobs handle bulk operations via a queue to avoid blocking the request thread.",
-          "highlight": ["TTL-based invalidation"]
+          "highlight": [
+            "TTL-based invalidation"
+          ]
         },
         {
           "label": "Challenges faced",
-          "content": "Prisma doesn't natively support runtime schema switching. Solved by injecting a raw SET search_path statement at the connection level inside a custom middleware before every query batch. Early builds had a global Redis flush on any mutation — replaced with namespaced keys (tenant:{id}:fees:{month}) so mutations only invalidate the affected tenant's affected resource.",
-          "highlight": ["SET search_path", "tenant:{id}:fees:{month}"]
+          "content": "Prisma doesn't natively support runtime schema switching. Solved by injecting a raw SET search_path statement at the connection level inside a custom middleware before every query batch. Early builds had a global Redis flush on any mutation \u2014 replaced with namespaced keys (tenant:{id}:fees:{month}) so mutations only invalidate the affected tenant's affected resource.",
+          "highlight": [
+            "SET search_path",
+            "tenant:{id}:fees:{month}"
+          ]
         }
       ],
       "decisions": [
-        { "decision": "Tenancy model", "chosen": "Schema-per-tenant", "rejected": "Row-level tenant_id" },
-        { "decision": "ORM", "chosen": "Prisma + raw SQL", "rejected": "Knex (too low-level)" },
-        { "decision": "Auth", "chosen": "JWT + tenant claim", "rejected": "Session cookies" },
-        { "decision": "Cache layer", "chosen": "Redis read-through", "rejected": "In-memory (no persistence)" }
+        {
+          "decision": "Tenancy model",
+          "chosen": "Schema-per-tenant",
+          "rejected": "Row-level tenant_id"
+        },
+        {
+          "decision": "ORM",
+          "chosen": "Prisma + raw SQL",
+          "rejected": "Knex (too low-level)"
+        },
+        {
+          "decision": "Auth",
+          "chosen": "JWT + tenant claim",
+          "rejected": "Session cookies"
+        },
+        {
+          "decision": "Cache layer",
+          "chosen": "Redis read-through",
+          "rejected": "In-memory (no persistence)"
+        }
       ],
       "metrics": [
-        { "val": "3", "label": "User roles" },
-        { "val": "12", "label": "API modules" },
-        { "val": "<80ms", "label": "Cached reads" },
-        { "val": "∞", "label": "Tenant scale" }
+        {
+          "val": "3",
+          "label": "User roles"
+        },
+        {
+          "val": "12",
+          "label": "API modules"
+        },
+        {
+          "val": "<80ms",
+          "label": "Cached reads"
+        },
+        {
+          "val": "\u221e",
+          "label": "Tenant scale"
+        }
       ]
     },
     {
       "id": "cs2",
       "tag": "Case study 02",
-      "title": "Plugin-Based DAO Governance Framework",
-      "sub": "Solana · Anchor · Snapshot voting · Dynamic quorum · Extensible plugin architecture",
-      "stack": ["Rust", "Solana", "Anchor", "TypeScript", "Web3.js"],
+      "title": "Exploring RAG Pipeline Architecture",
+      "sub": "Studying RAG concepts \u00b7 Vector search \u00b7 Embeddings \u00b7 Re-ranking \u00b7 Learning exploration",
+      "stack": [
+        "Python",
+        "RAG Concepts",
+        "Vector DBs",
+        "LLM APIs"
+      ],
       "archRows": [
-        ["DAO Client", "Core Program", "Plugin Registry"],
-        ["Voting Plugin", "Proposal Accounts", "IPFS Archive"]
+        [
+          "User Query",
+          "Retrieval Engine",
+          "LLM Composer"
+        ],
+        [
+          "Vector Search",
+          "Re-ranker",
+          "Response"
+        ]
       ],
       "archColors": [
-        ["client", "gateway", "service"],
-        ["service", "db", "infra"]
+        [
+          "client",
+          "service",
+          "service"
+        ],
+        [
+          "infra",
+          "service",
+          "client"
+        ]
       ],
       "panels": [
         {
-          "label": "Problem",
-          "content": "Existing Solana governance programs hardcode voting logic. Adding quadratic voting or delegation requires a full program redeploy — a breaking change for any DAO already using the contract. The design constraint: governance logic must be swappable without migrating state.",
-          "highlight": ["governance logic must be swappable without migrating state"]
+          "label": "Concept",
+          "content": "RAG (Retrieval-Augmented Generation) is a pattern that grounds LLM outputs in real data by retrieving relevant documents before generating a response. I am studying how chunking strategies, embedding models, and re-ranking work together to build reliable Q&A systems over documentation.",
+          "highlight": [
+            "grounds LLM outputs in real data",
+            "chunking strategies"
+          ]
         },
         {
-          "label": "Architecture decision",
-          "content": "A core program handles proposal lifecycle, account state, and execution. Voting logic lives in separate plugin programs that the core CPI-calls at vote time. The core stores a plugin_program_id on each realm — pointing to whichever voting plugin is active. Swapping governance = one config update, zero migration.",
-          "highlight": ["plugin_program_id", "zero migration"]
+          "label": "What I am learning",
+          "content": "Semantic chunking preserves document structure by splitting on headings and paragraphs rather than fixed token windows. Embedding models convert chunks into vectors for similarity search. Two-stage retrieval (vector search + cross-encoder re-ranking) improves accuracy by retrieving more candidates and then scoring relevance directly.",
+          "highlight": [
+            "Semantic chunking",
+            "two-stage retrieval"
+          ]
         },
         {
-          "label": "Key technical constraints",
-          "content": "Solana CPI depth limits cross-program invocations to 4 levels. Plugin architecture must stay within this. Account size limits (10MB max) mean proposal accounts store only a hash of the vote record, not the full voter list. Snapshot timing is critical — vote weight captured at proposal creation prevents token whale manipulation.",
-          "highlight": ["4 levels", "10MB max"]
+          "label": "Key trade-offs",
+          "content": "Smaller embeddings (384-dim) are faster but miss nuance. Larger embeddings (1536-dim) are more accurate but slower and costlier. Matryoshka embeddings let you use one model and truncate dimensions at query time. Chunk size affects both recall and precision \u2014 too small loses context, too large reduces retrieval precision.",
+          "highlight": [
+            "Matryoshka embeddings",
+            "Chunk size"
+          ]
         },
         {
-          "label": "Scaling strategy",
-          "content": "On-chain storage is expensive on Solana. Vote records are archived off-chain (IPFS) after proposal closure, with only the final tally stored on-chain. Dynamic quorum adjusts based on total circulating supply at snapshot time — no manual governor intervention needed as token supply changes.",
-          "highlight": ["Vote records are archived off-chain (IPFS)", "Dynamic quorum"]
+          "label": "Engineering considerations",
+          "content": "Metadata filtering (by date, source, access level) before vector search eliminates irrelevant candidates. LLM response caching by query hash reduces cost and latency. Observability metrics like hit rate, MRR, and faithfulness are essential to detect silent degradation in production RAG pipelines.",
+          "highlight": [
+            "Metadata filtering",
+            "hit rate, MRR, and faithfulness"
+          ]
         }
       ],
       "decisions": [
-        { "decision": "Voting logic", "chosen": "Separate plugin programs", "rejected": "Hardcoded in core" },
-        { "decision": "Vote storage", "chosen": "IPFS archive + hash", "rejected": "Full on-chain records" },
-        { "decision": "Quorum", "chosen": "Dynamic (supply-based)", "rejected": "Static threshold" },
-        { "decision": "State migration", "chosen": "Plugin swap = zero migration", "rejected": "Redeploy + migrate" }
+        {
+          "decision": "Chunking approach",
+          "chosen": "Semantic (heading/paragraph boundaries) (studying)",
+          "rejected": "Fixed-size sliding window"
+        },
+        {
+          "decision": "Embedding strategy",
+          "chosen": "Matryoshka embeddings (studying)",
+          "rejected": "Single fixed-dimension model"
+        },
+        {
+          "decision": "Retrieval method",
+          "chosen": "Vector search + re-ranking (studying)",
+          "rejected": "Vector search only"
+        },
+        {
+          "decision": "Caching approach",
+          "chosen": "Query hash cache (studying)",
+          "rejected": "No caching"
+        }
       ],
       "metrics": [
-        { "val": "4", "label": "CPI depth max" },
-        { "val": "∞", "label": "Plugin slots" },
-        { "val": "0", "label": "State migrations" },
-        { "val": "IPFS", "label": "Vote archive" }
+        {
+          "val": "Study",
+          "label": "Hit rate targeting"
+        },
+        {
+          "val": "Study",
+          "label": "MRR targeting"
+        },
+        {
+          "val": "Study",
+          "label": "Response time"
+        },
+        {
+          "val": "Study",
+          "label": "Cache savings"
+        }
       ]
     }
   ],
   "techRadar": {
-    "Adopt": ["TypeScript", "PostgreSQL", "Redis", "Prisma ORM", "Next.js API", "Docker"],
-    "Trial": ["BullMQ", "Turborepo", "tRPC", "Drizzle ORM", "Hono.js"],
-    "Assess": ["NATS JetStream", "ClickHouse", "CockroachDB", "EdgeDB", "Temporal.io"],
-    "Hold": ["REST (complex APIs)", "MongoDB", "GraphQL", "Microservices-early"]
+    "Adopt": [
+      "TypeScript",
+      "PostgreSQL",
+      "Redis",
+      "Prisma ORM",
+      "Next.js API",
+      "Docker"
+    ],
+    "Trial": [
+      "BullMQ",
+      "Turborepo",
+      "tRPC",
+      "Drizzle ORM",
+      "Hono.js"
+    ],
+    "Assess": [
+      "NATS JetStream",
+      "ClickHouse",
+      "CockroachDB",
+      "EdgeDB",
+      "Temporal.io"
+    ],
+    "Hold": [
+      "REST (complex APIs)",
+      "MongoDB",
+      "GraphQL",
+      "Microservices-early"
+    ]
   },
   "scalePatterns": [
     {
       "tag": "Cache layer",
       "tagColor": "var(--accent-text)",
       "title": "Namespaced Redis TTL caching",
-      "desc": "Every cached key is namespaced by tenant + resource + time window. Mutations trigger targeted invalidation — never a full flush. TTL acts as the final safety net, not the primary mechanism."
+      "desc": "Every cached key is namespaced by tenant + resource + time window. Mutations trigger targeted invalidation \u2014 never a full flush. TTL acts as the final safety net, not the primary mechanism."
     },
     {
       "tag": "Queue",
@@ -145,8 +296,14 @@
       "tag": "Infra",
       "tagColor": "var(--accent-text)",
       "title": "Stateless app servers",
-      "desc": "No session state in memory. JWT carries all auth context. All shared state lives in Redis or Postgres. Horizontal scaling is a Docker replica count change — no sticky sessions, no coordination overhead."
+      "desc": "No session state in memory. JWT carries all auth context. All shared state lives in Redis or Postgres. Horizontal scaling is a Docker replica count change \u2014 no sticky sessions, no coordination overhead."
     }
   ],
-  "tags": ["Multi-tenant architecture", "Distributed systems", "Production-grade APIs", "Redis caching", "PostgreSQL at scale"]
+  "tags": [
+    "Multi-tenant architecture",
+    "Distributed systems",
+    "Production-grade APIs",
+    "Redis caching",
+    "PostgreSQL at scale"
+  ]
 }

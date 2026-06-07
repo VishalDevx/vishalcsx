@@ -98,7 +98,7 @@ export default function ActivityPage() {
                 What I&apos;m<br /><span className="text-transparent" style={{ WebkitTextStroke: "1px var(--stroke)" }}>doing now</span>
               </h1>
               <p className="mt-5 max-w-[580px] text-sm font-light leading-7 text-[var(--text-secondary)] sm:mt-6 sm:text-[15px] sm:leading-8 md:text-base md:leading-[1.75]">
-                A live view of what I&apos;m building, learning, exploring, and improving — from product systems and backend architecture to open source, protocol engineering, and AI/ML curiosity.
+                A live view of what I&apos;m building, learning, exploring, and improving — from product systems and backend architecture to open source, AI/ML engineering, and LLM integration.
               </p>
             </div>
             <div className="grid grid-cols-3 gap-4 sm:gap-5 lg:flex lg:flex-col lg:items-end lg:gap-4 lg:pb-1">

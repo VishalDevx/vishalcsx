@@ -1,3 +1,14 @@
+export interface ArchDecision {
+  decision: string
+  chosen: string
+  rejected: string
+}
+
+export interface ProjectMetric {
+  val: string
+  label: string
+}
+
 export interface Project {
   slug: string
   title: string
@@ -5,7 +16,9 @@ export interface Project {
   fullDescription?: string
   category: string
   techStack: string[]
+  domain?: string
   architecture?: string
+  dataModel?: string
   challenges?: string
   scalingStrategy?: string
   security?: string
@@ -15,6 +28,12 @@ export interface Project {
     uptime?: string
   }
   lessonsLearned?: string
+  failureHandling?: string
+  observability?: string
+  tradeoffs?: string
+  seniorTopics?: string[]
+  architectureDecisions?: ArchDecision[]
+  metrics?: ProjectMetric[]
   timeline?: TimelineEvent[]
   imageUrl?: string
   liveUrl?: string

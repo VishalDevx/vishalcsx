@@ -6,11 +6,11 @@ import { Text } from '@react-three/drei'
 import * as THREE from 'three'
 
 const planets = [
-  { label: 'School ERP', color: '#3b82f6', orbit: 2.5, speed: 0.15, size: 0.3 },
-  { label: 'FlowForge', color: '#06b6d4', orbit: 3.2, speed: 0.1, size: 0.25 },
-  { label: 'TaskMesh', color: '#6366f1', orbit: 4, speed: 0.08, size: 0.35 },
-  { label: 'DAO Framework', color: '#8b5cf6', orbit: 3.8, speed: 0.12, size: 0.2 },
-  { label: 'Open Source', color: '#22c55e', orbit: 2.8, speed: 0.18, size: 0.15 },
+  { label: 'Astra', color: '#06b6d4', orbit: 2.5, speed: 0.12, size: 0.3 },
+  { label: 'FlowForge', color: '#a855f7', orbit: 3.2, speed: 0.1, size: 0.25 },
+  { label: 'NexPay', color: '#22c55e', orbit: 3.8, speed: 0.09, size: 0.28 },
+  { label: 'TaskMesh', color: '#3b82f6', orbit: 4.2, speed: 0.08, size: 0.35 },
+  { label: 'RGD School', color: '#f59e0b', orbit: 2.8, speed: 0.15, size: 0.2 },
 ]
 
 function Planet({ data, index }: { data: typeof planets[0]; index: number }) {

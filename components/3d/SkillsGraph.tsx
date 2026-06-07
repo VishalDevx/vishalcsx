@@ -22,7 +22,7 @@ const skillData: SkillNode[] = [
   { id: 'redis', label: 'Redis', category: 'Database', radius: 0.25, color: '#dc382d' },
   { id: 'docker', label: 'Docker', category: 'DevOps', radius: 0.25, color: '#2496ed' },
   { id: 'rust', label: 'Rust', category: 'Language', radius: 0.3, color: '#dea584' },
-  { id: 'solana', label: 'Solana', category: 'Web3', radius: 0.25, color: '#9945ff' },
+  { id: 'ai-ml', label: 'AI/ML', category: 'AI/ML', radius: 0.25, color: '#06b6d4' },
   { id: 'prisma', label: 'Prisma', category: 'Database', radius: 0.2, color: '#2d3748' },
   { id: 'express', label: 'Express', category: 'Backend', radius: 0.2, color: '#68a063' },
   { id: 'redis-cache', label: 'Redis Cache', category: 'Backend', radius: 0.2, color: '#dc382d' },
@@ -32,7 +32,7 @@ const edges: [string, string][] = [
   ['ts', 'node'], ['ts', 'react'], ['react', 'next'],
   ['node', 'express'], ['node', 'pg'], ['pg', 'prisma'],
   ['node', 'redis'], ['redis', 'redis-cache'], ['node', 'docker'],
-  ['ts', 'rust'], ['rust', 'solana'],
+  ['ts', 'rust'],
 ]
 
 function SkillsGraphScene() {

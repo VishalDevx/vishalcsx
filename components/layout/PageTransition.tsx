@@ -15,6 +15,7 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
   return (
     <motion.div
       key={pathname}
+      className="book-spine"
       variants={pageTransitionVariants}
       initial="initial"
       animate="enter"

@@ -219,6 +219,69 @@ body {
   border: 0.5px solid var(--border-color);
 }
 
+/* ─── Book Page Aesthetic ─── */
+.book-page {
+  position: relative;
+  min-height: 100vh;
+}
+.book-page::before {
+  content: '';
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 18px;
+  background: linear-gradient(to right, rgba(0,0,0,0.06), transparent);
+  pointer-events: none;
+  z-index: 1;
+}
+.book-page::after {
+  content: '';
+  position: fixed;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 8px;
+  background: linear-gradient(to left, rgba(0,0,0,0.03), transparent);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ─── Book Spine ─── */
+.book-spine {
+  position: relative;
+}
+.book-spine::before {
+  content: '';
+  position: absolute;
+  left: -1px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, transparent, rgba(0,245,255,0.08), transparent);
+}
+
+/* ─── Chapter Header ─── */
+.chapter-header {
+  font-family: 'Syne', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding-bottom: 12px;
+  margin-bottom: 24px;
+  position: relative;
+}
+.chapter-header::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 40px;
+  height: 1.5px;
+  background: var(--gradient-accent);
+}
+
 /* ─── Animations ─── */
 @keyframes float {
   0%, 100% { transform: translateY(0px); }

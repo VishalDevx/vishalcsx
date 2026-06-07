@@ -106,7 +106,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <ScrollGradient />
             <RouteProgress />
             <Navbar />
-            <main className="min-h-screen">{children}</main>
+            <main className="min-h-screen book-page">{children}</main>
             <Footer />
             <CommandPalette />
           </Providers>

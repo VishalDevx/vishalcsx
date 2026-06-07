@@ -68,28 +68,35 @@ export function ProjectsPageClient({ projects, categories }: ProjectsPageClientP
             <p className="font-dm-mono text-[11px] uppercase tracking-[0.2em]" style={{ color: 'var(--text-muted)' }}>No projects found in this category.</p>
           </div>
         ) : (
-          <div className="grid gap-px overflow-hidden rounded-2xl border sm:grid-cols-2" style={{ borderColor: 'var(--card-border)', backgroundColor: 'var(--card-border)' }}>
-            {filtered.map((project, i) => (
+          <div className="space-y-4">
+            {filtered.map((project) => (
               <Link
                 key={project.slug}
                 href={`/projects/${project.slug}`}
-                className="group bg-[var(--bg-primary)] p-5 transition-colors hover:bg-[var(--card-hover)] sm:p-6 lg:p-7"
-                style={i < filtered.length - 1 && filtered.length > 2 && i % 2 === 0 && i < filtered.length - (filtered.length % 2 || 2) ? {} : {}}
+                className="group block rounded-2xl border transition-all hover:border-[var(--accent)]/30 hover:shadow-[0_0_30px_rgba(0,245,255,0.04)]"
+                style={{ borderColor: 'var(--card-border)', backgroundColor: 'var(--bg-secondary)' }}
               >
-                <div className="flex items-start justify-between gap-4 mb-3">
-                  <span className="tag-accent">{project.category || 'Project'}</span>
-                  <ArrowUpRight size={18} className="shrink-0 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5" style={{ color: 'var(--text-muted)' }} />
-                </div>
-                <h3 className="font-syne text-[22px] font-bold tracking-[-0.02em] transition-colors group-hover:text-[var(--accent-text)] sm:text-[24px]" style={{ color: 'var(--text-primary)' }}>
-                  {project.title}
-                </h3>
-                <p className="mt-2 max-w-[640px] text-sm font-light leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
-                  {project.description}
-                </p>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {project.techStack?.slice(0, 6).map((tech) => (
-                    <span key={tech} className="tag">{tech}</span>
-                  ))}
+                <div className="p-5 sm:p-6 lg:p-7">
+                  <div className="flex items-start justify-between gap-4 mb-3">
+                    <div className="flex items-center gap-3">
+                      <span className="flex h-8 w-8 items-center justify-center rounded-lg border text-[11px] font-bold" style={{ borderColor: 'var(--border-color)', color: 'var(--accent-text)' }}>
+                        {filtered.indexOf(project) + 1}
+                      </span>
+                      <span className="tag-accent">{project.category || 'Project'}</span>
+                    </div>
+                    <ArrowUpRight size={18} className="shrink-0 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5" style={{ color: 'var(--text-muted)' }} />
+                  </div>
+                  <h3 className="font-syne text-[22px] font-bold tracking-[-0.02em] transition-colors group-hover:text-[var(--accent-text)] sm:text-[24px]" style={{ color: 'var(--text-primary)' }}>
+                    {project.title}
+                  </h3>
+                  <p className="mt-2 max-w-[640px] text-sm font-light leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+                    {project.description}
+                  </p>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {project.techStack?.slice(0, 6).map((tech) => (
+                      <span key={tech} className="tag">{tech}</span>
+                    ))}
+                  </div>
                 </div>
               </Link>
             ))}

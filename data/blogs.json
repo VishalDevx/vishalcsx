@@ -122,5 +122,71 @@
       "Validation",
       "API Design"
     ]
+  },
+  {
+    "id": "07",
+    "slug": "building-throttlegate-api-gateway",
+    "type": "Build Log",
+    "category": "Backend",
+    "title": "Building throttleGate — A Production-Grade API Gateway From Scratch",
+    "excerpt": "Rate limiting with Redis Lua scripts, circuit breakers with half-open recovery, dynamic service discovery, and why I built it instead of using an off-the-shelf solution.",
+    "content": "<p>Every backend system eventually needs an API gateway. Most teams reach for Kong, Envoy, or AWS API Gateway. But building one from scratch taught me more about distributed systems than any off-the-shelf solution ever could. This is the story of throttleGate — a Node.js gateway with adaptive rate limiting, circuit breaking, and observability built in.</p><h2>Why Build vs Buy?</h2><p>The honest answer: learning. But there's a practical argument too. Off-the-shelf gateways are general-purpose. They handle the 80% case. The remaining 20% — custom rate limit algorithms, tenant-specific circuit breaker thresholds, hot-reloadable config per route — requires either expensive enterprise tiers or working around someone else's abstractions.</p><p>Building your own gateway is the right call when you need:</p><ul><li>Custom rate limiting algorithms (token-bucket + sliding-window-log, not just fixed-window)</li><li>Tenant-aware stacked limits (IP + API key + endpoint simultaneously)</li><li>Circuit breaker thresholds that differ per endpoint, not per service</li><li>Hot-reloadable config without restarting the process</li></ul><h2>Architecture Overview</h2><p>The gateway follows a layered middleware architecture on top of Express. Each layer handles a cross-cutting concern:</p><pre><code>IP Filter → CORS → Input Sanitizer → Request Size Limit → Tracing → Rate Limiter → Auth → Coalescer → Circuit Breaker → Router → Proxy</code></pre><p>The order matters. Security middleware runs before tracing to reject obvious threats without creating spans. Rate limiting runs before auth so unauthenticated requests still consume rate limit budget. The coalescer runs after auth so dedup keys include tenant context.</p><h2>Redis Lua Scripts for Atomic Rate Limiting</h2><p>The centerpiece of throttleGate is two rate-limiting algorithms implemented as Lua scripts executed atomically in Redis. The critical insight: check-then-increment in application code creates race conditions under concurrent requests. By doing both operations inside a Lua script that Redis executes atomically, we guarantee correctness without locks.</p><pre><code>-- Token Bucket (lua/token_bucket.lua)\n-- KEYS[1] = bucket key\n-- ARGV: capacity, refillRate, now, cost\n\nlocal tokens = redis.call(\"HMGET\", KEYS[1], \"tokens\", \"lastRefillTime\")\nlocal elapsed = math.max(0, now - lastRefillTime)\ntokens = math.min(capacity, tokens + elapsed * refillRate)\n\nif tokens >= cost then\n    tokens = tokens - cost\n    allowed = 1\nend\n\nredis.call(\"HMSET\", KEYS[1], \"tokens\", tokens, \"lastRefillTime\", now)\nreturn {allowed, remainingTokens, retryAfter, resetTimestamp}</code></pre><p>The sliding-window-log variant uses a Redis sorted set to track request timestamps within the window, pruning expired entries before counting.</p><h2>Fail-Open vs Fail-Closed</h2><p>This is the production decision interviewers ask about. When Redis is unreachable, should the gateway block all traffic (fail-closed) or allow all traffic (fail-open)? I chose fail-open by default because rate limiting is a QoS mechanism, not a security boundary. A Redis outage shouldn't cascade into a full application outage. The security layer (auth, IP filtering) runs in-process and doesn't depend on Redis.</p><h2>What's Next</h2><p>The gateway is running in my local Docker stack with Prometheus metrics and Grafana dashboards. The full source code, load test results, and architecture documentation are on GitHub.</p>",
+    "readTime": "7 min read",
+    "date": "Jun 28, 2026",
+    "createdAt": "2026-06-28T10:00:00.000Z",
+    "updatedAt": "2026-06-28T10:00:00.000Z",
+    "featured": true,
+    "published": true,
+    "tags": [
+      "Node.js",
+      "TypeScript",
+      "API Gateway",
+      "Redis",
+      "Architecture"
+    ]
+  },
+  {
+    "id": "08",
+    "slug": "rate-limiting-with-lua-redis",
+    "type": "Deep Dive",
+    "category": "Backend",
+    "title": "Rate Limiting Algorithms From Scratch: Token Bucket vs Sliding Window Log in Redis Lua",
+    "excerpt": "Implementing token-bucket and sliding-window-log as atomic Lua scripts, why fixed-window fails at boundaries, and how to stack multiple rate limit rules per request.",
+    "content": "<p>Rate limiting sounds simple: allow N requests per minute, reject the rest. But the difference between a rate limiter that works and one that works correctly under concurrent load is whether the check-and-increment is atomic. This post breaks down the two algorithms I implemented for throttleGate and why each exists.</p><h2>Why Not Fixed Window?</h2><p>Fixed-window rate limiting (resetting a counter every 60 seconds) has a well-known boundary problem: traffic spikes at the window boundary. If you allow 100 requests/minute, a client can send 100 requests at 11:59:59 and another 100 at 12:00:00 — effectively 200 requests in 2 seconds. Fixed-window is simple but leaky.</p><p>Both token-bucket and sliding-window-log solve this, just in different ways.</p><h2>Sliding Window Log</h2><p>Maintain a sorted set of timestamps representing each request. When a new request arrives, remove entries older than the window, count what remains, and decide. This gives perfect accuracy but costs memory proportional to the number of requests in the window.</p><pre><code>-- KEYS[1] = sorted set key\n-- ARGV: windowMs, maxRequests, now, cost\n\nredis.call(\"ZREMRANGEBYSCORE\", KEYS[1], 0, now - windowMs)\nlocal count = redis.call(\"ZCARD\", KEYS[1])\n\nif count + cost <= maxRequests then\n    redis.call(\"ZADD\", KEYS[1], now, now .. \":\" .. math.random())\n    return {1, maxRequests - count - cost, 0, resetTimestamp}\nend\n\nreturn {0, maxRequests - count, retryAfter, resetTimestamp}</code></pre><p><strong>Best for:</strong> General-purpose rate limiting where precision matters more than memory. This is throttleGate's default algorithm.</p><h2>Token Bucket</h2><p>A bucket holds C tokens, refilling at R tokens per second. Each request consumes cost tokens. If the bucket has enough, the request passes and tokens are consumed. If not, the request is rejected until enough tokens refill.</p><p>The elegance of token-bucket is that it naturally handles bursts. A full bucket of 100 tokens allows 100 immediate requests, then smooths out to the refill rate. It also supports variable-cost requests — an expensive endpoint can cost 5 tokens while a cheap one costs 1.</p><pre><code>-- KEYS[1] = bucket key\n-- ARGV: capacity, refillRate, now_seconds, cost\n\nlocal data = redis.call(\"HMGET\", KEYS[1], \"tokens\", \"lastRefill\")\nlocal elapsed = math.max(0, now - (data[2] or now))\nlocal tokens = math.min(capacity, (data[1] or capacity) + elapsed * refillRate)\n\nif tokens >= cost then\n    tokens = tokens - cost\n    redis.call(\"HMSET\", KEYS[1], \"tokens\", tokens, \"lastRefill\", now)\n    return {1, tokens, 0, ...}\nend\n\nreturn {0, tokens, (cost - tokens) / refillRate, ...}</code></pre><p><strong>Best for:</strong> Bursty endpoints, API keys with different costs, login attempt throttling.</p><h2>Stacked Limits</h2><p>The real power comes from stacking multiple rules. A single request can be checked against per-IP, per-API-key, per-tenant, and per-endpoint limits simultaneously. Each rule gets its own Lua script execution, and if any rule rejects, the request gets a 429. The headers reflect the most restrictive limit.</p><h2>Atomicity via Lua</h2><p>Running these in Lua via Redis EVALSHA guarantees atomicity. No race conditions, no TOCTOU bugs. The script either completes fully or not at all. This is the same technique that Redis uses internally for its own rate limiting features, and it's the only correct way to do distributed rate limiting without distributed locks.</p>",
+    "readTime": "6 min read",
+    "date": "Jun 29, 2026",
+    "createdAt": "2026-06-29T10:00:00.000Z",
+    "updatedAt": "2026-06-29T10:00:00.000Z",
+    "featured": false,
+    "published": true,
+    "tags": [
+      "Redis",
+      "Lua",
+      "Rate Limiting",
+      "Algorithms",
+      "Performance"
+    ]
+  },
+  {
+    "id": "09",
+    "slug": "circuit-breakers-and-resilience-patterns",
+    "type": "Engineering Note",
+    "category": "Backend",
+    "title": "Circuit Breakers, Bulkheading, and Why Retrying POST Is a Junior Mistake",
+    "excerpt": "Implementing the closed-open-half-open state machine, isolated connection pools per upstream, and exponential backoff with jitter for idempotent requests only.",
+    "content": "<p>Distributed systems fail in predictable ways. The question isn't whether a backend service will fail — it's whether your gateway handles the failure gracefully or cascades it into a full outage. throttleGate implements three resilience patterns that work together: circuit breakers, bulkheading, and smart retries.</p><h2>Circuit Breaker State Machine</h2><p>The circuit breaker is a state machine with three states: closed, open, and half-open. In the closed state, requests flow normally while the breaker tracks error rates over a rolling window. When the error rate exceeds a configurable threshold, the breaker trips to open — blocking all requests instantly and returning 503.</p><pre><code>CLOSED ──(errors > threshold)──▶ OPEN\nOPEN   ──(recovery timeout)────▶ HALF-OPEN\nHALF-OPEN ──(all succeed)──────▶ CLOSED\nHALF-OPEN ──(any failure)──────▶ OPEN</code></pre><p>After a recovery timeout, the breaker transitions to half-open and allows a limited number of probe requests. If all probes succeed, the breaker resets to closed. If any probe fails, it snaps back to open and the recovery timeout restarts.</p><p>The key implementation detail: circuit breaker state is local per gateway instance. This is intentional. Using Redis for CB state would add latency and complexity with no benefit. Each instance independently tracks its experience with the backend, which is correct behavior — one instance may be seeing errors while another is fine.</p><h2>Bulkheading — Don't Let One Service Take Down the Rest</h2><p>Bulkheading means isolating resources so a failure in one component doesn't exhaust shared resources. In throttleGate, each upstream target gets its own connection pool via a dedicated http.Agent with keep-alive enabled.</p><pre><code>const agent = new http.Agent({\n  keepAlive: true,\n  maxSockets: 100,\n  maxFreeSockets: 20,\n});</code></pre><p>When the billing service slows down, it can only exhaust its own 100-socket pool. The user service, with its own independent pool, continues serving normally. Without bulkheading, a single slow backend can consume all gateway connections and take down routing to every service.</p><h2>Retry With Exponential Backoff and Jitter — But NEVER POST</h2><p>Retries sound like an easy win: request failed, try again. But blind retries on non-idempotent requests are one of the most common junior-level mistakes in distributed systems.</p><p><strong>Why not retry POST?</strong> A POST request that creates a resource might succeed on the server but the response times out before reaching the client. Retrying the POST creates a duplicate resource. Orders get charged twice, tickets get created in duplicate, databases get corrupted. The HTTP spec is clear: POST is not idempotent unless the endpoint explicitly guarantees it.</p><p>In throttleGate, retries only trigger for idempotent methods: GET, PUT, DELETE, HEAD, and OPTIONS. The retry uses exponential backoff with jitter to prevent thundering herd problems:</p><pre><code>function backoff(attempt, baseMs, maxMs) {\n  const delay = Math.min(baseMs * 2^attempt, maxMs);\n  const jitter = Math.random() * delay * 0.5;\n  return Math.floor(delay + jitter);\n}</code></pre><p>The jitter prevents the retry stampede that happens when N clients all retry at exactly the same interval. Adding 0-50% random jitter spreads retries across the window, giving the backend time to recover.</p><h2>Testing Resilience</h2><p>The chaos tests kill a backend mid-request and verify the circuit breaker opens correctly. They simulate Redis going down and verify fail-open behavior kicks in. These aren't unit tests that pass with mocks — they spin up real Redis instances and mock backend services to verify the system behaves correctly under real failure conditions.</p>",
+    "readTime": "6 min read",
+    "date": "Jun 30, 2026",
+    "createdAt": "2026-06-30T10:00:00.000Z",
+    "updatedAt": "2026-06-30T10:00:00.000Z",
+    "featured": false,
+    "published": true,
+    "tags": [
+      "Resilience",
+      "Circuit Breaker",
+      "Distributed Systems",
+      "Node.js",
+      "Reliability"
+    ]
   }
 ]

@@ -1,359 +1,372 @@
 [
   {
-    "slug": "astra",
-    "title": "Astra \u2014 Enterprise SaaS Platform",
-    "description": "Enterprise multi-tenant SaaS platform with schema-per-tenant isolation, RBAC, audit logging, billing, and webhook infrastructure \u2014 designed for thousands of organizations on a single codebase.",
-    "fullDescription": "Astra is an enterprise-grade multi-tenant SaaS platform that solves a fundamental problem: how do thousands of organizations use the same application while keeping data completely isolated? The platform provides workspace management, role-based access control, and audit logging \u2014 infrastructure that every B2B SaaS product like Slack, Notion, or Linear needs.",
-    "domain": "Multi-Tenant SaaS is one of the hardest architectural challenges in backend engineering. The core problem is data isolation: when Organization A and Organization B use the same app, their data must never mix. Astra implements schema-per-tenant isolation where each organization gets their own PostgreSQL schema. This provides stronger guarantees than shared-table with tenant_id \u2014 a single missing WHERE clause cannot leak data across tenants.",
-    "category": "Backend",
+    "slug": "careernorth",
+    "title": "CareerNorth — AI Job Hunt Toolkit",
+    "description": "AI-powered job hunt platform with ATS resume scoring, job-fit analysis, tailored resume generation, and automated job application across 12 job platforms — with both web and CLI interfaces.",
+    "fullDescription": "CareerNorth is an end-to-end job hunt automation toolkit that tackles the entire job search pipeline — from resume optimization to automated applications. The core innovation is an ATS scoring engine that analyzes resumes against job descriptions using keyword matching, section detection, action verb analysis, and quantification scoring. It provides a 0-100 ATS score with actionable feedback, then can rewrite and tailor resumes per role using LLM integration. The auto-apply pipeline connects to 12 job platforms via Playwright browser automation, discovers relevant positions, tailors resumes, gates at ATS >= 80, and submits applications.",
+    "domain": "Job hunting is a system design problem: resume parsing, job discovery, fit scoring, resume tailoring, and application submission form a pipeline where each stage must handle failures gracefully. CareerNorth treats this as a multi-stage pipeline with idempotent operations, so a crash at any stage doesn't lose progress. The dual interface (web + CLI) makes the same engine accessible from different workflows — a developer might use the CLI for batch applications while a job seeker prefers the web dashboard.",
+    "category": "Full-Stack",
     "techStack": [
-      "Node.js",
+      "Next.js 15",
       "TypeScript",
+      "React 19",
+      "Prisma 6",
       "PostgreSQL",
-      "Redis",
-      "Prisma",
-      "Docker",
-      "BullMQ",
-      "Stripe"
+      "Playwright",
+      "OpenRouter",
+      "Tailwind CSS 4",
+      "NextAuth.js"
     ],
-    "architecture": "The platform uses a layered architecture: an API gateway handles authentication and tenant resolution, a service layer orchestrates business logic, and a data layer enforces tenant isolation via dynamic schema switching. Prisma connects with a custom middleware that injects SET search_path before every query, routing each request to the correct tenant schema. Redis caches organization-scoped permissions, reducing authorization query latency from 40ms to 5ms. Background jobs (BullMQ) handle billing events, webhook delivery, and audit log persistence asynchronously.",
-    "dataModel": "Each tenant gets their own schema (tenant_orgname) containing tables for users, projects, tasks, billing, and audit logs. Cross-tenant operations use a shared public schema for reference data. Row-level security (RLS) policies provide a defense-in-depth layer \u2014 even if a query bypasses the application layer, the database itself enforces tenant boundaries.",
-    "challenges": "The hardest challenge was Prisma's lack of native runtime schema switching. Solved by injecting raw SET search_path at the connection level inside a custom Prisma middleware before every query batch. Early builds had a global Redis flush on any permission change \u2014 replaced with namespaced keys (tenant:{id}:perms:{role}) so mutations only invalidate the affected tenant's affected resource. Billing was another major complexity: handling subscription upgrades, downgrades, failed payments, trial periods, and seat-based billing requires careful state management and idempotent webhook handlers.",
-    "scalingStrategy": "Horizontal scaling is safe because all state lives in Postgres + Redis, not in-process. New tenants simply create a new schema and run migrations \u2014 no code change. Redis caches heavy reads (permissions, tenant config, user lists) with TTL-based invalidation keyed per tenant. Read replicas handle reporting queries. The webhook system uses a dead-letter queue for failed deliveries with exponential backoff retry.",
-    "security": "Schema-per-tenant isolation is the primary boundary. JWT tokens carry tenant claims verified at the gateway. RLS policies at the database layer provide defense-in-depth. Audit logs capture who did what, when, and from which IP \u2014 meeting enterprise compliance requirements. Rate limiting per tenant prevents abuse. All billing data is PCI-compliant via Stripe's tokenization \u2014 raw card data never touches the server.",
-    "failureHandling": "The platform handles failures at multiple levels: transient database failures retry with exponential backoff, webhook delivery uses a DLQ after 3 failed attempts, payment processing uses Stripe webhooks with idempotency keys, and the queue system persists jobs to Redis so no work is lost on crash.",
-    "observability": "Structured logging with correlation IDs across request boundaries. Audit logs persist to a separate table for compliance. Key metrics tracked: P99 response time per tenant, cache hit ratio, webhook delivery success rate, failed payment rate. Alerts fire when any tenant exceeds rate limits or when audit log volume spikes unexpectedly.",
-    "tradeoffs": "Schema-per-tenant was chosen over shared-table for stronger isolation despite increased migration complexity. Database-per-tenant was rejected as too expensive for the target market. Prisma was chosen over raw SQL for developer velocity, accepting the middleware complexity for schema switching. Redis was chosen for caching over Memcached for its data structure flexibility and persistence options.",
+    "architecture": "The system uses a pipeline architecture with clear stage boundaries: Parse Resume → Score ATS → Match Job → Tailor Resume → Apply. Each stage is independently executable and idempotent. The core engine is shared between the Next.js web app and the CLI tool. Resume parsing uses pdfjs-dist for PDF extraction. ATS scoring analyzes keywords, sections, contact info, action verbs, quantification, bullet structure, and formatting. Job discovery uses Playwright to automate browser sessions across 12 platforms (LinkedIn, Naukri, Indeed, Cutshort, Wellfound, etc.). The LLM integration layer supports OpenRouter, OpenAI, and Anthropic for genuine AI resume rewriting — with a deterministic fallback when no LLM key is provided.",
+    "dataModel": "The data layer uses Prisma with PostgreSQL for persistent storage (Users, Resumes, Jobs, Applications, Activity logs) with localStorage as the default lightweight backend. Each resume stores parsed sections, ATS scores per job match, and tailored versions. Applications track platform, status, tailored resume snapshot, and timestamp. The model supports per-account history and batch operation tracking.",
+    "challenges": "The hardest challenge was making browser automation reliable across 12 different job platforms, each with unique DOM structures, CAPTCHA systems, and anti-bot measures. Solved with platform-specific selectors, session persistence, and configurable approval gates. Resume tailoring required balancing ATS optimization with readability — aggressive keyword stuffing improves scores but produces unnatural resumes. The solution uses weighted scoring with configurable thresholds per job fit level.",
+    "scalingStrategy": "The pipeline is embarrassingly parallel — each job application is independent and can be batched. The CLI uses PM2 for process management. The web app leverages server-side rendering for the dashboard and API routes for the pipeline. Job discovery results are cached to avoid re-scanning platforms. Application rate limiting per platform prevents account restrictions.",
+    "security": "Platform credentials are never stored — Playwright uses persistent browser profiles with manual login. LLM API keys are environment-only. Application data is account-scoped with row-level isolation. The system gates applications behind an ATS threshold (default 80) to prevent low-quality submissions that could flag accounts.",
+    "failureHandling": "Each pipeline stage has retry logic with exponential backoff. Failed applications are logged with full context (platform, error, input state) for manual review. Browser automation handles CAPTCHAs by pausing for human intervention. Session expiration triggers re-authentication prompts rather than silent failures.",
+    "observability": "Application history provides per-platform success rates, response rates, and timing. ATS score distributions help optimize resume strategies. Pipeline stage timing identifies bottlenecks. Structured logging with correlation IDs connects resume parsing, scoring, and application outcomes.",
+    "tradeoffs": "Prisma was chosen over raw SQL for type safety and migration management. Playwright was chosen over Puppeteer for better cross-browser support and built-in waiting mechanisms. Shared engine architecture (web + CLI) was chosen over separate implementations to maintain scoring consistency. PostgreSQL over SQLite for production reliability and concurrent access.",
     "seniorTopics": [
-      "Row-Level Security",
-      "Multi-Tenant Indexing",
-      "Distributed Caching",
-      "Event Sourcing",
+      "Pipeline Architecture",
+      "Browser Automation",
+      "PDF Parsing",
+      "LLM Integration",
+      "Idempotent Operations",
       "Rate Limiting",
-      "Audit Compliance",
-      "Idempotency",
-      "Webhook Infrastructure"
+      "Dual Interface Design",
+      "Process Management"
     ],
     "architectureDecisions": [
       {
-        "decision": "Tenancy model",
-        "chosen": "Schema-per-tenant",
-        "rejected": "Shared database with tenant_id"
+        "decision": "Architecture",
+        "chosen": "Shared engine with web + CLI interfaces",
+        "rejected": "Separate implementations per interface"
       },
       {
-        "decision": "ORM",
-        "chosen": "Prisma + schema switching middleware",
-        "rejected": "Raw SQL (too slow for development)"
+        "decision": "Browser automation",
+        "chosen": "Playwright with persistent profiles",
+        "rejected": "Puppeteer (less cross-browser support)"
       },
       {
-        "decision": "Cache strategy",
-        "chosen": "Redis namespaced read-through",
-        "rejected": "In-memory (no persistence across restarts)"
+        "decision": "LLM integration",
+        "chosen": "Multi-provider with deterministic fallback",
+        "rejected": "LLM-only (unreliable without API key)"
       },
       {
-        "decision": "Job queue",
-        "chosen": "BullMQ with Redis",
-        "rejected": "In-process execution (blocks requests)"
-      },
-      {
-        "decision": "Billing",
-        "chosen": "Stripe + webhook idempotency",
-        "rejected": "Custom billing (PCI complexity)"
+        "decision": "Data persistence",
+        "chosen": "PostgreSQL + localStorage dual mode",
+        "rejected": "SQLite only (concurrency issues)"
       }
     ],
     "metrics": [
       {
-        "val": "\u221e",
-        "label": "Tenant scale"
+        "val": "12",
+        "label": "Platform integrations"
       },
       {
-        "val": "5ms",
-        "label": "Auth latency (cached)"
+        "val": "0-100",
+        "label": "ATS score range"
       },
       {
-        "val": "40ms",
-        "label": "Auth latency (uncached)"
+        "val": "2",
+        "label": "Interface modes"
       },
       {
-        "val": "99.9%",
-        "label": "Webhook delivery rate"
+        "val": "<3s",
+        "label": "ATS analysis time"
       }
     ],
+    "liveUrl": "http://16.176.241.121",
+    "githubUrl": "https://github.com/VishalDevx/careernorth",
     "featured": true,
     "published": true,
-    "createdAt": "2026-01-15T10:00:00.000Z",
-    "updatedAt": "2026-06-01T10:00:00.000Z"
+    "createdAt": "2026-03-15T10:00:00.000Z",
+    "updatedAt": "2026-07-01T10:00:00.000Z"
   },
   {
-    "slug": "flowforge",
-    "title": "FlowForge \u2014 Workflow Automation Platform",
-    "description": "Distributed workflow automation engine with DAG-based pipeline execution, queue-driven workers, retry mechanisms, and event-driven architecture \u2014 inspired by n8n and Zapier.",
-    "fullDescription": "FlowForge is a workflow automation platform that executes complex, multi-step pipelines reliably. The core challenge: how do you execute Trigger \u2192 Action 1 \u2192 Action 2 \u2192 Action 3 reliably, even when individual steps fail? The answer is a combination of DAG-based dependency resolution, a distributed queue system, and idempotent retry logic.",
-    "domain": "Workflow automation sits at the intersection of distributed systems and application integration. The core problem is reliable execution: if a workflow has 10 steps and step 5 fails, the entire workflow shouldn't crash \u2014 it should retry, log, and eventually move to a dead-letter queue for investigation. FlowForge treats every workflow as a Directed Acyclic Graph (DAG) and executes nodes based on topological ordering.",
-    "category": "Backend",
+    "slug": "repolens",
+    "title": "RepoLens — GitHub Codebase Intelligence",
+    "description": "Full-stack platform that builds interactive dependency graphs from GitHub repos, explains every file with AI, and answers codebase questions — all rendered with custom Canvas API at 60fps.",
+    "fullDescription": "RepoLens transforms how developers understand unfamiliar codebases. It connects to GitHub via OAuth, builds a force-directed dependency graph from the real file tree using custom Canvas API rendering (no D3 or SVG), and layers AI-powered explanations on top. Click any node and Gemini explains what the file does. Ask questions about the codebase and get answers referencing real file paths. Symbol search lights up call sites on the graph in real-time.",
+    "domain": "Codebase comprehension is a graph problem: files have dependencies, directories contain files, and understanding a codebase means navigating these relationships. RepoLens models the entire repository as a force-directed graph where nodes are files/directories and edges represent imports/references. The Canvas API renderer handles 1,000+ nodes at 60fps with custom hit-testing, making it practical for real-world repositories. AI integration provides contextual understanding — not just what a file contains, but what would break if it changes.",
+    "category": "Full-Stack",
     "techStack": [
+      "Next.js 14",
       "TypeScript",
-      "Node.js",
-      "Redis",
-      "BullMQ",
-      "PostgreSQL",
-      "Docker",
-      "REST API"
+      "React 18",
+      "Tailwind CSS 3",
+      "NextAuth.js v4",
+      "Octokit REST",
+      "Google Gemini API",
+      "Canvas API"
     ],
-    "architecture": "FlowForge uses an event-driven architecture. When a workflow triggers, the engine parses the DAG, resolves dependencies via topological sort, and enqueues each executable node into a Redis-backed job queue. Workers pick up jobs, execute the corresponding action (HTTP request, email, database query, etc.), and emit completion events that trigger downstream nodes. Failed jobs retry with exponential backoff (1min \u2192 5min \u2192 30min) before moving to a dead-letter queue for manual investigation.",
-    "dataModel": "Workflows are stored as DAG definitions (nodes + edges) in PostgreSQL. Node types include Trigger, Action, Condition, and Wait. Each execution creates an immutable run record with per-node status (pending, running, succeeded, failed, skipped). Queue state lives in Redis for performance, with periodic snapshots to Postgres for durability.",
-    "challenges": "Ensuring exactly-once execution semantics was the hardest part \u2014 workers can crash after completing an action but before recording success. Solved with idempotency keys on each job: if a worker picks up a job with the same idempotency key, it checks if the action was already performed before re-executing. Another challenge was DAG cycle detection \u2014 workflows must be validated as acyclic before execution. Implemented Kahn's algorithm for topological sort with cycle detection.",
-    "scalingStrategy": "Workers scale horizontally \u2014 add more containers to process more workflows. The queue (BullMQ/Redis) is the bottleneck, so Redis runs in cluster mode for high-throughput deployments. Workflow definitions are cached in Redis after first load. Long-running workflows checkpoint progress to Postgres so they can resume after worker crashes.",
-    "security": "Each workflow runs in a sandboxed execution context. Action credentials are encrypted at rest using AES-256. Webhook triggers validate signatures. Rate limiting per workspace prevents runaway workflows from consuming all queue capacity.",
-    "failureHandling": "Three-tier retry: immediate retry for transient failures, exponential backoff (1m/5m/30m) for intermittent failures, dead-letter queue for permanent failures. DLQ alerts trigger manual review. Failed webhook deliveries retry with idempotency to prevent duplicate processing.",
-    "observability": "Every workflow execution emits structured logs with a run ID. Per-node timing metrics help identify bottlenecks. Dashboard shows active runs, queue depth, failure rate, and average execution time. Failed nodes surface the exact error and input context for debugging.",
-    "tradeoffs": "Redis-backed queues were chosen over Kafka for simplicity (FlowForge doesn't need Kafka's log retention or replay capabilities). PostgreSQL stores workflow definitions because they're relational and change infrequently. BullMQ was chosen over RabbitMQ for its Redis-native integration and job scheduling features.",
+    "architecture": "The system uses a server-client architecture where GitHub API calls happen server-side (authenticated via NextAuth.js GitHub OAuth), and graph rendering happens entirely client-side on Canvas. The dependency graph is built from GitHub's recursive tree endpoint in a single API call, then parsed into nodes and edges. The force-directed simulation runs in requestAnimationFrame for smooth 60fps animation. AI features (file explanation, repo chat) use Google Gemini with the file tree as context. The collaboration view splits repos by ownership with avatar display.",
+    "dataModel": "Graph nodes represent files and directories with metadata (name, path, language, size, type). Edges represent containment (directory→file) and dependencies (file→file). The force simulation assigns x/y positions iteratively. Language colors match GitHub's scheme. Search indexes symbols across the repo for instant lookup. Chat context includes the full file tree structure for accurate codebase Q&A.",
+    "challenges": "The biggest challenge was Canvas API performance with large repositories. SVG rendering buckled at 1,000+ nodes. Solved with custom spatial hashing for hit-testing (O(1) instead of O(n)), viewport culling (only render visible nodes), and level-of-detail (render simplified shapes when zoomed out). GitHub OAuth token management required careful handling of scope limits and token refresh for large repos. Symbol extraction across files required language-aware parsing.",
+    "scalingStrategy": "Graph computation is offloaded to the server, and the client only receives the final node/edge data. Canvas rendering is GPU-accelerated by default. Large repos use progressive loading — file tree first, then dependency analysis in the background. API rate limits are managed with request batching and caching of recent repos.",
+    "security": "GitHub OAuth tokens are session-scoped and never stored server-side. All GitHub API calls use the user's token, so access is limited to their own repos. Gemini API calls include only file paths and structure — never full source code — to prevent data leakage. CSRF protection on OAuth callbacks. No persistent storage of repo data.",
+    "failureHandling": "GitHub API failures trigger graceful degradation — if tree fetch fails, show available repos with an error. Gemini API failures show cached explanations where available. Canvas rendering handles WebGL context loss by falling back to 2D canvas. Network disconnection pauses live features but keeps the cached graph interactive.",
+    "observability": "Graph rendering metrics (node count, render time, FPS) displayed in debug mode. GitHub API rate limit status visible to users. AI response times tracked per query. Error boundaries prevent full-page crashes from individual component failures.",
+    "tradeoffs": "Custom Canvas over D3.js for better performance control and zero dependencies. Gemini over OpenAI for free tier availability. GitHub OAuth over personal tokens for better security posture. Force-directed layout over hierarchical for more natural codebase visualization. NextAuth.js v4 over v5 for stability in production.",
     "seniorTopics": [
-      "DAG Execution",
-      "Topological Sorting",
-      "Message Brokers",
-      "Distributed Workers",
-      "Exactly-Once Processing",
-      "Dead Letter Queues",
-      "Event-Driven Architecture",
-      "Idempotency"
+      "Force-Directed Graphs",
+      "Canvas API Rendering",
+      "Spatial Hashing",
+      "OAuth 2.0 Flows",
+      "Codebase Analysis",
+      "GPU Acceleration",
+      "Progressive Loading",
+      "Real-Time Search"
     ],
     "architectureDecisions": [
       {
-        "decision": "Execution model",
-        "chosen": "DAG with topological sort",
-        "rejected": "Linear step execution"
+        "decision": "Graph renderer",
+        "chosen": "Custom Canvas API with spatial hashing",
+        "rejected": "D3.js (performance ceiling at scale)"
       },
       {
-        "decision": "Queue system",
-        "chosen": "BullMQ (Redis)",
-        "rejected": "Kafka (overkill for this use case)"
+        "decision": "AI provider",
+        "chosen": "Google Gemini (free tier)",
+        "rejected": "OpenAI (cost at scale)"
       },
       {
-        "decision": "Retry strategy",
-        "chosen": "Exponential backoff + DLQ",
-        "rejected": "Infinite retry (blocks queue)"
+        "decision": "Auth",
+        "chosen": "GitHub OAuth via NextAuth.js",
+        "rejected": "Personal access tokens (security risk)"
       },
       {
-        "decision": "Idempotency",
-        "chosen": "Idempotency keys per job",
-        "rejected": "At-most-once (data loss risk)"
+        "decision": "Layout algorithm",
+        "chosen": "Force-directed simulation",
+        "rejected": "Hierarchical layout (less natural)"
       }
     ],
     "metrics": [
       {
-        "val": "<100ms",
-        "label": "Node execution overhead"
+        "val": "60fps",
+        "label": "Graph render rate"
       },
       {
-        "val": "\u221e",
-        "label": "Worker scale"
+        "val": "1k+",
+        "label": "Nodes supported"
       },
       {
-        "val": "99.5%",
-        "label": "Delivery reliability"
+        "val": "4",
+        "label": "View modes"
+      },
+      {
+        "val": "1",
+        "label": "API call for tree"
+      }
+    ],
+    "liveUrl": "https://repolens-inky.vercel.app",
+    "githubUrl": "https://github.com/VishalDevx/repolens",
+    "featured": true,
+    "published": true,
+    "createdAt": "2026-02-01T10:00:00.000Z",
+    "updatedAt": "2026-06-15T10:00:00.000Z"
+  },
+  {
+    "slug": "shelf",
+    "title": "Shelf — React Component Library & Design System",
+    "description": "Professional design system with 100+ accessible components, interactive playground, dark/light themes, and publishable npm package — built on Base UI primitives with shadcn conventions.",
+    "fullDescription": "Shelf is a complete design system and component library engineered for production use. It ships 100+ components across 9 categories (buttons, inputs, navigation, feedback, layout, data display, overlays, utilities, charts) with full keyboard navigation, ARIA compliance, and screen reader support via Base UI primitives. The interactive playground at /playground lets developers preview components live. The documentation site provides per-component docs, getting-started guides, and copy-paste code examples. It builds to a publishable npm package with tree-shaking, TypeScript declarations, and ESM output via tsup.",
+    "domain": "Design systems solve the consistency problem: when multiple developers build features, visual and behavioral consistency degrades without shared primitives. Shelf provides a foundation layer that enforces consistent spacing, typography, color usage, and interaction patterns. Base UI primitives handle the accessibility complexity (focus management, ARIA attributes, keyboard navigation) so component consumers don't have to think about it. The publishable package format means teams can install it as a dependency rather than copying component files.",
+    "category": "Full-Stack",
+    "techStack": [
+      "Next.js 16",
+      "TypeScript 5",
+      "React 19",
+      "Tailwind CSS 4",
+      "Base UI",
+      "Framer Motion",
+      "Recharts",
+      "tsup",
+      "Lucide React"
+    ],
+    "architecture": "The system is structured as a monorepo with the component library as the core package and the documentation site as a consumer. Components follow a composable pattern: atomic primitives (Button, Input) compose into compound components (DatePicker, Select) which compose into page-level patterns (LoginForm, DataTable). Theme management uses CSS custom properties with a persisted toggle. The build pipeline uses tsup for ESM output with proper exports map and .d.ts generation. Documentation uses Next.js App Router with MDX-like content for per-component pages.",
+    "dataModel": "Component variants are defined using class-variance-authority (cva) with typed props. Theme tokens are CSS custom properties organized by category (colors, spacing, typography, shadows). Component state (open/closed, active/inactive, disabled) maps to visual variants through Tailwind classes. The playground state manages component previews with live prop editing.",
+    "challenges": "The hardest challenge was making components fully accessible while keeping the API simple. Base UI handles complex accessibility patterns (dialog focus trapping, combobox keyboard navigation, accordion ARIA) but the component wrapper had to expose these capabilities without leaking complexity. Theme consistency across 100+ components required strict token usage — no hardcoded colors, only CSS variables. The tsup build required careful package.json exports configuration to support both ESM imports and TypeScript path resolution.",
+    "scalingStrategy": "Tree-shaking ensures consumers only bundle used components. CSS variables enable theme customization without JavaScript overhead. Component lazy-loading is supported via dynamic imports. The documentation site uses ISR for fast page loads. The playground uses code splitting to avoid bundling all component previews upfront.",
+    "security": "No runtime security concerns — the library is static UI primitives. XSS prevention is handled by React's built-in escaping. The documentation site has no server-side data processing. The npm package is signed and published with version pinning.",
+    "failureHandling": "Component error boundaries prevent individual component failures from crashing the page. The documentation site has fallback rendering for failed MDX compilation. The playground catches and displays component errors inline. Build failures are reported with specific component and file references.",
+    "observability": "Bundle size tracking per component in the build output. Accessibility audit results displayed per component. TypeScript strict mode catches type errors at build time. Visual regression testing is planned for theme changes.",
+    "tradeoffs": "Base UI over Radix UI for stronger unstyled primitive support. Tailwind CSS 4 over CSS Modules for developer velocity and consistency. tsup over Rollup for simpler configuration with equivalent output. Framer Motion over CSS animations for complex interaction patterns. Recharts over D3 for React-native chart components.",
+    "seniorTopics": [
+      "Design System Architecture",
+      "Component Composition Patterns",
+      "Accessibility (WCAG 2.1)",
+      "CSS Custom Properties",
+      "Tree-Shaking Optimization",
+      "Monorepo Structure",
+      "Build Tooling (tsup)",
+      "Theme Engine Design"
+    ],
+    "architectureDecisions": [
+      {
+        "decision": "Component primitives",
+        "chosen": "Base UI (unstyled, accessible)",
+        "rejected": "Radix UI (less flexible unstyled API)"
+      },
+      {
+        "decision": "Styling",
+        "chosen": "Tailwind CSS 4 with CSS variables",
+        "rejected": "CSS Modules (inconsistent naming)"
+      },
+      {
+        "decision": "Build tool",
+        "chosen": "tsup (ESM + .d.ts)",
+        "rejected": "Rollup (complex configuration)"
+      },
+      {
+        "decision": "Package format",
+        "chosen": "Publishable npm with exports map",
+        "rejected": "Copy-paste components (no versioning)"
+      }
+    ],
+    "metrics": [
+      {
+        "val": "100+",
+        "label": "Components"
+      },
+      {
+        "val": "9",
+        "label": "Categories"
+      },
+      {
+        "val": "WCAG 2.1",
+        "label": "Accessibility"
+      },
+      {
+        "val": "Tree-shake",
+        "label": "Bundle strategy"
+      }
+    ],
+    "liveUrl": "https://shelf-zffn.vercel.app/",
+    "githubUrl": "https://github.com/VishalDevx/shelf",
+    "featured": true,
+    "published": true,
+    "createdAt": "2026-01-10T10:00:00.000Z",
+    "updatedAt": "2026-07-10T10:00:00.000Z"
+  },
+  {
+    "slug": "astra",
+    "title": "Astra — Terminal AI Coding Agent",
+    "description": "Feature-rich terminal coding agent with 23 built-in tools, multi-provider LLM failover, multi-agent orchestration, browser automation, and messaging gateways for Telegram, Discord, and WhatsApp.",
+    "fullDescription": "Astra is a terminal-native AI coding agent built with Ink (React for CLI) that can read, write, and edit code, search the web, run shell and git commands with approval workflows, automate browser interactions, and communicate across Telegram, Discord, and WhatsApp. It supports 23 built-in tools, multi-provider LLM failover (OpenAI, Anthropic, Groq, Gemini, OpenRouter), boss orchestrator mode for sequential delegation, and multi-agent parallel orchestration with file-scope claims to prevent write conflicts.",
+    "domain": "AI coding agents face a fundamental tension: power versus safety. Astra resolves this with a permission system (allow/ask/deny by pattern), approval gates for destructive operations, and scope isolation for multi-agent runs. The multi-provider failover means if one LLM hits rate limits, Astra seamlessly switches to the next provider — up to 3 switches per turn. The boss orchestrator mode delegates to specialized workers (explore, implement, shell, plan) while the multi-agent mode runs agents in parallel with disjoint file-scope claims.",
+    "category": "Backend",
+    "techStack": [
+      "TypeScript",
+      "Node.js 20+",
+      "Ink (React for CLI)",
+      "OpenAI SDK",
+      "Playwright",
+      "grammY (Telegram)",
+      "discord.js v14",
+      "Baileys (WhatsApp)",
+      "Vitest",
+      "Docker"
+    ],
+    "architecture": "The system uses a tool-use architecture where the LLM orchestrates a set of 23 registered tools. Each tool has a schema definition, permission level, and execution handler. The agent loop: user input → LLM reasoning → tool selection → permission check → execution → result → next iteration. Multi-agent mode uses file-scope claims — each agent locks specific file paths to prevent concurrent write conflicts. The messaging gateways (Telegram, Discord, WhatsApp) are thin adapters that map platform messages to the agent's standard input format and render tool approval buttons as platform-native interactive elements.",
+    "dataModel": "The agent maintains conversation history with context compaction when approaching model limits. Tool results are stored with correlation IDs linking them to the triggering LLM decision. Permission presets are defined per-pattern (bash: allow 'npm *', ask 'rm *', deny 'sudo *'). Project rules auto-discover AGENTS.md/CLAUDE.md files injected into system prompts. Skills are installable modules from the Vercel Agent Skills ecosystem.",
+    "challenges": "The hardest challenge was multi-agent file-scope coordination. When multiple agents work on the same codebase, concurrent writes can corrupt files. Solved with a claim system: each agent declares which files it needs before starting work, and the orchestrator rejects overlapping claims. Context compaction required careful history summarization to preserve critical decisions while reducing token count. The messaging gateways needed platform-specific UX — Telegram's inline buttons for approve/deny, Discord's component interactions, WhatsApp's reply-based flow.",
+    "scalingStrategy": "The agent is single-process but handles load through tool parallelism (multiple independent tool calls in one turn). Multi-agent mode scales horizontally by running separate Node.js processes with the orchestrator as coordinator. Docker deployment provides isolation per agent run. Conversation compaction keeps memory usage bounded regardless of session length.",
+    "security": "Permission presets enforce granular access control: bash commands pattern-matched against allow/ask/deny lists. Shell approval gates require explicit human consent for destructive operations. API keys are environment-only, never logged. MCP server connections are validated before tool registration. Skills are sandboxed — they can only access declared capabilities.",
+    "failureHandling": "Tool execution failures are reported to the LLM for retry with modified approach. Provider failover handles rate limits and API errors transparently. Browser automation pauses for CAPTCHAs and OTPs. Context overflow triggers compaction rather than truncation. Conversation history is persisted to disk so crashes don't lose work.",
+    "observability": "Every tool call is logged with timing, input, output, and success/failure status. LLM token usage tracked per turn with cost estimation. Multi-agent runs show a coordination timeline. Permission denials are logged with pattern and reason. Provider failover events include trigger reason and recovery.",
+    "tradeoffs": "Ink over Blessed for React-native component model. OpenAI SDK as universal provider client over per-provider SDKs. Playwright over Puppeteer for better cross-browser support. Permission patterns over per-command approval for UX. Boss mode (sequential) over fully parallel for predictability. Docker over process isolation for reproducibility.",
+    "seniorTopics": [
+      "Tool-Use Architecture",
+      "Multi-Provider Failover",
+      "File-Scope Coordination",
+      "Permission Systems",
+      "Browser Automation",
+      "Message Gateway Design",
+      "Context Compaction",
+      "Agent Orchestration"
+    ],
+    "architectureDecisions": [
+      {
+        "decision": "CLI framework",
+        "chosen": "Ink (React for CLI)",
+        "rejected": "Blessed (low-level, verbose)"
+      },
+      {
+        "decision": "Multi-agent coordination",
+        "chosen": "File-scope claims with orchestrator",
+        "rejected": "Lock-based concurrency (deadlock risk)"
+      },
+      {
+        "decision": "Provider management",
+        "chosen": "Unified SDK with automatic failover",
+        "rejected": "Per-provider clients (duplicated logic)"
+      },
+      {
+        "decision": "Permission model",
+        "chosen": "Pattern-based presets with approval gates",
+        "rejected": "Per-command approval (UX friction)"
+      }
+    ],
+    "metrics": [
+      {
+        "val": "23",
+        "label": "Built-in tools"
+      },
+      {
+        "val": "5",
+        "label": "LLM providers"
       },
       {
         "val": "3",
-        "label": "Retry attempts before DLQ"
+        "label": "Messaging platforms"
+      },
+      {
+        "val": "3",
+        "label": "Failover attempts/turn"
       }
     ],
-    "githubUrl": "https://github.com/VishalDevx/FlowForge",
+    "liveUrl": "http://15.134.57.101:3000/",
+    "githubUrl": "https://github.com/VishalDevx/Astra",
     "featured": true,
     "published": true,
-    "createdAt": "2026-02-10T10:00:00.000Z",
-    "updatedAt": "2026-05-20T10:00:00.000Z"
-  },
-  {
-    "slug": "nexpay",
-    "title": "NexPay \u2014 Payment Infrastructure",
-    "description": "Payment processing infrastructure with double-entry ledger, idempotent transactions, reconciliation engine, and financial audit trails \u2014 built for correctness over convenience.",
-    "fullDescription": "NexPay is payment infrastructure designed around one absolute rule: money must never disappear. The system implements a double-entry ledger where every transaction creates matching credit and debit entries, ensuring the books always balance. Idempotency keys prevent double-charging on retry, and a reconciliation engine compares gateway records against internal records daily to catch mismatches.",
-    "domain": "Payment systems are the hardest category of backend engineering because financial correctness is non-negotiable. A social feed bug is an inconvenience; a payment bug is a lawsuit. NexPay treats every monetary operation as a ledger entry rather than a balance update \u2014 this way, the full history of every rupee is always traceable. The system handles double-spending protection, idempotent charge creation, automated reconciliation, and audit-ready transaction logs.",
-    "category": "Backend",
-    "techStack": [
-      "Node.js",
-      "TypeScript",
-      "PostgreSQL",
-      "Redis",
-      "BullMQ",
-      "Stripe API",
-      "Docker"
-    ],
-    "architecture": "The core of NexPay is a double-entry ledger. Every financial operation creates at least two entries: a debit from one account and a credit to another. Balances are derived values, never stored directly \u2014 preventing the classic 'balance = 100, balance = 50' bug where history disappears. The payment flow: client request with idempotency key \u2192 validation \u2192 ledger entry creation \u2192 gateway charge \u2192 ledger settlement \u2192 webhook notification. If any step fails, the entire transaction rolls back atomically using PostgreSQL transactions.",
-    "dataModel": "The ledger schema uses a journal entry pattern: each transaction has a unique ID, a pair of entries (debit/credit), and references to the affected accounts. Accounts track running balance as a materialized view computed from the ledger, never stored directly. A separate reconciliation table stores daily snapshots of gateway balances vs internal balances for automated comparison.",
-    "challenges": "Double-spending prevention was the hardest technical problem. Without protection, two concurrent requests could charge the same \u20b9100 balance twice, resulting in negative balance. Solved with a combination of: (1) idempotency keys \u2014 every charge request carries a unique key, and the system ensures each key processes only once, (2) pessimistic row-level locks on the account during transaction, (3) atomic PostgreSQL updates with CHECK constraints preventing negative balances. Reconciliation was another challenge \u2014 matching thousands of daily transactions between Stripe records and internal records requires careful handling of timing differences and partial settlements.",
-    "scalingStrategy": "The ledger table is append-only and partitioned by month for query performance. Idempotency keys are stored in Redis with TTL for fast lookups, with PostgreSQL as the source of truth. Reconciliation runs as a daily batch job. Read replicas serve reporting queries without impacting write throughput.",
-    "security": "PCI compliance is handled by Stripe's tokenization \u2014 raw card data never touches the server. API keys are hashed with bcrypt. All financial operations are logged to an append-only audit table. Idempotency keys prevent replay attacks. Rate limiting per merchant prevents abuse. Failed transactions are logged with full context for debugging.",
-    "failureHandling": "If a charge succeeds at the gateway but the ledger entry fails, a background reconciler detects the orphan and reverses it. If the gateway itself is unreachable, the request is queued for retry with idempotency. The daily reconciliation job sends alerts for any discrepancy > 0.01 INR.",
-    "observability": "Every financial operation generates an audit trail: who initiated it, when, from which IP, the idempotency key, gateway response, and ledger entries. Dashboards track: success rate, average settlement time, failed payment rate, reconciliation discrepancies, and ledger balance vs gateway balance. Alerts fire on any unreconciled difference.",
-    "tradeoffs": "PostgreSQL was chosen over specialized ledger databases (like LedgerDB) to avoid adding another infrastructure dependency \u2014 PostgreSQL's transactional guarantees and CHECK constraints are sufficient for this scale. Redis idempotency keys use TTL-based expiration rather than permanent storage, accepting a tiny window where an expired key could cause a duplicate (mitigated by PostgreSQL-level unique constraints).",
-    "seniorTopics": [
-      "Double-Entry Ledger",
-      "Distributed Transactions",
-      "Sagas",
-      "Event Sourcing",
-      "Idempotency",
-      "Reconciliation",
-      "PCI Compliance",
-      "Financial Auditing"
-    ],
-    "architectureDecisions": [
-      {
-        "decision": "Balance storage",
-        "chosen": "Derived from ledger entries",
-        "rejected": "Stored balance column"
-      },
-      {
-        "decision": "Idempotency",
-        "chosen": "Redis + PostgreSQL dual check",
-        "rejected": "Database-only (slower)"
-      },
-      {
-        "decision": "Payment gateway",
-        "chosen": "Stripe tokenization",
-        "rejected": "Self-hosted (PCI nightmare)"
-      },
-      {
-        "decision": "Reconciliation",
-        "chosen": "Daily batch + alert",
-        "rejected": "Real-time (unnecessary complexity)"
-      }
-    ],
-    "metrics": [
-      {
-        "val": "100%",
-        "label": "Ledger accuracy"
-      },
-      {
-        "val": "<200ms",
-        "label": "Charge latency"
-      },
-      {
-        "val": "99.99%",
-        "label": "Uptime target"
-      },
-      {
-        "val": "Daily",
-        "label": "Reconciliation"
-      }
-    ],
-    "featured": true,
-    "published": true,
-    "createdAt": "2026-03-01T10:00:00.000Z",
-    "updatedAt": "2026-06-01T10:00:00.000Z"
-  },
-  {
-    "slug": "taskmesh",
-    "title": "TaskMesh \u2014 Collaboration Platform",
-    "description": "Real-time collaborative task manager with WebSocket-based live updates, activity feeds, notification systems, and full-text search \u2014 built for team productivity at scale.",
-    "fullDescription": "TaskMesh is a real-time collaboration platform designed for teams that need synchronized task tracking across projects, members, and workspaces. Think Linear or Jira \u2014 but engineered with WebSocket-based live updates, pub/sub event distribution, and a CQRS-inspired read/write separation for performance.",
-    "domain": "Collaboration platforms face a unique challenge: teams create huge amounts of connected data (projects, tasks, comments, files, users) that must stay in sync across multiple clients in real time. TaskMesh solves this with an event-driven architecture where every action (task created, assigned, commented) emits an event that is broadcast to all connected clients via WebSockets, persisted to an activity feed, and optionally routed to the notification system.",
-    "category": "Full-Stack",
-    "techStack": [
-      "Next.js",
-      "TypeScript",
-      "React",
-      "PostgreSQL",
-      "Prisma",
-      "Redis",
-      "WebSockets",
-      "BullMQ"
-    ],
-    "architecture": "TaskMesh uses a layered architecture with CQRS influence. Write operations go through the API layer, persist to PostgreSQL, and emit domain events to Redis pub/sub. A WebSocket server subscribes to these events and broadcasts them to connected clients. Read operations can hit PostgreSQL directly or a Redis cache for frequently accessed data (workspace members, project lists). Activity feeds are materialized views updated by background workers. Search uses PostgreSQL full-text search with GIN indexes, with the option to swap to Elasticsearch as data grows.",
-    "dataModel": "The core entities form a hierarchy: Workspace \u2192 Project \u2192 Task \u2192 Comment. Each entity has a creator, assignee (for tasks), and audit timestamps. Task status transitions are tracked in a separate events table that doubles as the activity feed source. Notifications are denormalized per user for fast queries \u2014 each notification stores the event type, actor, target, and a read/unread flag.",
-    "challenges": "Scaling WebSocket connections was a major challenge \u2014 a single server can handle ~10k connections, but beyond that you need horizontal scaling with a pub/sub layer. Solved by using Redis pub/sub as the message bus between WebSocket servers: any server can publish an event, and all servers receive it and forward to their connected clients. The activity feed presented another challenge: every action generates an event, and querying the raw events table for a user's feed is slow. Solved by materializing feeds per user via background workers.",
-    "scalingStrategy": "WebSocket servers scale horizontally behind a load balancer with Redis pub/sub as the coordination layer. PostgreSQL handles the write path with read replicas for feed and search queries. Redis caches workspace metadata, member lists, and frequently accessed tasks. The notification system uses a separate queue to avoid blocking critical write operations.",
-    "security": "Workspace-level isolation enforced at the API layer: every query includes a workspace_id filter. JWT tokens carry workspace membership claims. WebSocket connections authenticate on connect and authorize on each subscription. File uploads are scanned and stored with signed URLs that expire.",
-    "failureHandling": "If the WebSocket connection drops, the client reconnects with the last known event ID, and the server replays missed events from the event store. Queue workers retry failed notification deliveries. The activity feed materializer handles backpressure by batching events when the write rate exceeds the processing rate.",
-    "observability": "Key metrics tracked: WebSocket connection count, messages per second, event processing latency, notification delivery time, search query latency. Structured logging with correlation IDs connects WebSocket events to the API requests that triggered them. Alerts fire when connection counts approach server limits or when event processing falls behind.",
-    "tradeoffs": "WebSockets were chosen over SSE for bidirectional communication (necessary for typing indicators and presence). Redis pub/sub was chosen over Kafka because the use case doesn't require message replay or long-term retention. PostgreSQL full-text search was chosen over Elasticsearch for simplicity \u2014 the workload is well within PG's capabilities at this scale.",
-    "seniorTopics": [
-      "CQRS",
-      "Event Streams",
-      "WebSocket Scaling",
-      "Pub/Sub Architecture",
-      "Real-Time Systems",
-      "Search Engines",
-      "Materialized Views",
-      "Connection Management"
-    ],
-    "architectureDecisions": [
-      {
-        "decision": "Real-time protocol",
-        "chosen": "WebSockets",
-        "rejected": "SSE (unidirectional, no typing indicators)"
-      },
-      {
-        "decision": "Pub/sub",
-        "chosen": "Redis pub/sub",
-        "rejected": "Kafka (overkill for real-time broadcast)"
-      },
-      {
-        "decision": "Search",
-        "chosen": "PostgreSQL full-text search",
-        "rejected": "Elasticsearch (premature optimization)"
-      },
-      {
-        "decision": "Activity feed",
-        "chosen": "Materialized view per user",
-        "rejected": "Query raw events (too slow at scale)"
-      }
-    ],
-    "metrics": [
-      {
-        "val": "<50ms",
-        "label": "Real-time broadcast latency"
-      },
-      {
-        "val": "10k+",
-        "label": "Connections per server"
-      },
-      {
-        "val": "<200ms",
-        "label": "Search query time"
-      },
-      {
-        "val": "99.9%",
-        "label": "Notification delivery"
-      }
-    ],
-    "githubUrl": "https://github.com/VishalDevx/TaskMesh",
-    "liveUrl": "https://task-mesh-x2wh.vercel.app/workspaces",
-    "featured": true,
-    "published": true,
-    "createdAt": "2026-04-01T10:00:00.000Z",
-    "updatedAt": "2026-06-01T10:00:00.000Z"
+    "createdAt": "2025-12-01T10:00:00.000Z",
+    "updatedAt": "2026-07-15T10:00:00.000Z"
   },
   {
     "slug": "rgd-school",
-    "title": "RGD School Management System",
-    "description": "Production school management platform with multi-role access, fee handling, attendance tracking, result generation, and reporting \u2014 a true business domain system.",
-    "fullDescription": "RGD School Management System is a full-featured education platform handling the complete lifecycle of a school \u2014 from student admissions and attendance to fee management, exam results, and performance analytics. It's not a CRUD app; it's a business domain system with complex workflows, state machines, and reporting requirements.",
-    "domain": "School management is deceptively complex. Most people think it's CRUD until they encounter problems like: a student transfers sections mid-year but their attendance history must remain correct, fees have installments/discounts/late fees/scholarships, and exam results require ranked grade calculations across multiple subjects. RGD handles all of these with proper domain modeling and workflow engines.",
+    "title": "RGD School — Multi-Tenant School Management SaaS",
+    "description": "Production multi-tenant school management platform with student/staff management, attendance tracking, fee handling with Razorpay, exam management, and role-based access control across subscription tiers.",
+    "fullDescription": "RGD School is a comprehensive multi-tenant SaaS platform where multiple schools register and independently manage their own instance. Each school gets slug-based isolation (`/school/[slug]/*`) with role-based dashboards for Admin, Staff, and Student. The platform handles the complete school lifecycle: student admissions, attendance tracking, fee management with online Razorpay payments, exam creation, result generation, and performance analytics — all behind a subscription tier system (Free through Enterprise) that controls feature access.",
+    "domain": "School management is deceptively complex. Fee management alone requires installment plans, early-bird discounts, sibling discounts, late payment penalties, scholarship adjustments, and refund processing. Attendance tracking needs period-level granularity (not just day-level) to handle students who are present in some classes but absent in others. Multi-tenancy requires data isolation per school while sharing the same codebase and infrastructure. The subscription tier system adds another dimension: feature flags, usage limits, and payment integration must work correctly across all tiers.",
     "category": "Full-Stack",
     "techStack": [
-      "Next.js",
+      "Next.js 15",
       "TypeScript",
-      "Node.js",
+      "React 18",
       "PostgreSQL",
-      "Prisma",
+      "Prisma 6",
+      "NextAuth.js",
+      "Tailwind CSS 4",
+      "Radix UI",
+      "Razorpay",
+      "Supabase",
       "Redis",
-      "Docker"
+      "Framer Motion"
     ],
-    "architecture": "The system uses a modular architecture with clear domain boundaries: Student Management, Academic Tracking, Fee Management, Examination, and Reporting. Each module has its own service layer and data access patterns. Authentication uses JWT with role-based middleware that enforces permissions at both the API and data level. Background workers (BullMQ) handle report generation, fee reminders, and bulk operations without blocking the request thread.",
-    "dataModel": "The domain model centers around the Student entity, which connects to Attendance, Fee, Exam, and Class entities. A Student transfers between sections over time, so attendance and fee records are linked to the admission period rather than the current section. The fee model supports installments, discounts (sibling, merit), late fees, and scholarship adjustments. The exam model supports multiple subjects, grade boundaries, rank calculation, and report card generation.",
-    "challenges": "Fee management was the most complex module. Real schools don't just charge a flat fee \u2014 they have installment plans, early-bird discounts, sibling discounts, late payment penalties, scholarship adjustments, and refund processing. The fee engine had to handle all these cases while maintaining an auditable payment trail. Attendance tracking faced its own challenge: a student might be marked present in one class but absent in another on the same day, requiring period-level attendance rather than day-level.",
-    "scalingStrategy": "The system serves a single school with horizontal scaling for peak periods (exam result days, fee due dates). PostgreSQL handles the relational data, Redis caches frequently accessed data (student lists, fee structures, class schedules). Background jobs prevent slow operations (report generation, bulk SMS/email) from blocking HTTP requests.",
-    "security": "Four role levels (Admin, Teacher, Student, Parent) with granular permissions. Teachers can only access their assigned classes. Students see only their own data. Parents see their children's data. All API endpoints enforce role-based access at the middleware level, with row-level security in PostgreSQL as a backup.",
-    "failureHandling": "Fee payments use idempotency keys to prevent double-charging. Report generation retries on failure. Attendance saving is transactional \u2014 if saving 40 students' attendance fails, the entire batch rolls back. Notifications queue with retry for SMS/email failures.",
-    "observability": "Dashboard tracks: fee collection rates, attendance trends, class performance comparisons, and exam result distributions. Structured logging helps debug issues in production. Audit logs track who modified student records, fee waivers, and grade changes.",
-    "tradeoffs": "Single-database PostgreSQL was chosen over microservices because the school's scale doesn't warrant distributed complexity. Prisma ORM provides type safety and migration management at the cost of some query flexibility. Background jobs over cron for reliability and observability.",
+    "architecture": "The system uses a modular monolith with clear domain boundaries: Student Management, Academic Tracking, Fee Management, Examination, and Reporting. Multi-tenancy is enforced via slug-based routing — each request includes the school slug, which scopes all database queries. Authentication uses NextAuth.js with credentials provider and Prisma adapter. Role-based middleware enforces permissions at both API and data levels. Background workers handle report generation and fee reminders. Razorpay handles payment processing with webhook-driven settlement.",
+    "dataModel": "The domain model centers on the School entity, which owns Students, Staff, Classes, Fees, Exams, and Results. Students connect to Attendance, Fee, and Exam entities. Fee records support installments, discounts (sibling, merit), late fees, and scholarship adjustments. Exam results support multiple subjects, grade boundaries, rank calculation, and report card generation. Subscription tiers (Free, Starter, Basic, Pro, Enterprise) control feature access and usage limits per school.",
+    "challenges": "Fee management was the most complex module — real schools don't charge flat fees. The engine handles installment plans with varying due dates, partial payments, late fees that compound daily, sibling discounts that cascade, and scholarship adjustments that modify the base fee. Razorpay integration required handling webhooks for payment confirmation, refund processing, and subscription renewal. Student transfer between sections mid-year required careful handling of attendance and fee history to maintain data integrity.",
+    "scalingStrategy": "The system serves multiple schools on shared infrastructure. PostgreSQL handles relational data with connection pooling. Redis caches school-specific data (fee structures, class schedules, member lists) with TTL-based invalidation. Vercel cron jobs handle student promotion and fee reminder scheduling. Background jobs prevent slow operations (report generation, bulk SMS) from blocking HTTP requests.",
+    "security": "Four role levels (Admin, Staff, Student) with granular per-module permissions. School data isolation enforced at the query level — every database query includes a school slug filter. NextAuth.js session management with CSRF protection. Upstash Redis rate limiting on login attempts. Razorpay webhook signature verification. Supabase storage with signed URLs for file uploads. All API endpoints enforce authentication and authorization before data access.",
+    "failureHandling": "Fee payments use idempotency keys to prevent double-charging. Report generation retries on failure with exponential backoff. Attendance saving is transactional — if saving 40 students' attendance fails, the entire batch rolls back. Razorpay webhook processing is idempotent — duplicate webhooks don't create duplicate transactions. Database connection failures trigger graceful degradation with cached data.",
+    "observability": "Dashboard tracks fee collection rates, attendance trends, class performance comparisons, and exam result distributions. Structured logging with correlation IDs across request boundaries. Audit logs track who modified student records, fee waivers, and grade changes. Razorpay payment status tracked with reconciliation. Vercel deployment logs for cron job execution.",
+    "tradeoffs": "Modular monolith over microservices because the school scale doesn't warrant distributed complexity. Prisma over raw SQL for type safety and migration management at the cost of some query flexibility. Razorpay over Stripe for Indian market focus. Supabase storage over S3 for simpler integration. Background jobs over cron for retry and observability. slug-based tenancy over schema-per-tenant for simpler deployment.",
     "seniorTopics": [
+      "Multi-Tenant Architecture",
       "Domain-Driven Design",
-      "State Machines",
-      "Audit Logging",
       "Role-Based Access Control",
+      "Subscription Systems",
+      "Payment Integration",
+      "State Machines",
       "Bulk Operations",
       "Report Generation"
     ],
@@ -364,19 +377,19 @@
         "rejected": "Microservices (premature complexity)"
       },
       {
-        "decision": "Fee engine",
-        "chosen": "Custom fee module with installment/discount support",
-        "rejected": "Fixed-fee model (too inflexible)"
+        "decision": "Tenancy",
+        "chosen": "Slug-based routing with query-level isolation",
+        "rejected": "Schema-per-tenant (migration complexity)"
       },
       {
-        "decision": "Attendance",
-        "chosen": "Period-level attendance tracking",
-        "rejected": "Day-level (loses granularity)"
+        "decision": "Payment gateway",
+        "chosen": "Razorpay (Indian market)",
+        "rejected": "Stripe (less local support)"
       },
       {
-        "decision": "Background jobs",
-        "chosen": "BullMQ queue",
-        "rejected": "Cron jobs (no retry/observability)"
+        "decision": "File storage",
+        "chosen": "Supabase with signed URLs",
+        "rejected": "S3 (more configuration)"
       }
     ],
     "metrics": [
@@ -385,23 +398,23 @@
         "label": "User roles"
       },
       {
-        "val": "12",
+        "val": "12+",
         "label": "Core modules"
+      },
+      {
+        "val": "5",
+        "label": "Subscription tiers"
       },
       {
         "val": "<80ms",
         "label": "Page load time"
-      },
-      {
-        "val": "100%",
-        "label": "Uptime"
       }
     ],
-    "githubUrl": "https://github.com/VishalDevx/rgd-academy",
-    "liveUrl": "https://www.rgd-modern-academy.online/",
+    "liveUrl": "https://rgd-modern-academy.online",
+    "githubUrl": "https://github.com/VishalDevx/rgd-school",
     "featured": true,
     "published": true,
     "createdAt": "2025-11-01T10:00:00.000Z",
-    "updatedAt": "2026-06-01T10:00:00.000Z"
+    "updatedAt": "2026-07-01T10:00:00.000Z"
   }
 ]

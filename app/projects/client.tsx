@@ -125,7 +125,16 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
       style={{ borderColor: 'var(--card-border)', backgroundColor: 'var(--bg-secondary)' }}
     >
       <div className="relative h-44 overflow-hidden border-b" style={{ borderColor: 'var(--border-subtle)' }}>
-        <ProjectVisual project={project} className="h-full w-full transition-transform duration-500 group-hover:scale-[1.03]" />
+        {project.imageUrl ? (
+          <img
+            src={project.imageUrl}
+            alt={`${project.title} — live site preview`}
+            className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+            loading="lazy"
+          />
+        ) : (
+          <ProjectVisual project={project} className="h-full w-full transition-transform duration-500 group-hover:scale-[1.03]" />
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-secondary)] via-transparent to-transparent" />
         <div className="absolute left-3 top-3 flex items-center gap-2">
           <span className="tag-accent">{project.category}</span>

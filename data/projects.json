@@ -80,7 +80,8 @@
     "featured": true,
     "published": true,
     "createdAt": "2026-03-15T10:00:00.000Z",
-    "updatedAt": "2026-07-01T10:00:00.000Z"
+    "updatedAt": "2026-07-01T10:00:00.000Z",
+    "imageUrl": "/projects/careernorth.png"
   },
   {
     "slug": "repolens",
@@ -162,7 +163,8 @@
     "featured": true,
     "published": true,
     "createdAt": "2026-02-01T10:00:00.000Z",
-    "updatedAt": "2026-06-15T10:00:00.000Z"
+    "updatedAt": "2026-06-15T10:00:00.000Z",
+    "imageUrl": "/projects/repolens.png"
   },
   {
     "slug": "shelf",
@@ -245,7 +247,8 @@
     "featured": true,
     "published": true,
     "createdAt": "2026-01-10T10:00:00.000Z",
-    "updatedAt": "2026-07-10T10:00:00.000Z"
+    "updatedAt": "2026-07-10T10:00:00.000Z",
+    "imageUrl": "/projects/shelf.png"
   },
   {
     "slug": "astra",
@@ -329,7 +332,8 @@
     "featured": true,
     "published": true,
     "createdAt": "2025-12-01T10:00:00.000Z",
-    "updatedAt": "2026-07-15T10:00:00.000Z"
+    "updatedAt": "2026-07-15T10:00:00.000Z",
+    "imageUrl": "/projects/astra.png"
   },
   {
     "slug": "rgd-school",
@@ -415,7 +419,8 @@
     "featured": true,
     "published": true,
     "createdAt": "2025-11-01T10:00:00.000Z",
-    "updatedAt": "2026-07-01T10:00:00.000Z"
+    "updatedAt": "2026-07-01T10:00:00.000Z",
+    "imageUrl": "/projects/rgd-school.png"
   },
   {
     "slug": "nexpay",
@@ -1144,7 +1149,8 @@
     "featured": false,
     "published": true,
     "createdAt": "2026-04-01T10:00:00.000Z",
-    "updatedAt": "2026-07-08T10:00:00.000Z"
+    "updatedAt": "2026-07-08T10:00:00.000Z",
+    "imageUrl": "/projects/lumiforge-ai.png"
   },
   {
     "slug": "epsilon",

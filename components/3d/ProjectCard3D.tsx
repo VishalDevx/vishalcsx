@@ -80,7 +80,16 @@ export function ProjectCard3D({ project, index = 0 }: ProjectCard3DProps) {
             }}
             className="sm:h-56"
           >
-            <ProjectVisual project={project} className="h-full w-full" />
+            {project.imageUrl ? (
+              <img
+                src={project.imageUrl}
+                alt={`${project.title} — live site preview`}
+                className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                loading="lazy"
+              />
+            ) : (
+              <ProjectVisual project={project} className="h-full w-full" />
+            )}
             <div className="absolute left-3 top-3">
               <span
                 style={{

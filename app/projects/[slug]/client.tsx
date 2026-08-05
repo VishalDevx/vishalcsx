@@ -28,7 +28,11 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
         </Link>
 
         <div className="relative mb-10 overflow-hidden rounded-2xl border" style={{ borderColor: 'var(--card-border)' }}>
-          <ProjectVisual project={project} className="h-56 w-full sm:h-72" />
+          {project.imageUrl ? (
+            <img src={project.imageUrl} alt={`${project.title} — live site preview`} className="h-56 w-full object-cover object-top sm:h-72" />
+          ) : (
+            <ProjectVisual project={project} className="h-56 w-full sm:h-72" />
+          )}
           <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-primary)] via-transparent to-transparent" />
         </div>
 

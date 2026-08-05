@@ -61,10 +61,7 @@ export const profile: Profile = {
 export const navItems: NavItem[] = [
   { label: 'Home', href: '/', shortcut: 'G H', icon: 'Home' },
   { label: 'Projects', href: '/projects', shortcut: 'G P', icon: 'FolderKanban' },
-  { label: 'System Design', href: '/system-design', shortcut: 'G S', icon: 'Network' },
-  { label: 'Blog', href: '/blog', shortcut: 'G B', icon: 'BookOpen' },
-  { label: 'Open Source', href: '/open-source', shortcut: 'G O', icon: 'Code2' },
   { label: 'Skills', href: '/skills', shortcut: 'G K', icon: 'Cpu' },
-  { label: 'Activity', href: '/activity', shortcut: 'G A', icon: 'Activity' },
+  { label: 'About', href: '/about', shortcut: 'G A', icon: 'User' },
   { label: 'Contact', href: '/contact', shortcut: 'G C', icon: 'Mail' },
 ]

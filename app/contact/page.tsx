@@ -3,38 +3,42 @@
 import { useState } from 'react'
 import dynamic from 'next/dynamic'
 import { motion } from 'framer-motion'
-import { Mail, Github, Linkedin, Twitter, MapPin, Send, CheckCircle, Loader2 } from 'lucide-react'
-import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa'
+import { MapPin, Send, CheckCircle, Loader2, AlertTriangle, RefreshCw } from 'lucide-react'
+import { FaGithub, FaLinkedin, FaTwitter, FaWhatsapp } from 'react-icons/fa'
 import { MdEmail } from 'react-icons/md'
 import { siteConfig } from '@/config/site'
 
 const TerminalBackground = dynamic(() => import('@/components/3d/TerminalBackground').then(mod => ({ default: mod.TerminalBackground })), { ssr: false })
 
+const WHATSAPP_NUMBER = '+918449142327'
+
 export default function ContactPage() {
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
+  const [lastData, setLastData] = useState<{ name: string; email: string; message: string }>({ name: '', email: '', message: '' })
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setStatus('sending')
     const form = e.currentTarget
     const data = new FormData(form)
+    const payload = {
+      name: String(data.get('name') ?? ''),
+      email: String(data.get('email') ?? ''),
+      message: String(data.get('message') ?? ''),
+    }
+    setLastData(payload)
 
     try {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: data.get('name'),
-          email: data.get('email'),
-          message: data.get('message'),
-        }),
+        body: JSON.stringify(payload),
       })
       if (!res.ok) throw new Error('Failed')
       setStatus('sent')
       form.reset()
     } catch {
       setStatus('error')
-      setTimeout(() => setStatus('idle'), 3000)
     }
   }
 
@@ -73,6 +77,48 @@ export default function ContactPage() {
                 <CheckCircle size={48} className="mb-4" style={{ color: '#22c55e' }} />
                 <h3 className="font-syne text-xl font-bold" style={{ color: 'var(--text-primary)' }}>Message sent!</h3>
                 <p className="mt-2 text-sm font-light" style={{ color: 'var(--text-secondary)' }}>I&apos;ll reply within 24h.</p>
+              </motion.div>
+            ) : status === 'error' ? (
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="flex flex-col rounded-2xl border p-6 sm:p-8"
+                style={{ borderColor: 'var(--border-color)', backgroundColor: 'var(--bg-secondary)' }}
+              >
+                <div className="mb-5 flex items-start gap-3">
+                  <AlertTriangle size={20} className="mt-0.5 shrink-0" style={{ color: '#f59e0b' }} />
+                  <div>
+                    <h3 className="font-syne text-lg font-bold" style={{ color: 'var(--text-primary)' }}>Send directly instead</h3>
+                    <p className="mt-1 text-sm font-light" style={{ color: 'var(--text-secondary)' }}>
+                      The email service isn&apos;t connected yet — use one of these to reach me right away. Your message is already filled in.
+                    </p>
+                  </div>
+                </div>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <a
+                    href={`mailto:${siteConfig.links.email}?subject=Portfolio contact from ${encodeURIComponent(lastData.name)}&body=${encodeURIComponent(`From: ${lastData.name} (${lastData.email})\n\n${lastData.message}`)}`}
+                    className="group flex items-center justify-center gap-2 rounded-lg border px-5 py-3.5 text-[11px] font-medium uppercase tracking-[0.1em] transition-all hover:border-[var(--accent)] hover:bg-[var(--accent-bg)]"
+                    style={{ fontFamily: "'DM Mono', monospace", borderColor: 'var(--border-color)', color: 'var(--text-primary)' }}
+                  >
+                    <MdEmail size={13} style={{ color: 'var(--accent-text)' }} /> Email me
+                  </a>
+                  <a
+                    href={`https://wa.me/${WHATSAPP_NUMBER.replace('+', '')}?text=${encodeURIComponent(`Hi Vishal, this is ${lastData.name}. ${lastData.message}`)}`}
+                    target="_blank" rel="noopener noreferrer"
+                    className="group flex items-center justify-center gap-2 rounded-lg border px-5 py-3.5 text-[11px] font-medium uppercase tracking-[0.1em] transition-all hover:border-[var(--accent)] hover:bg-[var(--accent-bg)]"
+                    style={{ fontFamily: "'DM Mono', monospace", borderColor: 'var(--border-color)', color: 'var(--text-primary)' }}
+                  >
+                    <FaWhatsapp size={13} style={{ color: '#22c55e' }} /> WhatsApp
+                  </a>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setStatus('idle')}
+                  className="mt-4 inline-flex items-center justify-center gap-2 text-[10px] uppercase tracking-[0.15em]"
+                  style={{ fontFamily: "'DM Mono', monospace", color: 'var(--text-muted)' }}
+                >
+                  <RefreshCw size={10} /> Try again
+                </button>
               </motion.div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
@@ -154,9 +200,6 @@ export default function ContactPage() {
                     <><Send size={11} /> Send Message</>
                   )}
                 </motion.button>
-                {status === 'error' && (
-                  <p className="font-dm-mono text-[10px] uppercase tracking-[0.12em]" style={{ color: '#ef4444' }}>Failed to send. Try again or email directly.</p>
-                )}
               </form>
             )}
           </div>
@@ -174,6 +217,7 @@ export default function ContactPage() {
                     { icon: FaGithub, label: 'GitHub', href: siteConfig.links.github, text: 'VishalDevx' },
                     { icon: FaLinkedin, label: 'LinkedIn', href: siteConfig.links.linkedin, text: 'vishalcsx' },
                     { icon: FaTwitter, label: 'Twitter', href: siteConfig.links.twitter, text: '@vishalcsx' },
+                    { icon: FaWhatsapp, label: 'WhatsApp', href: `https://wa.me/${WHATSAPP_NUMBER.replace('+', '')}`, text: 'Chat instantly' },
                   ].map((s) => (
                     <a
                       key={s.label}

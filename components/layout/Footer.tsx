@@ -8,8 +8,8 @@ import { siteConfig } from '@/config/site'
 
 const NAV_LINKS = [
   { label: 'Work', href: '/projects' },
-  { label: 'System', href: '/system' },
-  { label: 'Blog', href: '/blog' },
+  { label: 'Skills', href: '/skills' },
+  { label: 'About', href: '/about' },
   { label: 'Contact', href: '/contact' },
 ]
 

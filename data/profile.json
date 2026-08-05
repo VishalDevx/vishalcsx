@@ -25,12 +25,9 @@
   ],
   "navLinks": [
     { "label": "Work", "href": "/projects" },
-    { "label": "System", "href": "/system" },
-    { "label": "Blog", "href": "/blogs" },
     { "label": "Skills", "href": "/skills" },
     { "label": "About", "href": "/about" },
-    { "label": "Activity", "href": "/activity" },
-    { "label": "Contact", "href": "/contact-me" }
+    { "label": "Contact", "href": "/contact" }
   ],
   "seo": {
     "title": "VishalCSx",

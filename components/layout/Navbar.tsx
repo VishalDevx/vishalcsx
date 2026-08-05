@@ -11,12 +11,8 @@ import { ThemeToggle } from '@/components/ui/ThemeToggle'
 
 const NAV_LINKS = [
   { label: 'Work', href: '/projects' },
-  { label: 'System', href: '/system' },
-  { label: 'Blog', href: '/blog' },
   { label: 'Skills', href: '/skills' },
   { label: 'About', href: '/about' },
-  { label: 'Activity', href: '/activity' },
-  { label: 'Lab', href: '/engineering-lab' },
   { label: 'Contact', href: '/contact' },
 ]
 

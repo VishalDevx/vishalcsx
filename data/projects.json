@@ -936,8 +936,8 @@
     "updatedAt": "2026-06-05T10:00:00.000Z"
   },
   {
-    "slug": "glyphcast",
-    "title": "Glyphcast \u2014 Browser ASCII Studio",
+    "slug": "ascii-studio",
+    "title": "ASCII Studio \u2014 Browser ASCII Art Studio",
     "description": "A browser-native studio that converts images, GIFs, and videos into animated ASCII art in real time \u2014 with luminance mapping, charset presets, appearance controls, and exports to PNG, video, React component, ZIP, and clipboard.",
     "fullDescription": "Glyphcast samples every source frame on a pixel grid, maps luminance to a character set using ITU-R BT.601 coefficients, and renders animated ASCII in real time with playback and scrubbing controls. It ships rich charset presets (Standard, Retro Terminal, Matrix, Binary), editable columns, threshold, invert, and appearance controls for font, spacing, colors, and effects. Exports cover PNG snapshots, browser-recorded video, React component files that embed the animation, ZIP archives of per-frame text, and one-click clipboard copy. Featured on Product Hunt.",
     "domain": "ASCII conversion is a sampling problem: downsample the source to a coarse grid, compute per-cell luminance, and map brightness to characters. Making it interactive in the browser requires a real-time canvas pipeline, requestAnimationFrame playback for video sources, and an offscreen-canvas path that keeps the main thread responsive for 30MB+ sources.",
@@ -1008,8 +1008,8 @@
     "updatedAt": "2026-07-05T10:00:00.000Z"
   },
   {
-    "slug": "techies-community",
-    "title": "Techies Community \u2014 Landing Site",
+    "slug": "community-hub",
+    "title": "Community Hub \u2014 Engineering Collective Landing Site",
     "description": "Scroll-driven landing page for an engineering collective \u2014 full-bleed HLS video hero, pinned-scroll panels, a live client-side credential builder, and a RAG chat assistant over a local knowledge base.",
     "fullDescription": "A dark, motion-heavy single-page site for Techies Community with carefully engineered scroll effects that degrade gracefully on mobile. Sections include a full-bleed HLS video hero, a Why section of stacking panels, an asymmetric showcase grid with working tab filters, a pinned Build section with a horizontal card rail, a live TechPass credential builder that renders entirely client-side, a FAQ accordion, and an infinite marquee footer. A floating assistant answers questions using RAG \u2014 every chunk is embedded with gemini-embedding-001, ranked by cosine similarity, and only the top 4 chunks are passed to the model.",
     "domain": "The site treats marketing as a performance problem: no content above the fold waits on a video, every scroll effect has a non-jacking fallback for mobile, and the AI assistant's retrieval index lives in module memory to avoid repeated embedding calls.",
@@ -1077,8 +1077,8 @@
     "updatedAt": "2026-06-25T10:00:00.000Z"
   },
   {
-    "slug": "lumiforge-ai",
-    "title": "LumiForge AI \u2014 Pay-As-You-Go Image Generation",
+    "slug": "pixelforge",
+    "title": "PixelForge \u2014 Pay-As-You-Go AI Image Generation",
     "description": "AI image generation platform with multi-model generation via OpenRouter, one-time Razorpay credit packs, OAuth via Better Auth, atomic credit deduction, automatic refunds, and a full image gallery with transaction history.",
     "fullDescription": "LumiForge lets users buy credits once and generate images whenever \u2014 no subscriptions. Multiple AI image models (Riverflow, Seedream, Recraft, Grok Imagine, Gemini) are available through OpenRouter with transparent per-model credit pricing derived from real generation cost. Credits are checked and decremented atomically in a single database operation to prevent race conditions. A dual-path payment fulfillment pipeline uses the payments/verify endpoint for instant confirmation and a Razorpay webhook as a crash-safe fallback. Failed generations automatically refund deducted credits, and trial users are restricted server-side to a single low-cost model.",
     "domain": "AI billing is a correctness problem: a concurrent request must never spend credits twice, and a failed generation must never silently eat money. LumiForge solves both with atomic decrement and automatic refunds, while the dual-path payment flow guarantees credits are issued even if the browser disconnects mid-checkout.",
@@ -1150,11 +1150,11 @@
     "published": true,
     "createdAt": "2026-04-01T10:00:00.000Z",
     "updatedAt": "2026-07-08T10:00:00.000Z",
-    "imageUrl": "/projects/lumiforge-ai.png"
+    "imageUrl": "/projects/pixelforge.png"
   },
   {
-    "slug": "epsilon",
-    "title": "Epsilon \u2014 Block-Based Note Workspace",
+    "slug": "blockboard",
+    "title": "Blockboard \u2014 Block-Based Note Workspace",
     "description": "A block-based workspace for notes, canvases, and lightweight project boards \u2014 Next.js frontend on Vercel, a Go REST API on EC2, PostgreSQL via Neon, S3 presigned uploads, and cookie sessions.",
     "fullDescription": "Epsilon lets users authenticate, create spaces, and arrange blocks \u2014 text, markdown, images, code, and todos \u2014 on a drag-and-drop canvas. It is a Turborepo monorepo spanning a Next.js frontend, a Go HTTP API, PostgreSQL, and object storage. Production runs across three hosts: Vercel serves HTML, EC2 (systemd) runs the Go API, and Neon PostgreSQL + AWS S3 back data and files. Sessions are cookie-based and stored in Postgres, images upload via short-lived S3 presigned URLs, and the Go backend layers handler \u2192 service \u2192 repository \u2192 sqlc.",
     "domain": "A hybrid-stack product forces clear ownership boundaries: the frontend handles SSR and rendering, the Go API owns auth, spaces, blocks, sessions, OAuth, and upload presigning, and managed services provide persistence. Cookie sessions with proxy.ts route guards keep the browser\u2194API contract explicit.",

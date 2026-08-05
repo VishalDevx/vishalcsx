@@ -488,10 +488,10 @@ const visuals: Record<string, Visual> = {
   taskmesh: TaskMeshVisual,
   throttlegate: ThrottleGateVisual,
   aptiq: AptiqVisual,
-  glyphcast: GlyphcastVisual,
-  'techies-community': CommunityVisual,
-  'lumiforge-ai': LumiForgeVisual,
-  epsilon: EpsilonVisual,
+  'ascii-studio': GlyphcastVisual,
+  'community-hub': CommunityVisual,
+  pixelforge: LumiForgeVisual,
+  blockboard: EpsilonVisual,
 }
 
 function FallbackVisual() {

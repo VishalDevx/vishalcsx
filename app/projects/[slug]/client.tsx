@@ -4,6 +4,7 @@ import Link from 'next/link'
 import dynamic from 'next/dynamic'
 import { ArrowLeft, ExternalLink, Github, Calendar, Shield, Server, GitBranch, AlertTriangle, Eye, Scale, ArrowUpRight } from 'lucide-react'
 import type { Project } from '@/types'
+import { ProjectVisual } from '@/lib/project-visuals'
 
 const ArchitectureExplorer = dynamic(() => import('@/components/3d/ArchitectureExplorer').then(mod => ({ default: mod.ArchitectureExplorer })), { ssr: false })
 
@@ -26,7 +27,12 @@ export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
           <ArrowLeft size={9} /> Back
         </Link>
 
-        <div className="flex flex-col gap-6 mb-10 sm:flex-row sm:items-start sm:justify-between">
+        <div className="relative mb-10 overflow-hidden rounded-2xl border" style={{ borderColor: 'var(--card-border)' }}>
+          <ProjectVisual project={project} className="h-56 w-full sm:h-72" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-primary)] via-transparent to-transparent" />
+        </div>
+
+        <div className="flex flex-col gap-6 mb-8 sm:flex-row sm:items-start sm:justify-between">
           <div className="max-w-[640px]">
             <div className="font-dm-mono mb-3 text-[11px] uppercase tracking-[0.2em]" style={{ color: 'var(--text-muted)' }}>{project.category || 'Project'}</div>
             <h1 className="font-syne text-[clamp(1.8rem,4vw,3rem)] font-bold tracking-[-0.03em] leading-[1.05]" style={{ color: 'var(--text-primary)' }}>{project.title}</h1>

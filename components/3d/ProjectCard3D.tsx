@@ -3,8 +3,9 @@
 import { useRef } from 'react'
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import Link from 'next/link'
-import { ExternalLink, Github } from 'lucide-react'
+import { ExternalLink, Github, ArrowUpRight } from 'lucide-react'
 import type { Project } from '@/types'
+import { ProjectVisual } from '@/lib/project-visuals'
 
 interface ProjectCard3DProps {
   project: Project
@@ -79,30 +80,26 @@ export function ProjectCard3D({ project, index = 0 }: ProjectCard3DProps) {
             }}
             className="sm:h-56"
           >
-            {project.imageUrl ? (
-              <img
-                src={project.imageUrl}
-                alt={project.title}
-                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-              />
-            ) : (
-              <div className="flex h-full items-center justify-center">
-                <div className="text-center p-6">
-                  <div className="text-4xl font-bold mb-2" style={{ color: 'var(--accent)' }}>
-                    {project.title.charAt(0)}
-                  </div>
-                  <div className="text-xs font-mono" style={{ color: 'var(--text-muted)' }}>
-                    {project.category}
-                  </div>
-                </div>
-              </div>
-            )}
+            <ProjectVisual project={project} className="h-full w-full" />
+            <div className="absolute left-3 top-3">
+              <span
+                style={{
+                  padding: '3px 8px', fontSize: 10, fontFamily: 'var(--font-mono)',
+                  textTransform: 'uppercase', letterSpacing: '0.12em',
+                  borderRadius: 6, background: 'rgba(5,5,5,0.55)',
+                  color: 'var(--accent-text)', border: '1px solid rgba(255,255,255,0.14)',
+                  backdropFilter: 'blur(6px)',
+                }}
+              >
+                {project.category}
+              </span>
+            </div>
             <div className="absolute inset-0 bg-gradient-to-t from-[var(--card-bg)] via-transparent to-transparent" />
           </div>
 
           <div className="p-5 sm:p-6" style={{ transform: 'translateZ(30px)' }}>
             <div className="flex items-start justify-between gap-3">
-              <h3 className="text-lg font-semibold tracking-tight" style={{ color: 'var(--text-primary)' }}>{project.title}</h3>
+              <h3 className="text-lg font-semibold tracking-tight transition-colors group-hover:text-[var(--accent-text)]" style={{ color: 'var(--text-primary)' }}>{project.title}</h3>
               <div className="flex items-center gap-1.5 shrink-0">
                 {project.liveUrl && (
                   <a
@@ -141,8 +138,19 @@ export function ProjectCard3D({ project, index = 0 }: ProjectCard3DProps) {
               {project.description}
             </p>
 
+            {project.metrics && project.metrics.length > 0 && (
+              <div className="mt-4 grid grid-cols-4 gap-px overflow-hidden rounded-lg border" style={{ borderColor: 'var(--border-subtle)' }}>
+                {project.metrics.slice(0, 4).map((m) => (
+                  <div key={m.label} className="px-2 py-1.5" style={{ background: 'var(--bg-tertiary)' }}>
+                    <div className="font-syne text-[13px] font-bold leading-none" style={{ color: 'var(--accent-text)' }}>{m.val}</div>
+                    <div className="mt-1 truncate font-dm-mono text-[7px] uppercase tracking-[0.08em]" style={{ color: 'var(--text-muted)' }}>{m.label}</div>
+                  </div>
+                ))}
+              </div>
+            )}
+
             <div className="mt-4 flex flex-wrap gap-1.5">
-              {project.techStack?.slice(0, 5).map((tech) => (
+              {project.techStack?.slice(0, 4).map((tech) => (
                 <span
                   key={tech}
                   style={{
@@ -154,15 +162,19 @@ export function ProjectCard3D({ project, index = 0 }: ProjectCard3DProps) {
                   {tech}
                 </span>
               ))}
-              {(project.techStack?.length || 0) > 5 && (
+              {(project.techStack?.length || 0) > 4 && (
                 <span style={{
                   padding: '2px 8px', fontSize: 12, fontFamily: 'var(--font-mono)',
                   borderRadius: 6, background: 'var(--bg-tertiary)',
                   color: 'var(--text-muted)',
                 }}>
-                  +{project.techStack!.length - 5}
+                  +{project.techStack!.length - 4}
                 </span>
               )}
+            </div>
+
+            <div className="mt-4 flex items-center gap-1.5 text-[10px] uppercase tracking-[0.15em] font-dm-mono transition-colors group-hover:text-[var(--accent-text)]" style={{ color: 'var(--text-muted)' }}>
+              View case study <ArrowUpRight size={10} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </div>
           </div>
 

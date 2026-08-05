@@ -1,10 +1,10 @@
 [
   {
     "slug": "careernorth",
-    "title": "CareerNorth — AI Job Hunt Toolkit",
-    "description": "AI-powered job hunt platform with ATS resume scoring, job-fit analysis, tailored resume generation, and automated job application across 12 job platforms — with both web and CLI interfaces.",
-    "fullDescription": "CareerNorth is an end-to-end job hunt automation toolkit that tackles the entire job search pipeline — from resume optimization to automated applications. The core innovation is an ATS scoring engine that analyzes resumes against job descriptions using keyword matching, section detection, action verb analysis, and quantification scoring. It provides a 0-100 ATS score with actionable feedback, then can rewrite and tailor resumes per role using LLM integration. The auto-apply pipeline connects to 12 job platforms via Playwright browser automation, discovers relevant positions, tailors resumes, gates at ATS >= 80, and submits applications.",
-    "domain": "Job hunting is a system design problem: resume parsing, job discovery, fit scoring, resume tailoring, and application submission form a pipeline where each stage must handle failures gracefully. CareerNorth treats this as a multi-stage pipeline with idempotent operations, so a crash at any stage doesn't lose progress. The dual interface (web + CLI) makes the same engine accessible from different workflows — a developer might use the CLI for batch applications while a job seeker prefers the web dashboard.",
+    "title": "CareerNorth \u2014 AI Job Hunt Toolkit",
+    "description": "AI-powered job hunt platform with ATS resume scoring, job-fit analysis, tailored resume generation, and automated job application across 12 job platforms \u2014 with both web and CLI interfaces.",
+    "fullDescription": "CareerNorth is an end-to-end job hunt automation toolkit that tackles the entire job search pipeline \u2014 from resume optimization to automated applications. The core innovation is an ATS scoring engine that analyzes resumes against job descriptions using keyword matching, section detection, action verb analysis, and quantification scoring. It provides a 0-100 ATS score with actionable feedback, then can rewrite and tailor resumes per role using LLM integration. The auto-apply pipeline connects to 12 job platforms via Playwright browser automation, discovers relevant positions, tailors resumes, gates at ATS >= 80, and submits applications.",
+    "domain": "Job hunting is a system design problem: resume parsing, job discovery, fit scoring, resume tailoring, and application submission form a pipeline where each stage must handle failures gracefully. CareerNorth treats this as a multi-stage pipeline with idempotent operations, so a crash at any stage doesn't lose progress. The dual interface (web + CLI) makes the same engine accessible from different workflows \u2014 a developer might use the CLI for batch applications while a job seeker prefers the web dashboard.",
     "category": "Full-Stack",
     "techStack": [
       "Next.js 15",
@@ -17,11 +17,11 @@
       "Tailwind CSS 4",
       "NextAuth.js"
     ],
-    "architecture": "The system uses a pipeline architecture with clear stage boundaries: Parse Resume → Score ATS → Match Job → Tailor Resume → Apply. Each stage is independently executable and idempotent. The core engine is shared between the Next.js web app and the CLI tool. Resume parsing uses pdfjs-dist for PDF extraction. ATS scoring analyzes keywords, sections, contact info, action verbs, quantification, bullet structure, and formatting. Job discovery uses Playwright to automate browser sessions across 12 platforms (LinkedIn, Naukri, Indeed, Cutshort, Wellfound, etc.). The LLM integration layer supports OpenRouter, OpenAI, and Anthropic for genuine AI resume rewriting — with a deterministic fallback when no LLM key is provided.",
+    "architecture": "The system uses a pipeline architecture with clear stage boundaries: Parse Resume \u2192 Score ATS \u2192 Match Job \u2192 Tailor Resume \u2192 Apply. Each stage is independently executable and idempotent. The core engine is shared between the Next.js web app and the CLI tool. Resume parsing uses pdfjs-dist for PDF extraction. ATS scoring analyzes keywords, sections, contact info, action verbs, quantification, bullet structure, and formatting. Job discovery uses Playwright to automate browser sessions across 12 platforms (LinkedIn, Naukri, Indeed, Cutshort, Wellfound, etc.). The LLM integration layer supports OpenRouter, OpenAI, and Anthropic for genuine AI resume rewriting \u2014 with a deterministic fallback when no LLM key is provided.",
     "dataModel": "The data layer uses Prisma with PostgreSQL for persistent storage (Users, Resumes, Jobs, Applications, Activity logs) with localStorage as the default lightweight backend. Each resume stores parsed sections, ATS scores per job match, and tailored versions. Applications track platform, status, tailored resume snapshot, and timestamp. The model supports per-account history and batch operation tracking.",
-    "challenges": "The hardest challenge was making browser automation reliable across 12 different job platforms, each with unique DOM structures, CAPTCHA systems, and anti-bot measures. Solved with platform-specific selectors, session persistence, and configurable approval gates. Resume tailoring required balancing ATS optimization with readability — aggressive keyword stuffing improves scores but produces unnatural resumes. The solution uses weighted scoring with configurable thresholds per job fit level.",
-    "scalingStrategy": "The pipeline is embarrassingly parallel — each job application is independent and can be batched. The CLI uses PM2 for process management. The web app leverages server-side rendering for the dashboard and API routes for the pipeline. Job discovery results are cached to avoid re-scanning platforms. Application rate limiting per platform prevents account restrictions.",
-    "security": "Platform credentials are never stored — Playwright uses persistent browser profiles with manual login. LLM API keys are environment-only. Application data is account-scoped with row-level isolation. The system gates applications behind an ATS threshold (default 80) to prevent low-quality submissions that could flag accounts.",
+    "challenges": "The hardest challenge was making browser automation reliable across 12 different job platforms, each with unique DOM structures, CAPTCHA systems, and anti-bot measures. Solved with platform-specific selectors, session persistence, and configurable approval gates. Resume tailoring required balancing ATS optimization with readability \u2014 aggressive keyword stuffing improves scores but produces unnatural resumes. The solution uses weighted scoring with configurable thresholds per job fit level.",
+    "scalingStrategy": "The pipeline is embarrassingly parallel \u2014 each job application is independent and can be batched. The CLI uses PM2 for process management. The web app leverages server-side rendering for the dashboard and API routes for the pipeline. Job discovery results are cached to avoid re-scanning platforms. Application rate limiting per platform prevents account restrictions.",
+    "security": "Platform credentials are never stored \u2014 Playwright uses persistent browser profiles with manual login. LLM API keys are environment-only. Application data is account-scoped with row-level isolation. The system gates applications behind an ATS threshold (default 80) to prevent low-quality submissions that could flag accounts.",
     "failureHandling": "Each pipeline stage has retry logic with exponential backoff. Failed applications are logged with full context (platform, error, input state) for manual review. Browser automation handles CAPTCHAs by pausing for human intervention. Session expiration triggers re-authentication prompts rather than silent failures.",
     "observability": "Application history provides per-platform success rates, response rates, and timing. ATS score distributions help optimize resume strategies. Pipeline stage timing identifies bottlenecks. Structured logging with correlation IDs connects resume parsing, scoring, and application outcomes.",
     "tradeoffs": "Prisma was chosen over raw SQL for type safety and migration management. Playwright was chosen over Puppeteer for better cross-browser support and built-in waiting mechanisms. Shared engine architecture (web + CLI) was chosen over separate implementations to maintain scoring consistency. PostgreSQL over SQLite for production reliability and concurrent access.",
@@ -84,10 +84,10 @@
   },
   {
     "slug": "repolens",
-    "title": "RepoLens — GitHub Codebase Intelligence",
-    "description": "Full-stack platform that builds interactive dependency graphs from GitHub repos, explains every file with AI, and answers codebase questions — all rendered with custom Canvas API at 60fps.",
+    "title": "RepoLens \u2014 GitHub Codebase Intelligence",
+    "description": "Full-stack platform that builds interactive dependency graphs from GitHub repos, explains every file with AI, and answers codebase questions \u2014 all rendered with custom Canvas API at 60fps.",
     "fullDescription": "RepoLens transforms how developers understand unfamiliar codebases. It connects to GitHub via OAuth, builds a force-directed dependency graph from the real file tree using custom Canvas API rendering (no D3 or SVG), and layers AI-powered explanations on top. Click any node and Gemini explains what the file does. Ask questions about the codebase and get answers referencing real file paths. Symbol search lights up call sites on the graph in real-time.",
-    "domain": "Codebase comprehension is a graph problem: files have dependencies, directories contain files, and understanding a codebase means navigating these relationships. RepoLens models the entire repository as a force-directed graph where nodes are files/directories and edges represent imports/references. The Canvas API renderer handles 1,000+ nodes at 60fps with custom hit-testing, making it practical for real-world repositories. AI integration provides contextual understanding — not just what a file contains, but what would break if it changes.",
+    "domain": "Codebase comprehension is a graph problem: files have dependencies, directories contain files, and understanding a codebase means navigating these relationships. RepoLens models the entire repository as a force-directed graph where nodes are files/directories and edges represent imports/references. The Canvas API renderer handles 1,000+ nodes at 60fps with custom hit-testing, making it practical for real-world repositories. AI integration provides contextual understanding \u2014 not just what a file contains, but what would break if it changes.",
     "category": "Full-Stack",
     "techStack": [
       "Next.js 14",
@@ -100,11 +100,11 @@
       "Canvas API"
     ],
     "architecture": "The system uses a server-client architecture where GitHub API calls happen server-side (authenticated via NextAuth.js GitHub OAuth), and graph rendering happens entirely client-side on Canvas. The dependency graph is built from GitHub's recursive tree endpoint in a single API call, then parsed into nodes and edges. The force-directed simulation runs in requestAnimationFrame for smooth 60fps animation. AI features (file explanation, repo chat) use Google Gemini with the file tree as context. The collaboration view splits repos by ownership with avatar display.",
-    "dataModel": "Graph nodes represent files and directories with metadata (name, path, language, size, type). Edges represent containment (directory→file) and dependencies (file→file). The force simulation assigns x/y positions iteratively. Language colors match GitHub's scheme. Search indexes symbols across the repo for instant lookup. Chat context includes the full file tree structure for accurate codebase Q&A.",
+    "dataModel": "Graph nodes represent files and directories with metadata (name, path, language, size, type). Edges represent containment (directory\u2192file) and dependencies (file\u2192file). The force simulation assigns x/y positions iteratively. Language colors match GitHub's scheme. Search indexes symbols across the repo for instant lookup. Chat context includes the full file tree structure for accurate codebase Q&A.",
     "challenges": "The biggest challenge was Canvas API performance with large repositories. SVG rendering buckled at 1,000+ nodes. Solved with custom spatial hashing for hit-testing (O(1) instead of O(n)), viewport culling (only render visible nodes), and level-of-detail (render simplified shapes when zoomed out). GitHub OAuth token management required careful handling of scope limits and token refresh for large repos. Symbol extraction across files required language-aware parsing.",
-    "scalingStrategy": "Graph computation is offloaded to the server, and the client only receives the final node/edge data. Canvas rendering is GPU-accelerated by default. Large repos use progressive loading — file tree first, then dependency analysis in the background. API rate limits are managed with request batching and caching of recent repos.",
-    "security": "GitHub OAuth tokens are session-scoped and never stored server-side. All GitHub API calls use the user's token, so access is limited to their own repos. Gemini API calls include only file paths and structure — never full source code — to prevent data leakage. CSRF protection on OAuth callbacks. No persistent storage of repo data.",
-    "failureHandling": "GitHub API failures trigger graceful degradation — if tree fetch fails, show available repos with an error. Gemini API failures show cached explanations where available. Canvas rendering handles WebGL context loss by falling back to 2D canvas. Network disconnection pauses live features but keeps the cached graph interactive.",
+    "scalingStrategy": "Graph computation is offloaded to the server, and the client only receives the final node/edge data. Canvas rendering is GPU-accelerated by default. Large repos use progressive loading \u2014 file tree first, then dependency analysis in the background. API rate limits are managed with request batching and caching of recent repos.",
+    "security": "GitHub OAuth tokens are session-scoped and never stored server-side. All GitHub API calls use the user's token, so access is limited to their own repos. Gemini API calls include only file paths and structure \u2014 never full source code \u2014 to prevent data leakage. CSRF protection on OAuth callbacks. No persistent storage of repo data.",
+    "failureHandling": "GitHub API failures trigger graceful degradation \u2014 if tree fetch fails, show available repos with an error. Gemini API failures show cached explanations where available. Canvas rendering handles WebGL context loss by falling back to 2D canvas. Network disconnection pauses live features but keeps the cached graph interactive.",
     "observability": "Graph rendering metrics (node count, render time, FPS) displayed in debug mode. GitHub API rate limit status visible to users. AI response times tracked per query. Error boundaries prevent full-page crashes from individual component failures.",
     "tradeoffs": "Custom Canvas over D3.js for better performance control and zero dependencies. Gemini over OpenAI for free tier availability. GitHub OAuth over personal tokens for better security posture. Force-directed layout over hierarchical for more natural codebase visualization. NextAuth.js v4 over v5 for stability in production.",
     "seniorTopics": [
@@ -166,8 +166,8 @@
   },
   {
     "slug": "shelf",
-    "title": "Shelf — React Component Library & Design System",
-    "description": "Professional design system with 100+ accessible components, interactive playground, dark/light themes, and publishable npm package — built on Base UI primitives with shadcn conventions.",
+    "title": "Shelf \u2014 React Component Library & Design System",
+    "description": "Professional design system with 100+ accessible components, interactive playground, dark/light themes, and publishable npm package \u2014 built on Base UI primitives with shadcn conventions.",
     "fullDescription": "Shelf is a complete design system and component library engineered for production use. It ships 100+ components across 9 categories (buttons, inputs, navigation, feedback, layout, data display, overlays, utilities, charts) with full keyboard navigation, ARIA compliance, and screen reader support via Base UI primitives. The interactive playground at /playground lets developers preview components live. The documentation site provides per-component docs, getting-started guides, and copy-paste code examples. It builds to a publishable npm package with tree-shaking, TypeScript declarations, and ESM output via tsup.",
     "domain": "Design systems solve the consistency problem: when multiple developers build features, visual and behavioral consistency degrades without shared primitives. Shelf provides a foundation layer that enforces consistent spacing, typography, color usage, and interaction patterns. Base UI primitives handle the accessibility complexity (focus management, ARIA attributes, keyboard navigation) so component consumers don't have to think about it. The publishable package format means teams can install it as a dependency rather than copying component files.",
     "category": "Full-Stack",
@@ -184,9 +184,9 @@
     ],
     "architecture": "The system is structured as a monorepo with the component library as the core package and the documentation site as a consumer. Components follow a composable pattern: atomic primitives (Button, Input) compose into compound components (DatePicker, Select) which compose into page-level patterns (LoginForm, DataTable). Theme management uses CSS custom properties with a persisted toggle. The build pipeline uses tsup for ESM output with proper exports map and .d.ts generation. Documentation uses Next.js App Router with MDX-like content for per-component pages.",
     "dataModel": "Component variants are defined using class-variance-authority (cva) with typed props. Theme tokens are CSS custom properties organized by category (colors, spacing, typography, shadows). Component state (open/closed, active/inactive, disabled) maps to visual variants through Tailwind classes. The playground state manages component previews with live prop editing.",
-    "challenges": "The hardest challenge was making components fully accessible while keeping the API simple. Base UI handles complex accessibility patterns (dialog focus trapping, combobox keyboard navigation, accordion ARIA) but the component wrapper had to expose these capabilities without leaking complexity. Theme consistency across 100+ components required strict token usage — no hardcoded colors, only CSS variables. The tsup build required careful package.json exports configuration to support both ESM imports and TypeScript path resolution.",
+    "challenges": "The hardest challenge was making components fully accessible while keeping the API simple. Base UI handles complex accessibility patterns (dialog focus trapping, combobox keyboard navigation, accordion ARIA) but the component wrapper had to expose these capabilities without leaking complexity. Theme consistency across 100+ components required strict token usage \u2014 no hardcoded colors, only CSS variables. The tsup build required careful package.json exports configuration to support both ESM imports and TypeScript path resolution.",
     "scalingStrategy": "Tree-shaking ensures consumers only bundle used components. CSS variables enable theme customization without JavaScript overhead. Component lazy-loading is supported via dynamic imports. The documentation site uses ISR for fast page loads. The playground uses code splitting to avoid bundling all component previews upfront.",
-    "security": "No runtime security concerns — the library is static UI primitives. XSS prevention is handled by React's built-in escaping. The documentation site has no server-side data processing. The npm package is signed and published with version pinning.",
+    "security": "No runtime security concerns \u2014 the library is static UI primitives. XSS prevention is handled by React's built-in escaping. The documentation site has no server-side data processing. The npm package is signed and published with version pinning.",
     "failureHandling": "Component error boundaries prevent individual component failures from crashing the page. The documentation site has fallback rendering for failed MDX compilation. The playground catches and displays component errors inline. Build failures are reported with specific component and file references.",
     "observability": "Bundle size tracking per component in the build output. Accessibility audit results displayed per component. TypeScript strict mode catches type errors at build time. Visual regression testing is planned for theme changes.",
     "tradeoffs": "Base UI over Radix UI for stronger unstyled primitive support. Tailwind CSS 4 over CSS Modules for developer velocity and consistency. tsup over Rollup for simpler configuration with equivalent output. Framer Motion over CSS animations for complex interaction patterns. Recharts over D3 for React-native chart components.",
@@ -249,10 +249,10 @@
   },
   {
     "slug": "astra",
-    "title": "Astra — Terminal AI Coding Agent",
+    "title": "Astra \u2014 Terminal AI Coding Agent",
     "description": "Feature-rich terminal coding agent with 23 built-in tools, multi-provider LLM failover, multi-agent orchestration, browser automation, and messaging gateways for Telegram, Discord, and WhatsApp.",
     "fullDescription": "Astra is a terminal-native AI coding agent built with Ink (React for CLI) that can read, write, and edit code, search the web, run shell and git commands with approval workflows, automate browser interactions, and communicate across Telegram, Discord, and WhatsApp. It supports 23 built-in tools, multi-provider LLM failover (OpenAI, Anthropic, Groq, Gemini, OpenRouter), boss orchestrator mode for sequential delegation, and multi-agent parallel orchestration with file-scope claims to prevent write conflicts.",
-    "domain": "AI coding agents face a fundamental tension: power versus safety. Astra resolves this with a permission system (allow/ask/deny by pattern), approval gates for destructive operations, and scope isolation for multi-agent runs. The multi-provider failover means if one LLM hits rate limits, Astra seamlessly switches to the next provider — up to 3 switches per turn. The boss orchestrator mode delegates to specialized workers (explore, implement, shell, plan) while the multi-agent mode runs agents in parallel with disjoint file-scope claims.",
+    "domain": "AI coding agents face a fundamental tension: power versus safety. Astra resolves this with a permission system (allow/ask/deny by pattern), approval gates for destructive operations, and scope isolation for multi-agent runs. The multi-provider failover means if one LLM hits rate limits, Astra seamlessly switches to the next provider \u2014 up to 3 switches per turn. The boss orchestrator mode delegates to specialized workers (explore, implement, shell, plan) while the multi-agent mode runs agents in parallel with disjoint file-scope claims.",
     "category": "Backend",
     "techStack": [
       "TypeScript",
@@ -266,11 +266,11 @@
       "Vitest",
       "Docker"
     ],
-    "architecture": "The system uses a tool-use architecture where the LLM orchestrates a set of 23 registered tools. Each tool has a schema definition, permission level, and execution handler. The agent loop: user input → LLM reasoning → tool selection → permission check → execution → result → next iteration. Multi-agent mode uses file-scope claims — each agent locks specific file paths to prevent concurrent write conflicts. The messaging gateways (Telegram, Discord, WhatsApp) are thin adapters that map platform messages to the agent's standard input format and render tool approval buttons as platform-native interactive elements.",
+    "architecture": "The system uses a tool-use architecture where the LLM orchestrates a set of 23 registered tools. Each tool has a schema definition, permission level, and execution handler. The agent loop: user input \u2192 LLM reasoning \u2192 tool selection \u2192 permission check \u2192 execution \u2192 result \u2192 next iteration. Multi-agent mode uses file-scope claims \u2014 each agent locks specific file paths to prevent concurrent write conflicts. The messaging gateways (Telegram, Discord, WhatsApp) are thin adapters that map platform messages to the agent's standard input format and render tool approval buttons as platform-native interactive elements.",
     "dataModel": "The agent maintains conversation history with context compaction when approaching model limits. Tool results are stored with correlation IDs linking them to the triggering LLM decision. Permission presets are defined per-pattern (bash: allow 'npm *', ask 'rm *', deny 'sudo *'). Project rules auto-discover AGENTS.md/CLAUDE.md files injected into system prompts. Skills are installable modules from the Vercel Agent Skills ecosystem.",
-    "challenges": "The hardest challenge was multi-agent file-scope coordination. When multiple agents work on the same codebase, concurrent writes can corrupt files. Solved with a claim system: each agent declares which files it needs before starting work, and the orchestrator rejects overlapping claims. Context compaction required careful history summarization to preserve critical decisions while reducing token count. The messaging gateways needed platform-specific UX — Telegram's inline buttons for approve/deny, Discord's component interactions, WhatsApp's reply-based flow.",
+    "challenges": "The hardest challenge was multi-agent file-scope coordination. When multiple agents work on the same codebase, concurrent writes can corrupt files. Solved with a claim system: each agent declares which files it needs before starting work, and the orchestrator rejects overlapping claims. Context compaction required careful history summarization to preserve critical decisions while reducing token count. The messaging gateways needed platform-specific UX \u2014 Telegram's inline buttons for approve/deny, Discord's component interactions, WhatsApp's reply-based flow.",
     "scalingStrategy": "The agent is single-process but handles load through tool parallelism (multiple independent tool calls in one turn). Multi-agent mode scales horizontally by running separate Node.js processes with the orchestrator as coordinator. Docker deployment provides isolation per agent run. Conversation compaction keeps memory usage bounded regardless of session length.",
-    "security": "Permission presets enforce granular access control: bash commands pattern-matched against allow/ask/deny lists. Shell approval gates require explicit human consent for destructive operations. API keys are environment-only, never logged. MCP server connections are validated before tool registration. Skills are sandboxed — they can only access declared capabilities.",
+    "security": "Permission presets enforce granular access control: bash commands pattern-matched against allow/ask/deny lists. Shell approval gates require explicit human consent for destructive operations. API keys are environment-only, never logged. MCP server connections are validated before tool registration. Skills are sandboxed \u2014 they can only access declared capabilities.",
     "failureHandling": "Tool execution failures are reported to the LLM for retry with modified approach. Provider failover handles rate limits and API errors transparently. Browser automation pauses for CAPTCHAs and OTPs. Context overflow triggers compaction rather than truncation. Conversation history is persisted to disk so crashes don't lose work.",
     "observability": "Every tool call is logged with timing, input, output, and success/failure status. LLM token usage tracked per turn with cost estimation. Multi-agent runs show a coordination timeline. Permission denials are logged with pattern and reason. Provider failover events include trigger reason and recovery.",
     "tradeoffs": "Ink over Blessed for React-native component model. OpenAI SDK as universal provider client over per-provider SDKs. Playwright over Puppeteer for better cross-browser support. Permission patterns over per-command approval for UX. Boss mode (sequential) over fully parallel for predictability. Docker over process isolation for reproducibility.",
@@ -333,9 +333,9 @@
   },
   {
     "slug": "rgd-school",
-    "title": "RGD School — Multi-Tenant School Management SaaS",
+    "title": "RGD School \u2014 Multi-Tenant School Management SaaS",
     "description": "Production multi-tenant school management platform with student/staff management, attendance tracking, fee handling with Razorpay, exam management, and role-based access control across subscription tiers.",
-    "fullDescription": "RGD School is a comprehensive multi-tenant SaaS platform where multiple schools register and independently manage their own instance. Each school gets slug-based isolation (`/school/[slug]/*`) with role-based dashboards for Admin, Staff, and Student. The platform handles the complete school lifecycle: student admissions, attendance tracking, fee management with online Razorpay payments, exam creation, result generation, and performance analytics — all behind a subscription tier system (Free through Enterprise) that controls feature access.",
+    "fullDescription": "RGD School is a comprehensive multi-tenant SaaS platform where multiple schools register and independently manage their own instance. Each school gets slug-based isolation (`/school/[slug]/*`) with role-based dashboards for Admin, Staff, and Student. The platform handles the complete school lifecycle: student admissions, attendance tracking, fee management with online Razorpay payments, exam creation, result generation, and performance analytics \u2014 all behind a subscription tier system (Free through Enterprise) that controls feature access.",
     "domain": "School management is deceptively complex. Fee management alone requires installment plans, early-bird discounts, sibling discounts, late payment penalties, scholarship adjustments, and refund processing. Attendance tracking needs period-level granularity (not just day-level) to handle students who are present in some classes but absent in others. Multi-tenancy requires data isolation per school while sharing the same codebase and infrastructure. The subscription tier system adds another dimension: feature flags, usage limits, and payment integration must work correctly across all tiers.",
     "category": "Full-Stack",
     "techStack": [
@@ -352,12 +352,12 @@
       "Redis",
       "Framer Motion"
     ],
-    "architecture": "The system uses a modular monolith with clear domain boundaries: Student Management, Academic Tracking, Fee Management, Examination, and Reporting. Multi-tenancy is enforced via slug-based routing — each request includes the school slug, which scopes all database queries. Authentication uses NextAuth.js with credentials provider and Prisma adapter. Role-based middleware enforces permissions at both API and data levels. Background workers handle report generation and fee reminders. Razorpay handles payment processing with webhook-driven settlement.",
+    "architecture": "The system uses a modular monolith with clear domain boundaries: Student Management, Academic Tracking, Fee Management, Examination, and Reporting. Multi-tenancy is enforced via slug-based routing \u2014 each request includes the school slug, which scopes all database queries. Authentication uses NextAuth.js with credentials provider and Prisma adapter. Role-based middleware enforces permissions at both API and data levels. Background workers handle report generation and fee reminders. Razorpay handles payment processing with webhook-driven settlement.",
     "dataModel": "The domain model centers on the School entity, which owns Students, Staff, Classes, Fees, Exams, and Results. Students connect to Attendance, Fee, and Exam entities. Fee records support installments, discounts (sibling, merit), late fees, and scholarship adjustments. Exam results support multiple subjects, grade boundaries, rank calculation, and report card generation. Subscription tiers (Free, Starter, Basic, Pro, Enterprise) control feature access and usage limits per school.",
-    "challenges": "Fee management was the most complex module — real schools don't charge flat fees. The engine handles installment plans with varying due dates, partial payments, late fees that compound daily, sibling discounts that cascade, and scholarship adjustments that modify the base fee. Razorpay integration required handling webhooks for payment confirmation, refund processing, and subscription renewal. Student transfer between sections mid-year required careful handling of attendance and fee history to maintain data integrity.",
+    "challenges": "Fee management was the most complex module \u2014 real schools don't charge flat fees. The engine handles installment plans with varying due dates, partial payments, late fees that compound daily, sibling discounts that cascade, and scholarship adjustments that modify the base fee. Razorpay integration required handling webhooks for payment confirmation, refund processing, and subscription renewal. Student transfer between sections mid-year required careful handling of attendance and fee history to maintain data integrity.",
     "scalingStrategy": "The system serves multiple schools on shared infrastructure. PostgreSQL handles relational data with connection pooling. Redis caches school-specific data (fee structures, class schedules, member lists) with TTL-based invalidation. Vercel cron jobs handle student promotion and fee reminder scheduling. Background jobs prevent slow operations (report generation, bulk SMS) from blocking HTTP requests.",
-    "security": "Four role levels (Admin, Staff, Student) with granular per-module permissions. School data isolation enforced at the query level — every database query includes a school slug filter. NextAuth.js session management with CSRF protection. Upstash Redis rate limiting on login attempts. Razorpay webhook signature verification. Supabase storage with signed URLs for file uploads. All API endpoints enforce authentication and authorization before data access.",
-    "failureHandling": "Fee payments use idempotency keys to prevent double-charging. Report generation retries on failure with exponential backoff. Attendance saving is transactional — if saving 40 students' attendance fails, the entire batch rolls back. Razorpay webhook processing is idempotent — duplicate webhooks don't create duplicate transactions. Database connection failures trigger graceful degradation with cached data.",
+    "security": "Four role levels (Admin, Staff, Student) with granular per-module permissions. School data isolation enforced at the query level \u2014 every database query includes a school slug filter. NextAuth.js session management with CSRF protection. Upstash Redis rate limiting on login attempts. Razorpay webhook signature verification. Supabase storage with signed URLs for file uploads. All API endpoints enforce authentication and authorization before data access.",
+    "failureHandling": "Fee payments use idempotency keys to prevent double-charging. Report generation retries on failure with exponential backoff. Attendance saving is transactional \u2014 if saving 40 students' attendance fails, the entire batch rolls back. Razorpay webhook processing is idempotent \u2014 duplicate webhooks don't create duplicate transactions. Database connection failures trigger graceful degradation with cached data.",
     "observability": "Dashboard tracks fee collection rates, attendance trends, class performance comparisons, and exam result distributions. Structured logging with correlation IDs across request boundaries. Audit logs track who modified student records, fee waivers, and grade changes. Razorpay payment status tracked with reconciliation. Vercel deployment logs for cron job execution.",
     "tradeoffs": "Modular monolith over microservices because the school scale doesn't warrant distributed complexity. Prisma over raw SQL for type safety and migration management at the cost of some query flexibility. Razorpay over Stripe for Indian market focus. Supabase storage over S3 for simpler integration. Background jobs over cron for retry and observability. slug-based tenancy over schema-per-tenant for simpler deployment.",
     "seniorTopics": [
@@ -416,5 +416,876 @@
     "published": true,
     "createdAt": "2025-11-01T10:00:00.000Z",
     "updatedAt": "2026-07-01T10:00:00.000Z"
+  },
+  {
+    "slug": "nexpay",
+    "title": "NexPay \u2014 Multi-Tenant Payment Infrastructure",
+    "description": "Production-grade payment platform implementing the full payment lifecycle, double-entry accounting ledger, wallet balances, fraud scoring, subscription billing, webhooks, disputes, payouts, and daily reconciliation.",
+    "fullDescription": "NexPay is a multi-tenant payment infrastructure platform for SaaS businesses. It implements the complete payment lifecycle \u2014 from initiation through processing, authorization, capture, and settlement \u2014 backed by a double-entry accounting ledger with advisory locks that prevent concurrent balance corruption. Every credit has a matching debit. The system adds wallet balances, a rule-based fraud scoring engine, subscription billing cycles, reliable webhook delivery via the outbox pattern with HMAC signing, dispute management, batch payouts, and daily payment-vs-ledger reconciliation that detects drift before it compounds.",
+    "domain": "Payments are a distributed-consistency problem: money must never be lost or double-spent, even when networks fail mid-transaction. NexPay treats every movement of money as a state transition in a strict state machine with idempotent operations. The double-entry ledger guarantees accounting invariants hold, the outbox pattern guarantees webhook delivery, and daily reconciliation catches drift between payment records and ledger balances.",
+    "category": "Backend",
+    "techStack": [
+      "Node.js 20",
+      "Express 4",
+      "TypeScript",
+      "PostgreSQL 16",
+      "Prisma",
+      "Redis 7",
+      "BullMQ",
+      "Next.js 14",
+      "Zod",
+      "JWT + TOTP MFA",
+      "Vitest",
+      "Docker Compose"
+    ],
+    "architecture": "A Turbo monorepo with three apps \u2014 an Express REST API, a merchant portal, and an admin portal \u2014 plus shared packages and a TypeScript SDK. The API is organized into 34 feature modules backed by 6 BullMQ workers (billing, fraud-unblock, outbox, payout, reconciliation, webhook). Middleware enforces JWT auth with RBAC, idempotency keys (Redis lock + Prisma), Prometheus metrics, per-endpoint rate limiting, and request tracing.",
+    "dataModel": "60+ Prisma models covering merchants, customers, payment methods, payment state machines, ledger accounts and entries, wallets, invoices, subscriptions, disputes, fraud rules, webhooks, payouts, and reconciliation runs. Account types follow double-entry conventions: Asset, Liability, Revenue, Expense, Reserve.",
+    "challenges": "The hardest problems were payment state consistency (a payment can be captured, refunded, disputed, won, or lost \u2014 each transition must be atomic and idempotent), preventing double-charging under retries via idempotency keys, fraud scoring that adapts per merchant, and keeping the ledger balanced under high concurrency using advisory locks.",
+    "scalingStrategy": "BullMQ distributes background work across 6 workers with retry and dead-letter queues. Redis caches hot paths and backs rate limiting. The reconciliation worker runs daily and the outbox worker guarantees event delivery. Docker Compose supports dev, production (with Nginx, Prometheus, Grafana), and e2e environments.",
+    "security": "JWT authentication with RBAC, TOTP MFA, sandbox mode for testing, idempotency enforcement, per-endpoint rate limiting, HMAC-signed webhooks, tenant-scoped data access, and full audit logging.",
+    "failureHandling": "Webhook delivery uses exponential backoff with a dead-letter queue. Payments are idempotent so duplicate requests never double-charge. The fraud-unblock worker resolves time-based flags automatically. Reconciliation detects ledger drift daily.",
+    "observability": "Prometheus metrics, Pino structured logging with request IDs, and a metrics module. 22 test files cover ledger invariants, tenant isolation, payment state transitions, refunds, reconciliation, and webhook delivery.",
+    "tradeoffs": "PostgreSQL + Prisma for relational integrity over NoSQL. BullMQ over in-process queues for durability and observability. A monolith API over microservices at this scale. Gateway adapters (Mock, Stripe, Razorpay) over a single vendor.",
+    "seniorTopics": [
+      "Payment State Machines",
+      "Double-Entry Accounting",
+      "Idempotency Patterns",
+      "Outbox Pattern",
+      "Fraud Scoring",
+      "Multi-Tenancy",
+      "Webhook Reliability",
+      "Daily Reconciliation"
+    ],
+    "architectureDecisions": [
+      {
+        "decision": "Ledger consistency",
+        "chosen": "Double-entry + advisory locks",
+        "rejected": "Single-entry (no integrity guarantee)"
+      },
+      {
+        "decision": "Event publishing",
+        "chosen": "Outbox pattern with BullMQ",
+        "rejected": "Fire-and-forget (silent loss)"
+      },
+      {
+        "decision": "Payment safety",
+        "chosen": "Idempotency keys",
+        "rejected": "Client dedupe only"
+      },
+      {
+        "decision": "Tenancy",
+        "chosen": "Shared schema with tenant scope",
+        "rejected": "Schema-per-tenant"
+      }
+    ],
+    "metrics": [
+      {
+        "val": "60+",
+        "label": "DB models"
+      },
+      {
+        "val": "6",
+        "label": "Async workers"
+      },
+      {
+        "val": "34",
+        "label": "Feature modules"
+      },
+      {
+        "val": "22",
+        "label": "Test files"
+      }
+    ],
+    "liveUrl": "",
+    "githubUrl": "https://github.com/VishalDevx/NexPay",
+    "featured": true,
+    "published": true,
+    "createdAt": "2026-02-20T10:00:00.000Z",
+    "updatedAt": "2026-07-01T10:00:00.000Z"
+  },
+  {
+    "slug": "flowforge",
+    "title": "FlowForge \u2014 Distributed Workflow Automation",
+    "description": "Zapier/n8n-style workflow automation platform with 5 microservices, a visual drag-and-drop editor, a BullMQ execution engine, real-time WebSocket monitoring, multi-tenancy with RBAC, and 17+ node types.",
+    "fullDescription": "FlowForge lets non-developers automate multi-step processes by wiring visual nodes into workflows. Five microservices \u2014 API, worker, scheduler, realtime gateway, and web app \u2014 collaborate to parse workflow DAGs, topologically sort execution, detect cycles, and run nodes with retry and backoff. A drag-and-drop React Flow editor composes 17+ node types (triggers, actions, and logic branches), while Socket.IO streams live execution status and logs. Multi-tenancy isolates workspaces behind role-based access control.",
+    "domain": "Workflow automation turns sequential logic into a directed acyclic graph problem: parse the graph, topologically order it, detect cycles, and execute with parallelism. FlowForge models workflows as versioned DAGs, plans parallel branches, and runs each node as a durable BullMQ job so a crash never loses an in-flight execution.",
+    "category": "Full-Stack",
+    "techStack": [
+      "Node.js 20",
+      "Fastify",
+      "TypeScript",
+      "PostgreSQL 16",
+      "Neon",
+      "Prisma 5",
+      "Redis 7",
+      "BullMQ",
+      "Next.js 15",
+      "React Flow",
+      "Socket.IO",
+      "Zustand",
+      "TanStack Query",
+      "Zod",
+      "Pino"
+    ],
+    "architecture": "Five microservices: an API server (Fastify with plugin architecture, 22 source files), a BullMQ worker with retry and dead-letter queue, a cron scheduler that fires time-based triggers, a Socket.IO realtime gateway, and a Next.js web app. A shared workflow-engine package provides DAG parsing, topological sort, cycle detection, and parallel branch planning. 13 shared packages cover auth, contracts, db, logger, nodes, observability, queue, redis, triggers, and workspace.",
+    "dataModel": "17 Prisma models: users, sessions, refresh tokens, workspaces, workspace members, workflows, workflow versions, workflow triggers, executions, execution nodes, execution logs, encrypted secrets, and audit logs.",
+    "challenges": "The execution engine had to be durable and resumable \u2014 a workflow might have thousands of nodes. Cycle detection prevents infinite loops, topological sort guarantees dependency order, and BullMQ jobs make each node restart-safe. Real-time updates required a dedicated gateway decoupled from the API to avoid blocking request handling.",
+    "scalingStrategy": "Independent microservices scale horizontally. BullMQ queues each node execution as a job with exponential backoff retry and dead-letter queue. The scheduler scans for due cron triggers independently. Socket.IO scales via the realtime gateway. Secrets are encrypted with per-workspace keys.",
+    "security": "bcrypt password hashing (12 rounds), short-lived JWT access tokens (15 min) with rotating refresh tokens (7 days), token revocation, rate limiting (100 req/min per IP), Zod validation on every endpoint, RBAC (owner, admin, developer, operator, viewer), encrypted secrets, and full audit logging.",
+    "failureHandling": "Node execution retries with exponential backoff; failed jobs move to a dead-letter queue. Execution state is persisted so workflows resume after crashes. WebSocket disconnects pause real-time views while the durable queue keeps processing.",
+    "observability": "Pino structured logging, Prometheus metrics, real-time execution logs and node events streamed over Socket.IO, and per-execution status tracking in the UI.",
+    "tradeoffs": "Fastify over Express for plugin architecture and validation. React Flow over a custom editor for battle-tested interaction. BullMQ over Redis-only pub/sub for durable job semantics. Microservices over monolith to isolate the worker, scheduler, and realtime planes.",
+    "seniorTopics": [
+      "Microservices Architecture",
+      "DAG Execution Engine",
+      "Topological Sort",
+      "BullMQ Job Queues",
+      "Real-Time Streaming",
+      "Multi-Tenancy + RBAC",
+      "Trigger Scheduling",
+      "Workflow Versioning"
+    ],
+    "architectureDecisions": [
+      {
+        "decision": "Execution model",
+        "chosen": "Durable BullMQ jobs per node",
+        "rejected": "In-process execution (loses state)"
+      },
+      {
+        "decision": "Graph handling",
+        "chosen": "Topological sort + cycle detection",
+        "rejected": "Naive recursion (infinite loops)"
+      },
+      {
+        "decision": "Realtime",
+        "chosen": "Dedicated Socket.IO gateway",
+        "rejected": "In-API polling"
+      },
+      {
+        "decision": "Auth tokens",
+        "chosen": "Rotating refresh tokens",
+        "rejected": "Long-lived JWTs"
+      }
+    ],
+    "metrics": [
+      {
+        "val": "5",
+        "label": "Microservices"
+      },
+      {
+        "val": "17+",
+        "label": "Node types"
+      },
+      {
+        "val": "13",
+        "label": "Shared packages"
+      },
+      {
+        "val": "4",
+        "label": "RBAC roles"
+      }
+    ],
+    "liveUrl": "",
+    "githubUrl": "https://github.com/VishalDevx/FlowForge",
+    "featured": true,
+    "published": true,
+    "createdAt": "2026-01-20T10:00:00.000Z",
+    "updatedAt": "2026-06-20T10:00:00.000Z"
+  },
+  {
+    "slug": "taskmesh",
+    "title": "TaskMesh \u2014 Real-Time Collaborative Workspace",
+    "description": "Enterprise Kanban workspace with real-time collaboration via Socket.IO, CQRS architecture with 24 domain events, multi-layer caching (in-memory + Redis), hash-chained immutable audit logs, AI assistant, and full-text search.",
+    "fullDescription": "TaskMesh is an enterprise-grade project management workspace with dnd-kit Kanban boards, live multi-user collaboration, and a CQRS architecture that separates command repositories from read repositories. Writes publish 24 domain events to BullMQ; reads go through a two-layer cache (in-memory L1 + Redis L2). An SHA-256 hash-chained audit log makes tampering detectable. Redis-backed feature flags enable gradual rollouts, a GPT-4o-mini assistant generates tasks and sprint plans, and PostgreSQL full-text search spans 5 entity types.",
+    "domain": "Collaborative tools are concurrency problems disguised as CRUD apps. TaskMesh separates writes from reads so the read path stays fast and consistent under multi-user load, uses domain events to keep notifications, audit, and analytics in sync, and chains audit entries so any tampering breaks the hash chain \u2014 a verifiable trail of who did what, when.",
+    "category": "Full-Stack",
+    "techStack": [
+      "Next.js 14",
+      "TypeScript",
+      "React 18",
+      "PostgreSQL",
+      "Prisma",
+      "Redis",
+      "BullMQ",
+      "Socket.IO",
+      "NextAuth v5",
+      "dnd-kit",
+      "Zustand",
+      "TanStack Query",
+      "OpenAI GPT-4o-mini",
+      "AWS S3",
+      "Vitest",
+      "Kubernetes"
+    ],
+    "architecture": "CQRS: CommandRepository validates via Zod, publishes domain events after writes, invalidates cache, and returns the entity; ReadRepository uses a cache-aside getOrSet pattern with L1 in-memory Map (LRU, 1000 entries) and L2 Redis with TTL. A custom Socket.IO server streams 26 server-to-client and 19 client-to-server events for presence, typing, and live board updates.",
+    "dataModel": "24 Prisma models across 9 enums: users/auth, workspaces/members/invitations, boards/columns, tasks/assignees/labels/comments/subtasks, sprints, activity logs, notifications, hash-chained AuditEntry, feature flags and rules, API keys, webhooks.",
+    "challenges": "Real-time collaboration without data races required scoping every mutation to a workspace channel and using optimistic UI with server reconciliation. The audit chain had to be append-only and verifiable. The two-layer cache needed targeted invalidation on every write to avoid stale reads \u2014 each write publishes events that trigger cache invalidation.",
+    "scalingStrategy": "9 BullMQ workers (email, audit, analytics, notification, webhook, cleanup, search-index, presence, feature-flag) handle side effects asynchronously. Kubernetes manifests include HPA (2-10), PDB, StatefulSets, and PVCs. Docker multi-stage builds with HEALTHCHECK. Six GitHub Actions jobs run lint, typecheck, test, build, docker, and security.",
+    "security": "RBAC with Owner/Admin/Member/Viewer roles, Redis sliding-window rate limiting with brute-force protection, NextAuth v5 credentials + OAuth, presigned S3 URLs, Zod validation everywhere, and an immutable hash-chained audit trail covering logins and session management.",
+    "failureHandling": "BullMQ retries with exponential backoff and dead-letter queues. Socket.IO reconnects with presence reconciliation. Cache misses fall through to the database. Database and Redis health checks gate requests.",
+    "observability": "Prometheus metrics across 11 metric types \u2014 HTTP request counts/duration/errors, cache hit ratios, WebSocket connection counts, BullMQ queue depth and job duration, rate limit hits, auth attempts, and feature flag evaluations.",
+    "tradeoffs": "CQRS over plain repositories for read-path scalability. BullMQ events over synchronous side effects for decoupling. Two-layer cache over single-layer for sub-ms reads. dnd-kit over native DnD for accessibility and touch support.",
+    "seniorTopics": [
+      "CQRS Architecture",
+      "Event-Driven Design",
+      "Real-Time Collaboration",
+      "Multi-Layer Caching",
+      "Hash-Chained Audit Logs",
+      "Feature Flags",
+      "Full-Text Search",
+      "Kubernetes Deployment"
+    ],
+    "architectureDecisions": [
+      {
+        "decision": "Read/write paths",
+        "chosen": "CQRS repositories",
+        "rejected": "Single repository (read contention)"
+      },
+      {
+        "decision": "Side effects",
+        "chosen": "24 domain events via BullMQ",
+        "rejected": "Inline side effects"
+      },
+      {
+        "decision": "Audit integrity",
+        "chosen": "SHA-256 hash chain",
+        "rejected": "Append-only log (tamperable)"
+      },
+      {
+        "decision": "Caching",
+        "chosen": "L1 in-memory + L2 Redis",
+        "rejected": "Redis only (1ms latency)"
+      }
+    ],
+    "metrics": [
+      {
+        "val": "24",
+        "label": "Domain events"
+      },
+      {
+        "val": "9",
+        "label": "Workers"
+      },
+      {
+        "val": "45",
+        "label": "Socket events"
+      },
+      {
+        "val": "11",
+        "label": "Metric types"
+      }
+    ],
+    "liveUrl": "",
+    "githubUrl": "https://github.com/VishalDevx/TaskMesh",
+    "featured": true,
+    "published": true,
+    "createdAt": "2025-10-15T10:00:00.000Z",
+    "updatedAt": "2026-06-10T10:00:00.000Z"
+  },
+  {
+    "slug": "throttlegate",
+    "title": "throttleGate \u2014 Production-Grade API Gateway",
+    "description": "API gateway built from scratch with custom Lua rate-limiting algorithms (token bucket + sliding window log) executed atomically in Redis, Hystrix-style circuit breaking, dynamic service discovery, distributed tracing, and hot-reloadable config.",
+    "fullDescription": "throttleGate is a production-grade API gateway with zero off-the-shelf rate-limit packages. Custom Lua scripts run token-bucket and sliding-window-log algorithms atomically inside Redis, returning allow/remaining/retryAfter/reset in a single EVALSHA round-trip. A Hystrix-style circuit breaker state machine (CLOSED \u2192 OPEN \u2192 HALF-OPEN) protects upstreams, dynamic service discovery supports path- and header-based routing with weighted round-robin and least-connections load balancing, and OpenTelemetry traces every request through the proxy. A 63-field Zod config schema hot-reloads from Redis every 30 seconds.",
+    "domain": "API gateways concentrate the hardest edge concerns: rate limiting must be accurate under concurrency (hence atomic Lua in Redis), circuit breaking must absorb upstream failures without cascading, and service discovery must track health in real time. throttleGate demonstrates each with measurable rigor \u2014 4,500 req/s max throughput with p50 8ms, p95 45ms, p99 120ms.",
+    "category": "Backend",
+    "techStack": [
+      "Node.js 20",
+      "Express 4",
+      "TypeScript",
+      "Redis 7",
+      "Lua",
+      "OpenTelemetry",
+      "Prometheus",
+      "Pino",
+      "Zod",
+      "http-proxy",
+      "Vitest",
+      "k6",
+      "React 19",
+      "Kubernetes"
+    ],
+    "architecture": "A 16-step request pipeline: size limiter \u2192 slow-request protection \u2192 IP filter (CIDR) \u2192 input sanitizer \u2192 CORS \u2192 tracing \u2192 health/metrics \u2192 body parse \u2192 registration \u2192 stacked Lua rate limiter \u2192 auth (API key/JWT) \u2192 request coalescer \u2192 circuit breaker \u2192 route match \u2192 load balancer \u2192 proxy with retry/backoff. Hot-reload rebuilds the router stack on config change.",
+    "dataModel": "Config-driven: a Zod schema with 63+ fields covering limits, tiers (Free/Pro/Enterprise), circuit breaker thresholds, health checks, and routing rules. Service registry entries live in Redis with active + passive health checks.",
+    "challenges": "Writing correct rate-limiting Lua was the core challenge \u2014 refill math, atomicity, TTL management, and fail-open behavior under Redis outages. The request coalescer dedupes identical GET/HEAD requests so 100 concurrent clients share one upstream call. Circuit breaker state is inherently local, so it runs in-process per route.",
+    "scalingStrategy": "Stateless gateway instances scale horizontally behind Kubernetes (HPA 2-10, PDB min 2). Redis holds shared state \u2014 rate limits, registry, config. Weighted round-robin + least-connections load balancing distributes traffic. Bulkheading isolates connection pools per upstream.",
+    "security": "IP allowlist/denylist with CIDR, request-smuggling detection, slow-loris protection, oversized-payload DoS protection, XSS/SQLi sanitizer, API key + JWT auth with tenant extraction, and rate limits on every dimension.",
+    "failureHandling": "Fail-open mode when Redis is down (configurable), retry with exponential backoff + jitter for idempotent methods only, dead-letter circuit breaker transitions, and graceful shutdown on SIGTERM/SIGINT.",
+    "observability": "18 Prometheus metrics across 6 groups (proxy, rate limit, circuit breaker, security, service discovery, coalescer) plus OpenTelemetry spans, Pino logs, and a React dashboard (6 pages, 15 Radix components, Recharts).",
+    "tradeoffs": "Custom Lua over npm rate-limit packages for atomicity and performance. In-process circuit breakers over centralized state. Sliding-window-log over fixed-window (no boundary spikes). No retry for POST by default (idempotency only). Express over Fastify for ecosystem maturity.",
+    "seniorTopics": [
+      "Redis Lua Scripting",
+      "Rate Limit Algorithms",
+      "Circuit Breakers",
+      "Service Discovery",
+      "Distributed Tracing",
+      "Hot-Reload Config",
+      "Load Balancing",
+      "Bulkheading"
+    ],
+    "architectureDecisions": [
+      {
+        "decision": "Rate limiting",
+        "chosen": "Atomic Redis Lua (token bucket + SWL)",
+        "rejected": "npm rate-limit packages"
+      },
+      {
+        "decision": "Failure posture",
+        "chosen": "Fail-open when Redis is down",
+        "rejected": "Fail-closed (outage amplifies)"
+      },
+      {
+        "decision": "Retries",
+        "chosen": "Idempotent methods only",
+        "rejected": "Retry all methods"
+      },
+      {
+        "decision": "Breakers",
+        "chosen": "In-process per route",
+        "rejected": "Centralized state"
+      }
+    ],
+    "metrics": [
+      {
+        "val": "4.5k",
+        "label": "req/s throughput"
+      },
+      {
+        "val": "8ms",
+        "label": "p50 latency"
+      },
+      {
+        "val": "18",
+        "label": "Prometheus metrics"
+      },
+      {
+        "val": "16",
+        "label": "Pipeline stages"
+      }
+    ],
+    "liveUrl": "",
+    "githubUrl": "https://github.com/VishalDevx/throttleGate",
+    "featured": true,
+    "published": true,
+    "createdAt": "2025-09-01T10:00:00.000Z",
+    "updatedAt": "2026-05-30T10:00:00.000Z"
+  },
+  {
+    "slug": "kakshaone",
+    "title": "KakshaOne \u2014 Open-Source School Management SaaS",
+    "description": "Production multi-tenant school management platform \u2014 admissions, attendance, exams, results, homework, fee management with Razorpay, a super admin platform, 6 pricing tiers, and a 4-step school registration wizard. 107 API routes.",
+    "fullDescription": "KakshaOne (rgd-academy) is the open-source evolution of the school management platform, built to be deployable by any school. It covers the complete school lifecycle: student admissions and profiles, staff management, classes/subjects/timetables, attendance, exams and results, homework and study materials, certificates and ID cards, and fee management with per-school Razorpay accounts. A super admin platform manages all schools, plans, and subscriptions across 6 pricing tiers, gated by a feature-flag system. Self-service onboarding uses a 4-step registration wizard.",
+    "domain": "School operations involve deeply interconnected entities \u2014 students, fees, exams, attendance \u2014 that shift mid-year (transfers, promotions). KakshaOne models each school as a tenant with slug-based routing and query-level isolation, while feature-gating tiers control capacity. PDF generation (marksheets, certificates, fee slips, ID cards) is a first-class concern, not an afterthought.",
+    "category": "Full-Stack",
+    "techStack": [
+      "Next.js 15",
+      "TypeScript",
+      "PostgreSQL 16",
+      "Prisma 6",
+      "NextAuth.js v4",
+      "Tailwind CSS 4",
+      "shadcn/ui",
+      "Radix UI",
+      "Razorpay",
+      "Supabase",
+      "Upstash Redis",
+      "jsPDF",
+      "Framer Motion"
+    ],
+    "architecture": "A Next.js App Router application with 107 API route files organized by domain: auth, school management, student management, staff management, academics, attendance, fees & payments, financials, reports, and infrastructure (cron jobs, uploads, notifications). Three portals \u2014 admin, staff, student \u2014 plus a platform-level super admin and a registration wizard. Razorpay webhooks settle payments per school.",
+    "dataModel": "30+ Prisma models covering organizations (schools), users with 4 roles, students, staff, classes, subjects, timetables, exams, results, homework and submissions, study materials, certificates, ID cards, attendance, fee categories/structures/payments, expenses, and subscriptions.",
+    "challenges": "Fee management is the most complex module \u2014 installments, sibling discounts, late fees, scholarships, refunds, and reconciliation with Razorpay webhooks. Certificate and marksheet PDF generation had to handle print-quality layout. Multi-tenancy required every query to carry the school slug while keeping shared infrastructure.",
+    "scalingStrategy": "Shared infrastructure across schools with PostgreSQL connection pooling, Upstash Redis rate limiting and caching, Vercel cron jobs for fee reminders and student promotion, and background PDF generation to keep requests fast. Feature gates control per-plan limits on students, staff, and storage.",
+    "security": "Four role levels (SUPER_ADMIN, ADMIN, STAFF, STUDENT), RBAC enforced at the API and data levels, query-level tenant isolation, Upstash brute-force protection, audit logging on all CRUD operations, and Zod schema validation throughout.",
+    "failureHandling": "Razorpay webhooks are idempotent \u2014 duplicate callbacks never double-credit fees. Attendance saves are transactional and batch-rolled-back on partial failure. Report generation retries with backoff. Feature gates fall back safely for unknown tiers.",
+    "observability": "Admin dashboards for fee collection, attendance trends, exam results, and finance reports. Audit logs track record modifications. Cron job execution logs in Vercel. Structured logging with correlation across API calls.",
+    "tradeoffs": "Next.js API routes over a separate backend for deployment simplicity. Prisma over raw SQL for type safety. Razorpay over Stripe for the Indian market. Per-school Razorpay accounts over a central account for direct settlement. Feature-gated tiers over hardcoded plans.",
+    "seniorTopics": [
+      "Multi-Tenant SaaS",
+      "Role-Based Access Control",
+      "Payment Webhooks",
+      "Feature Gating",
+      "PDF Generation",
+      "Subscription Tiers",
+      "Bulk Operations",
+      "Cron Automation"
+    ],
+    "architectureDecisions": [
+      {
+        "decision": "Payments",
+        "chosen": "Per-school Razorpay accounts",
+        "rejected": "Central payment account"
+      },
+      {
+        "decision": "Tenancy",
+        "chosen": "Slug routing + query isolation",
+        "rejected": "Schema-per-tenant"
+      },
+      {
+        "decision": "Plans",
+        "chosen": "Feature-gated tiers",
+        "rejected": "Hardcoded plan logic"
+      },
+      {
+        "decision": "Onboarding",
+        "chosen": "4-step registration wizard",
+        "rejected": "Admin-provisioned schools"
+      }
+    ],
+    "metrics": [
+      {
+        "val": "107",
+        "label": "API routes"
+      },
+      {
+        "val": "378",
+        "label": "Source files"
+      },
+      {
+        "val": "6",
+        "label": "Pricing tiers"
+      },
+      {
+        "val": "4",
+        "label": "User roles"
+      }
+    ],
+    "liveUrl": "",
+    "githubUrl": "https://github.com/VishalDevx/KakshaOne",
+    "featured": false,
+    "published": true,
+    "createdAt": "2025-08-10T10:00:00.000Z",
+    "updatedAt": "2026-06-01T10:00:00.000Z"
+  },
+  {
+    "slug": "aptiq",
+    "title": "Aptiq \u2014 Production-Ready SaaS API Starter",
+    "description": "A clean SaaS starter template with Express + TypeScript + Prisma backend, React + Vite + TanStack Query frontend, JWT auth with refresh tokens, and deployment configs for Docker, Render, Railway, and Fly.io.",
+    "fullDescription": "Aptiq is a production-ready starting point for SaaS products. The Express + TypeScript + Prisma backend provides health and readiness checks plus a complete JWT auth flow with refresh tokens and bcrypt password hashing. The React + Vite + TanStack Query frontend ships with React Router and a shared UI package. Monorepo tooling via pnpm workspaces and shared ESLint/TypeScript configs keep the two apps consistent, and ready-made deployment configs target Docker, Render, Railway, and Fly.io.",
+    "domain": "Every SaaS product repeats the same bootstrap: auth, health checks, a database, and a deploy path. Aptiq packages these decisions into a single template so a new product starts from a tested foundation instead of a blank repo \u2014 the auth flow, schema, and deployment topology are all wired before the first feature is written.",
+    "category": "Full-Stack",
+    "techStack": [
+      "Express",
+      "TypeScript",
+      "Prisma",
+      "PostgreSQL",
+      "React",
+      "Vite",
+      "TanStack Query",
+      "React Router",
+      "JWT",
+      "Docker",
+      "GitHub Actions"
+    ],
+    "architecture": "A pnpm monorepo with a backend app (Express REST API), a frontend app (React SPA), and shared packages for ESLint config, TypeScript config, and UI components. Docker Compose provisions PostgreSQL; the backend runs Prisma migrations and serves a versioned API under /api/v1.",
+    "dataModel": "Prisma schema for users and sessions supporting the JWT auth flow \u2014 registration, login, current-user, and refresh token rotation with bcrypt password hashing.",
+    "challenges": "The main challenge was keeping the template general enough to be useful yet concrete enough to be a real starting point \u2014 health/readiness endpoints, versioned API paths, and multiple deployment targets without coupling to a specific vendor.",
+    "scalingStrategy": "Stateless backend with PostgreSQL allows horizontal scaling from day one. Deployment configs for Render, Railway, and Fly.io each describe API + database topology, and Docker Compose provides a local production-equivalent environment.",
+    "security": "JWT access tokens with refresh-token rotation, bcrypt hashing, and environment-scoped secrets. Health and readiness endpoints are separated from protected routes.",
+    "failureHandling": "Graceful shutdown handling and readiness checks let orchestrators restart or drain the service without dropping traffic.",
+    "observability": "Health and readiness endpoints for load balancers and orchestrators, plus structured logging wired through the shared config package.",
+    "tradeoffs": "Express over Fastify for ubiquity and familiarity. React + Vite over Next.js for a lighter frontend that stays decoupled from the API. pnpm workspaces over a single package for clean separation.",
+    "seniorTopics": [
+      "SaaS Bootstrap Architecture",
+      "JWT Refresh Token Flow",
+      "Monorepo Tooling",
+      "Multi-Target Deployment",
+      "Health/Readiness Probes"
+    ],
+    "architectureDecisions": [
+      {
+        "decision": "Frontend",
+        "chosen": "React + Vite SPA",
+        "rejected": "Next.js (heavier for starter)"
+      },
+      {
+        "decision": "Monorepo",
+        "chosen": "pnpm workspaces",
+        "rejected": "Single package"
+      },
+      {
+        "decision": "Auth",
+        "chosen": "JWT + refresh tokens",
+        "rejected": "Session cookies"
+      }
+    ],
+    "metrics": [
+      {
+        "val": "2",
+        "label": "Apps"
+      },
+      {
+        "val": "4",
+        "label": "Deploy targets"
+      },
+      {
+        "val": "3",
+        "label": "Shared packages"
+      }
+    ],
+    "liveUrl": "",
+    "githubUrl": "https://github.com/VishalDevx/Aptiq",
+    "featured": false,
+    "published": true,
+    "createdAt": "2026-03-01T10:00:00.000Z",
+    "updatedAt": "2026-06-05T10:00:00.000Z"
+  },
+  {
+    "slug": "glyphcast",
+    "title": "Glyphcast \u2014 Browser ASCII Studio",
+    "description": "A browser-native studio that converts images, GIFs, and videos into animated ASCII art in real time \u2014 with luminance mapping, charset presets, appearance controls, and exports to PNG, video, React component, ZIP, and clipboard.",
+    "fullDescription": "Glyphcast samples every source frame on a pixel grid, maps luminance to a character set using ITU-R BT.601 coefficients, and renders animated ASCII in real time with playback and scrubbing controls. It ships rich charset presets (Standard, Retro Terminal, Matrix, Binary), editable columns, threshold, invert, and appearance controls for font, spacing, colors, and effects. Exports cover PNG snapshots, browser-recorded video, React component files that embed the animation, ZIP archives of per-frame text, and one-click clipboard copy. Featured on Product Hunt.",
+    "domain": "ASCII conversion is a sampling problem: downsample the source to a coarse grid, compute per-cell luminance, and map brightness to characters. Making it interactive in the browser requires a real-time canvas pipeline, requestAnimationFrame playback for video sources, and an offscreen-canvas path that keeps the main thread responsive for 30MB+ sources.",
+    "category": "Frontend",
+    "techStack": [
+      "Next.js",
+      "TypeScript",
+      "React",
+      "Canvas API",
+      "MediaRecorder API",
+      "Tailwind CSS"
+    ],
+    "architecture": "The conversion pipeline lives in ascii-converter and ascii-export modules: resolve source dimensions, downsample to the ASCII grid on an offscreen canvas, compute BT.601 luminance, map to the charset with invert/threshold offsets, build the text frame with optional per-cell RGB, then render preview/export with appearance settings. Playback uses requestAnimationFrame; video export uses MediaRecorder.",
+    "dataModel": "Stateless client-side pipeline \u2014 no persistence. Source, charset, and appearance settings compose the current studio state, and export targets derive directly from that state.",
+    "challenges": "The hard parts were keeping video conversion smooth at 60fps while users scrub frames, honoring the 30MB upload guardrail without breaking large assets, and generating truly embeddable React component exports rather than static snapshots.",
+    "scalingStrategy": "Everything runs client-side, so there is no server to scale \u2014 performance is managed by the offscreen canvas, efficient luminance passes, and level-of-detail in rendering.",
+    "security": "All media processing happens locally in the browser \u2014 no uploads to a server, no third-party processing, and no user data leaves the device.",
+    "failureHandling": "Unsupported source types and oversized uploads are rejected with clear feedback; MediaRecorder availability is feature-detected with MP4/WebM fallbacks.",
+    "observability": "Debug overlays for the live conversion grid, plus frame-rate monitoring during video playback.",
+    "tradeoffs": "Canvas API over WebAssembly for portability. Client-side processing over a server pipeline for privacy and zero infrastructure. MediaRecorder over ffmpeg for in-browser video export.",
+    "seniorTopics": [
+      "Image Processing",
+      "Luminance Mapping",
+      "Canvas Performance",
+      "MediaRecorder API",
+      "Browser-Native Workflows"
+    ],
+    "architectureDecisions": [
+      {
+        "decision": "Processing",
+        "chosen": "Client-side Canvas pipeline",
+        "rejected": "Server-side processing"
+      },
+      {
+        "decision": "Exports",
+        "chosen": "MediaRecorder video + React component",
+        "rejected": "PNG only"
+      },
+      {
+        "decision": "Luminance",
+        "chosen": "ITU-R BT.601 coefficients",
+        "rejected": "Simple averaging"
+      }
+    ],
+    "metrics": [
+      {
+        "val": "60fps",
+        "label": "Live preview"
+      },
+      {
+        "val": "5+",
+        "label": "Charset presets"
+      },
+      {
+        "val": "6",
+        "label": "Export formats"
+      },
+      {
+        "val": "30MB",
+        "label": "Source limit"
+      }
+    ],
+    "liveUrl": "",
+    "githubUrl": "https://github.com/VishalDevx/glyphcast",
+    "featured": false,
+    "published": true,
+    "createdAt": "2026-05-15T10:00:00.000Z",
+    "updatedAt": "2026-07-05T10:00:00.000Z"
+  },
+  {
+    "slug": "techies-community",
+    "title": "Techies Community \u2014 Landing Site",
+    "description": "Scroll-driven landing page for an engineering collective \u2014 full-bleed HLS video hero, pinned-scroll panels, a live client-side credential builder, and a RAG chat assistant over a local knowledge base.",
+    "fullDescription": "A dark, motion-heavy single-page site for Techies Community with carefully engineered scroll effects that degrade gracefully on mobile. Sections include a full-bleed HLS video hero, a Why section of stacking panels, an asymmetric showcase grid with working tab filters, a pinned Build section with a horizontal card rail, a live TechPass credential builder that renders entirely client-side, a FAQ accordion, and an infinite marquee footer. A floating assistant answers questions using RAG \u2014 every chunk is embedded with gemini-embedding-001, ranked by cosine similarity, and only the top 4 chunks are passed to the model.",
+    "domain": "The site treats marketing as a performance problem: no content above the fold waits on a video, every scroll effect has a non-jacking fallback for mobile, and the AI assistant's retrieval index lives in module memory to avoid repeated embedding calls.",
+    "category": "Frontend",
+    "techStack": [
+      "Next.js 16",
+      "React 19",
+      "TypeScript 5",
+      "Tailwind CSS v4",
+      "Gemini 2.5 Flash",
+      "gemini-embedding-001",
+      "HLS video"
+    ],
+    "architecture": "A single Next.js App Router page composed of independent sections. The chat widget uses a route handler that embeds the local knowledge corpus once per process, stores vectors in module memory, embeds each question as a RETRIEVAL_QUERY, ranks by cosine similarity, and passes the top 4 chunks as model context. The Gemini key is read only in the route handler and never reaches the browser.",
+    "dataModel": "A local knowledge corpus in src/lib/knowledge.ts \u2014 short, single-topic chunks \u2014 plus environment config for the Gemini API key and model name.",
+    "challenges": "Balancing heavy scroll animation with mobile performance required fallbacks for every effect. The live credential builder had to render identically server and client. The RAG index needed to stay fast and memory-bounded for the life of the process.",
+    "scalingStrategy": "Static rendering with dynamic chat only \u2014 the marketing content is served from the edge while the assistant route handler keeps a warm embedding index in memory.",
+    "security": "The Gemini key is server-only and never prefixed with NEXT_PUBLIC_. All assistant traffic flows through the route handler, keeping the API key out of the browser bundle.",
+    "failureHandling": "Everything except the chat widget runs without a key; the widget returns a 500 and shows an inline error when the key is missing.",
+    "observability": "No custom telemetry \u2014 relies on platform analytics for the marketing page and error boundaries for the interactive sections.",
+    "tradeoffs": "HLS video hero over a static image for visual impact with progressive loading. Server-side RAG over client-side model calls to protect the API key. Module-memory vectors over a database for zero-infrastructure retrieval.",
+    "seniorTopics": [
+      "Scroll-Driven Design",
+      "RAG / Embeddings",
+      "Cosine Similarity Ranking",
+      "Performance Budgets",
+      "Route-Handler Security"
+    ],
+    "architectureDecisions": [
+      {
+        "decision": "Assistant",
+        "chosen": "Server-side RAG with top-4 context",
+        "rejected": "Client-side model calls"
+      },
+      {
+        "decision": "Embeddings",
+        "chosen": "In-memory module cache",
+        "rejected": "External vector DB"
+      },
+      {
+        "decision": "Hero",
+        "chosen": "HLS video with fallbacks",
+        "rejected": "Heavy above-fold video"
+      }
+    ],
+    "metrics": [
+      {
+        "val": "8",
+        "label": "Sections"
+      },
+      {
+        "val": "4",
+        "label": "RAG context chunks"
+      },
+      {
+        "val": "0",
+        "label": "Above-fold video wait"
+      }
+    ],
+    "liveUrl": "",
+    "githubUrl": "https://github.com/VishalDevx/techies-community",
+    "featured": false,
+    "published": true,
+    "createdAt": "2026-04-10T10:00:00.000Z",
+    "updatedAt": "2026-06-25T10:00:00.000Z"
+  },
+  {
+    "slug": "lumiforge-ai",
+    "title": "LumiForge AI \u2014 Pay-As-You-Go Image Generation",
+    "description": "AI image generation platform with multi-model generation via OpenRouter, one-time Razorpay credit packs, OAuth via Better Auth, atomic credit deduction, automatic refunds, and a full image gallery with transaction history.",
+    "fullDescription": "LumiForge lets users buy credits once and generate images whenever \u2014 no subscriptions. Multiple AI image models (Riverflow, Seedream, Recraft, Grok Imagine, Gemini) are available through OpenRouter with transparent per-model credit pricing derived from real generation cost. Credits are checked and decremented atomically in a single database operation to prevent race conditions. A dual-path payment fulfillment pipeline uses the payments/verify endpoint for instant confirmation and a Razorpay webhook as a crash-safe fallback. Failed generations automatically refund deducted credits, and trial users are restricted server-side to a single low-cost model.",
+    "domain": "AI billing is a correctness problem: a concurrent request must never spend credits twice, and a failed generation must never silently eat money. LumiForge solves both with atomic decrement and automatic refunds, while the dual-path payment flow guarantees credits are issued even if the browser disconnects mid-checkout.",
+    "category": "Full-Stack",
+    "techStack": [
+      "React 19",
+      "Bun",
+      "Express 5",
+      "TypeScript 5.9",
+      "PostgreSQL",
+      "Prisma",
+      "Better Auth",
+      "OpenRouter",
+      "Razorpay",
+      "Cloudflare R2",
+      "TanStack Query",
+      "Tailwind CSS 4",
+      "Zod"
+    ],
+    "architecture": "A Bun + Express backend with Zod-validated routes for user, image generation, models, and credits & billing, plus a React 19 frontend with TanStack Query and React Router. Cloudflare R2 stores generated images; Better Auth handles email/password and Google OAuth. Credits, spend, and refunds are tracked per user with a full transaction history.",
+    "dataModel": "Prisma models for users, credit wallets, transactions (purchases, spend, refunds), generated images, and trial eligibility. Credit balance is stored and decremented atomically with validation in the same query.",
+    "challenges": "Atomic credit deduction under concurrent requests, mapping real model cost to fair credit pricing, the dual-path payment fulfillment (client verify + webhook fallback) without double-crediting, and server-side trial guardrails to prevent premium-model abuse on the free tier.",
+    "scalingStrategy": "Stateless Express API on Render with PostgreSQL; images offloaded to Cloudflare R2 for edge distribution. TanStack Query caches client state. Payment flow is idempotent across both fulfillment paths.",
+    "security": "Better Auth with OAuth, Zod validation on all routes, server-side trial restrictions, atomic wallet operations, and webhook verification to prevent forged payment callbacks.",
+    "failureHandling": "Failed generations trigger automatic refunds. The Razorpay webhook is the fallback path \u2014 if the browser never receives the response, credits are still issued and deduplicated.",
+    "observability": "Transaction history gives a full audit of purchases, spend, and refunds; generation success/failure is tracked per model.",
+    "tradeoffs": "Pay-as-you-go credits over subscriptions for flexibility. OpenRouter over a single vendor for multi-model support. Razorpay webhook + verify over a single path for reliability. R2 over S3 for simpler egress pricing.",
+    "seniorTopics": [
+      "Atomic Balance Operations",
+      "Multi-Provider Model APIs",
+      "Dual-Path Payment Fulfillment",
+      "Per-Model Cost Pricing",
+      "Trial Guardrails"
+    ],
+    "architectureDecisions": [
+      {
+        "decision": "Payments",
+        "chosen": "Verify endpoint + webhook fallback",
+        "rejected": "Single verification path"
+      },
+      {
+        "decision": "Credits",
+        "chosen": "Atomic single-query decrement",
+        "rejected": "Read-then-write (race conditions)"
+      },
+      {
+        "decision": "Models",
+        "chosen": "OpenRouter multi-model",
+        "rejected": "Single vendor"
+      }
+    ],
+    "metrics": [
+      {
+        "val": "6+",
+        "label": "AI image models"
+      },
+      {
+        "val": "3",
+        "label": "Credit packs"
+      },
+      {
+        "val": "2",
+        "label": "Payment paths"
+      }
+    ],
+    "liveUrl": "https://lumiforge-ai.vercel.app",
+    "githubUrl": "https://github.com/VishalDevx/lumiforge-ai",
+    "featured": false,
+    "published": true,
+    "createdAt": "2026-04-01T10:00:00.000Z",
+    "updatedAt": "2026-07-08T10:00:00.000Z"
+  },
+  {
+    "slug": "epsilon",
+    "title": "Epsilon \u2014 Block-Based Note Workspace",
+    "description": "A block-based workspace for notes, canvases, and lightweight project boards \u2014 Next.js frontend on Vercel, a Go REST API on EC2, PostgreSQL via Neon, S3 presigned uploads, and cookie sessions.",
+    "fullDescription": "Epsilon lets users authenticate, create spaces, and arrange blocks \u2014 text, markdown, images, code, and todos \u2014 on a drag-and-drop canvas. It is a Turborepo monorepo spanning a Next.js frontend, a Go HTTP API, PostgreSQL, and object storage. Production runs across three hosts: Vercel serves HTML, EC2 (systemd) runs the Go API, and Neon PostgreSQL + AWS S3 back data and files. Sessions are cookie-based and stored in Postgres, images upload via short-lived S3 presigned URLs, and the Go backend layers handler \u2192 service \u2192 repository \u2192 sqlc.",
+    "domain": "A hybrid-stack product forces clear ownership boundaries: the frontend handles SSR and rendering, the Go API owns auth, spaces, blocks, sessions, OAuth, and upload presigning, and managed services provide persistence. Cookie sessions with proxy.ts route guards keep the browser\u2194API contract explicit.",
+    "category": "Full-Stack",
+    "techStack": [
+      "Next.js",
+      "React",
+      "Go",
+      "PostgreSQL (Neon)",
+      "sqlc",
+      "AWS S3",
+      "React Email",
+      "PostHog",
+      "Sentry",
+      "Turborepo"
+    ],
+    "architecture": "apps/web (Next.js, SSR + a proxy.ts session gate) and apps/api-golang (Go HTTP API with a middleware chain, handlers, services, repositories, sqlc) with a shared packages/emails workspace for React Email templates. Object storage uses presigned URLs; the frontend PUTs directly to S3.",
+    "dataModel": "PostgreSQL models for users, sessions, spaces, and blocks. Backend layering keeps SQL generated by sqlc \u2014 type-safe queries against the schema.",
+    "challenges": "The cross-stack design required discipline around the browser\u2194API contract \u2014 cookie auth, CORS with credentials, and presigned upload flows. Running Go and Next.js in one repo needed clean monorepo tooling, and sessions stored in Postgres had to stay consistent across Vercel and EC2.",
+    "scalingStrategy": "Vercel serves the frontend at the edge; EC2 hosts the stateful Go API; Neon and S3 scale independently. React Email templates render server-side. PostHog and Sentry provide analytics and error monitoring in production.",
+    "security": "Cookie-based sessions stored in Postgres, OAuth sign-in, proxy.ts route guards, and private S3 buckets accessed only through short-lived presigned URLs.",
+    "failureHandling": "Sentry captures errors across both the Next.js and Go sides; session validation gates every API call with clear redirect flows on expiry.",
+    "observability": "PostHog product analytics and Sentry error monitoring wired into both the frontend and the Go API in production.",
+    "tradeoffs": "Go API over Node for performance and static binaries. sqlc over an ORM for explicit, type-safe SQL. Vercel + EC2 split over a single host for edge delivery plus a persistent API.",
+    "seniorTopics": [
+      "Polyglot Architecture",
+      "Cookie Session Management",
+      "Presigned Upload Flows",
+      "sqlc / Type-Safe SQL",
+      "Multi-Host Deployment"
+    ],
+    "architectureDecisions": [
+      {
+        "decision": "Backend language",
+        "chosen": "Go HTTP API + sqlc",
+        "rejected": "Node/TS API"
+      },
+      {
+        "decision": "Sessions",
+        "chosen": "Cookie-based in Postgres",
+        "rejected": "JWT stateless"
+      },
+      {
+        "decision": "Uploads",
+        "chosen": "S3 presigned URLs",
+        "rejected": "Server-proxied uploads"
+      }
+    ],
+    "metrics": [
+      {
+        "val": "2",
+        "label": "Languages"
+      },
+      {
+        "val": "3",
+        "label": "Production hosts"
+      },
+      {
+        "val": "5",
+        "label": "Block types"
+      }
+    ],
+    "liveUrl": "",
+    "githubUrl": "https://github.com/VishalDevx/epsilon",
+    "featured": false,
+    "published": true,
+    "createdAt": "2026-03-20T10:00:00.000Z",
+    "updatedAt": "2026-07-02T10:00:00.000Z"
+  },
+  {
+    "slug": "universe-simulator",
+    "title": "Universe Simulator \u2014 80K-Particle 3D Sandbox",
+    "description": "An interactive 3D particle universe rendered with React Three Fiber \u2014 80,000 particles driven by physics, hand-gesture controls via MediaPipe, audio reactivity, and a webcam selfie mask.",
+    "fullDescription": "A full-screen 3D sandbox where 80,000 particles flow, collapse, and explode based on mode, audio input, and the user's hands. MediaPipe hand tracking maps pinch, open-palm, fist, and pointing gestures to particle behavior in real time, and a selfie mask blends the webcam feed into the scene. Multiple visualization modes with per-mode colors, particle physics with sizes and forces, camera zoom controls, and post-processing effects make it a live, controllable particle engine.",
+    "domain": "Rendering 80,000 GPU points interactively is a performance engineering problem: geometry is built once and mutated per frame, physics runs in a typed array pipeline, and gesture recognition must stay under a frame budget so it never stalls the render loop.",
+    "category": "Frontend",
+    "techStack": [
+      "Next.js 16",
+      "React 19",
+      "three.js",
+      "React Three Fiber",
+      "MediaPipe",
+      "GSAP",
+      "Framer Motion",
+      "Zustand"
+    ],
+    "architecture": "A React Three Fiber Canvas hosts a Points object built from preallocated typed arrays (position, color, size) mutated per frame in useFrame. Store-driven state (Zustand) connects gesture recognition, audio reactivity, camera zoom, and combo intensity to the physics update. Post-processing effects and dynamic lighting layer on top.",
+    "dataModel": "Typed-array particle buffers initialized once (80,000 \u00d7 position/color/size), a Zustand store for UI and interaction state, and hand-landmark data from MediaPipe mapped through a gesture analyzer.",
+    "challenges": "Keeping 80,000 particles at 60fps meant avoiding per-frame allocations, batching physics in a tight typed-array loop, and GPU-point rendering with additive blending. Gesture recognition (pinch strength, velocity, fist/open-palm) had to be stable and low-latency, and audio reactivity needed a smoothed FFT signal that didn't fight the render loop.",
+    "scalingStrategy": "Particle count and effects are configurable for lower-end devices; rendering uses level-of-detail through mode-specific size and color adjustments.",
+    "security": "Runs entirely in the browser; webcam access uses standard MediaPipe camera APIs with explicit user permission.",
+    "failureHandling": "Webcam and microphone availability are feature-detected with graceful fallbacks to mouse/keyboard controls.",
+    "observability": "An on-screen HUD shows live FPS so performance regressions are visible during development.",
+    "tradeoffs": "React Three Fiber over raw three.js for declarative scene management. Typed-array physics over per-object particles for throughput. MediaPipe over a custom tracker for robust hand tracking.",
+    "seniorTopics": [
+      "GPU Particle Systems",
+      "Typed Array Performance",
+      "Hand Tracking Integration",
+      "Audio Reactivity",
+      "Real-Time Shader Effects"
+    ],
+    "architectureDecisions": [
+      {
+        "decision": "Rendering",
+        "chosen": "React Three Fiber + typed arrays",
+        "rejected": "Per-object meshes"
+      },
+      {
+        "decision": "Interaction",
+        "chosen": "MediaPipe hand gestures",
+        "rejected": "Mouse only"
+      },
+      {
+        "decision": "State",
+        "chosen": "Zustand store",
+        "rejected": "React context (re-render storms)"
+      }
+    ],
+    "metrics": [
+      {
+        "val": "80K",
+        "label": "Particles"
+      },
+      {
+        "val": "4",
+        "label": "Gesture types"
+      },
+      {
+        "val": "60fps",
+        "label": "Render target"
+      }
+    ],
+    "liveUrl": "",
+    "githubUrl": "https://github.com/VishalDevx/universe-simulator",
+    "featured": false,
+    "published": true,
+    "createdAt": "2026-05-01T10:00:00.000Z",
+    "updatedAt": "2026-06-28T10:00:00.000Z"
   }
 ]

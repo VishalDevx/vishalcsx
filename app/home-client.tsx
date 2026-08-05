@@ -118,7 +118,7 @@ export function HomeClient({ projects, posts }: HomeClientProps) {
             <SectionHeader label="Metrics" />
             <div className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border sm:grid-cols-4" style={{ borderColor: 'var(--card-border)', backgroundColor: 'var(--card-border)' }}>
               {[
-                { value: 12, label: 'Projects Built' },
+                { value: 16, label: 'Projects Built' },
                 { value: github?.totalPRs ?? 32, label: 'Pull Requests' },
                 { value: github?.totalStars ?? 15, label: 'Stars Earned' },
                 { value: 3, suffix: '+', label: 'Years Experience' },

@@ -476,37 +476,6 @@ function EpsilonVisual() {
   )
 }
 
-/* ── Universe Simulator: particle field ── */
-function UniverseVisual() {
-  const id = 'us'
-  const dots: React.ReactNode[] = []
-  const colors = [CYAN, PURPLE, BLUE, '#ffffff']
-  for (let i = 0; i < 90; i++) {
-    const x = (i * 137.5) % 400
-    const y = (i * 61.8) % 220
-    const r = 0.6 + ((i * 7) % 10) / 10
-    const c = colors[i % 4]
-    dots.push(<circle key={i} cx={x} cy={y} r={r} fill={c} opacity={0.5 + ((i * 13) % 50) / 100} />)
-  }
-  return (
-    <Shell id={id}>
-      <GridDefs id={id} />
-      <g>
-        <ellipse cx="200" cy="110" rx="130" ry="70" fill="none" stroke={PURPLE} strokeOpacity="0.35" strokeWidth="1" transform="rotate(-18 200 110)" />
-        <ellipse cx="200" cy="110" rx="170" ry="92" fill="none" stroke={CYAN} strokeOpacity="0.25" strokeWidth="1" transform="rotate(-18 200 110)" />
-        {dots}
-        <circle cx="200" cy="110" r="5" fill="#fff" />
-        <circle cx="200" cy="110" r="10" fill="none" stroke={CYAN} strokeOpacity="0.6" strokeWidth="1" />
-      </g>
-      <g fontFamily="monospace" fontSize="8" fill="#ffffff" opacity="0.4">
-        <text x="18" y="204">80,000 particles</text>
-        <circle cx="320" cy="200" r="3" fill={CYAN} />
-        <text x="328" y="203">60fps</text>
-      </g>
-    </Shell>
-  )
-}
-
 const visuals: Record<string, Visual> = {
   careernorth: CareerNorthVisual,
   repolens: RepoLensVisual,
@@ -523,7 +492,6 @@ const visuals: Record<string, Visual> = {
   'techies-community': CommunityVisual,
   'lumiforge-ai': LumiForgeVisual,
   epsilon: EpsilonVisual,
-  'universe-simulator': UniverseVisual,
 }
 
 function FallbackVisual() {

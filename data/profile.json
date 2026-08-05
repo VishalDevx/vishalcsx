@@ -12,7 +12,7 @@
   "availabilityText": "Open to full-time & freelance",
   "roles": ["Full-Stack Engineer", "Backend Architect", "Systems Builder", "Open Source Dev"],
   "stats": [
-    { "label": "Projects", "value": "16+" },
+    { "label": "Projects", "value": "15+" },
     { "label": "Years Exp.", "value": "2+" },
     { "label": "Open Source", "value": "Active" }
   ],
